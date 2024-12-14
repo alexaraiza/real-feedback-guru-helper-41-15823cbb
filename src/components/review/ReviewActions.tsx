@@ -26,7 +26,7 @@ export const ReviewActions = ({
     <div className="flex flex-col sm:flex-row gap-4">
       <Button
         onClick={onRefine}
-        disabled={!review || isRefining}
+        disabled={isRefining} // Remove the !review check
         className="button-hover flex-1 bg-secondary hover:bg-secondary/90 text-white shadow-lg"
         variant="outline"
       >

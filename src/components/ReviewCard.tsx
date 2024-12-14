@@ -31,8 +31,7 @@ export const ReviewCard = ({ businessName, businessImage, onTakeAiSurvey }: Revi
   };
 
   const handleRefineReview = async () => {
-    if (!review.trim()) return;
-
+    // Remove the trim check to allow any review length
     setIsRefining(true);
     try {
       const { data, error } = await supabase.functions.invoke('refine-review', {
@@ -43,10 +42,10 @@ export const ReviewCard = ({ businessName, businessImage, onTakeAiSurvey }: Revi
       
       if (data.refinedReview === review || !data.refinedReview) {
         toast({
-          title: "More details needed",
-          description: "Please add more specific details about your experience to help us refine your review.",
+          title: "Review refinement",
+          description: "Your review is already well-written! Feel free to submit it or add more details.",
         });
-        setIsRefined(false);
+        setIsRefined(true); // Mark as refined even if no changes were made
       } else {
         setReview(data.refinedReview);
         setIsRefined(true);
