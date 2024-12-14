@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { Copy, RefreshCw } from "lucide-react";
+import { Copy, RefreshCw, Gift, ExternalLink } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { nanoid } from 'nanoid';
 
@@ -86,7 +86,7 @@ export const ReviewCard = ({ businessName, businessImage }: ReviewCardProps) => 
       title: "Review copied!",
       description: "Opening Google Reviews in a new tab...",
     });
-    window.open("https://www.google.com/maps/place/Multiplier/@51.5149056,-0.1261213,17z/data=!3m1!4b1!4m6!3m5!1s0x487605aa8ce68713:0x3e67ee3bbf612e91!8m2!3d51.5149056!4d-0.1235464!16s%2Fg%2F11g_rx295s?entry=ttu&g_ep=EgoyMDI0MTIxMS4wIKXMDSoASAFQAw%3D%3D", "_blank");
+    window.open("https://www.google.com/maps", "_blank");
   };
 
   return (
@@ -116,7 +116,7 @@ export const ReviewCard = ({ businessName, businessImage }: ReviewCardProps) => 
         <Button
           onClick={handleRefineReview}
           disabled={!review || isRefining}
-          className="button-hover flex-1"
+          className="button-hover flex-1 bg-secondary hover:bg-secondary/90"
           variant="outline"
         >
           {isRefining ? (
@@ -131,14 +131,14 @@ export const ReviewCard = ({ businessName, businessImage }: ReviewCardProps) => 
           <Button
             onClick={handleSubmitReview}
             disabled={!review || isSubmitting}
-            className="button-hover flex-1"
+            className="button-hover flex-1 bg-primary hover:bg-primary/90"
           >
             Submit Review
           </Button>
         ) : (
           <Button
             onClick={handleCopyAndRedirect}
-            className="button-hover flex-1"
+            className="button-hover flex-1 bg-primary hover:bg-primary/90"
           >
             <Copy className="mr-2 h-4 w-4" />
             Copy & Submit to Google
@@ -147,13 +147,48 @@ export const ReviewCard = ({ businessName, businessImage }: ReviewCardProps) => 
       </div>
 
       {uniqueCode && (
-        <div className="mt-4 p-4 bg-secondary rounded-lg">
-          <p className="text-center">
-            Your unique review code: <span className="font-mono font-bold">{uniqueCode}</span>
-          </p>
-          <p className="text-sm text-center text-muted-foreground mt-2">
-            Save this code to track your review status
-          </p>
+        <div className="space-y-6">
+          <div className="p-4 bg-secondary/5 rounded-lg border border-secondary/10">
+            <p className="text-center">
+              Your unique review code: <span className="font-mono font-bold">{uniqueCode}</span>
+            </p>
+            <p className="text-sm text-center text-muted-foreground mt-2">
+              Save this code to track your review status
+            </p>
+          </div>
+          
+          <div className="bg-primary/5 rounded-lg p-6 border border-primary/10">
+            <div className="flex items-center justify-center gap-2 mb-4 text-primary">
+              <Gift className="h-6 w-6" />
+              <h3 className="font-semibold text-lg">Unlocked Offers!</h3>
+            </div>
+            <div className="space-y-4">
+              <div className="bg-white/80 p-4 rounded-lg shadow-sm">
+                <div className="flex justify-between items-center">
+                  <div>
+                    <h4 className="font-semibold">20% Off Your Next Visit</h4>
+                    <p className="text-sm text-muted-foreground">Valid for 30 days</p>
+                  </div>
+                  <Button variant="outline" size="sm" className="text-primary">
+                    <ExternalLink className="h-4 w-4 mr-2" />
+                    Claim
+                  </Button>
+                </div>
+              </div>
+              <div className="bg-white/80 p-4 rounded-lg shadow-sm">
+                <div className="flex justify-between items-center">
+                  <div>
+                    <h4 className="font-semibold">Free Dessert</h4>
+                    <p className="text-sm text-muted-foreground">With any main course</p>
+                  </div>
+                  <Button variant="outline" size="sm" className="text-primary">
+                    <ExternalLink className="h-4 w-4 mr-2" />
+                    Claim
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       )}
     </div>
