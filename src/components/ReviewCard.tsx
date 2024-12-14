@@ -113,8 +113,8 @@ export const ReviewCard = ({ businessName, businessImage, onTakeAiSurvey }: Revi
   const handleCopyAndRedirect = () => {
     navigator.clipboard.writeText(review);
     toast({
-      title: "Review copied!",
-      description: "Opening Google Reviews in a new tab...",
+      title: "Review copied to clipboard!",
+      description: "Opening Google Reviews in a new tab. Please paste your review there.",
     });
     window.open("https://www.google.com/maps", "_blank");
   };

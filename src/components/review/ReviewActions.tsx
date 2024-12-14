@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { RefreshCw, Copy } from "lucide-react";
+import { RefreshCw, Copy, ExternalLink } from "lucide-react";
 
 interface ReviewActionsProps {
   review: string;
@@ -51,10 +51,13 @@ export const ReviewActions = ({
       {uniqueCode && (
         <Button
           onClick={onCopyAndRedirect}
-          className="button-hover flex-1 bg-primary hover:bg-primary/90"
+          className="button-hover flex-1 bg-primary hover:bg-primary/90 space-x-2"
         >
-          <Copy className="mr-2 h-4 w-4" />
-          Copy & Submit to Google
+          <div className="flex items-center">
+            <Copy className="mr-2 h-4 w-4" />
+            <span>Copy Review & Open Google Reviews</span>
+            <ExternalLink className="ml-2 h-4 w-4" />
+          </div>
         </Button>
       )}
     </div>
