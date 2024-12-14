@@ -16,69 +16,8 @@ const Index = () => {
   };
 
   const handleSurveyCallClick = () => {
-    if (showWidget) {
-      const widgetContainer = document.querySelector('[data-widget-container="true"]');
-      if (widgetContainer) {
-        widgetContainer.remove();
-      }
-      const script = document.getElementById('convai-widget-script');
-      if (script) {
-        script.remove();
-      }
-      setShowWidget(false);
-    } else {
-      const script = document.createElement('script');
-      script.id = 'convai-widget-script';
-      script.src = "https://elevenlabs.io/convai-widget/index.js";
-      script.crossOrigin = "anonymous";
-      script.async = true;
-      
-      script.onload = () => {
-        const widgetContainer = document.createElement('div');
-        widgetContainer.setAttribute('data-widget-container', 'true');
-        widgetContainer.className = 'fixed bottom-0 right-0';
-        widgetContainer.style.cssText = 'z-index: 9999; min-width: 320px;';
-        
-        const wrapper = document.createElement('div');
-        wrapper.className = 'relative';
-        
-        const widget = document.createElement('elevenlabs-convai');
-        widget.setAttribute('agent-id', 'CI0HSZaVDE1uT881ruiq');
-        widget.style.cssText = 'display: block; position: relative; z-index: 1;';
-        
-        const pinkBar = document.createElement('div');
-        pinkBar.className = 'absolute bottom-0 left-0 right-0 flex items-center justify-center';
-        pinkBar.style.cssText = 'height: 24px; background: #E94E87; z-index: 2; color: white; font-size: 12px; font-weight: 500;';
-        pinkBar.textContent = 'AI Voice Demo';
-        
-        wrapper.appendChild(widget);
-        wrapper.appendChild(pinkBar);
-        widgetContainer.appendChild(wrapper);
-        document.body.appendChild(widgetContainer);
-      };
-      
-      script.onerror = (error) => {
-        console.error('Failed to load ElevenLabs widget:', error);
-        setShowWidget(false);
-      };
-      
-      document.body.appendChild(script);
-      setShowWidget(true);
-    }
+    setShowWidget(!showWidget);
   };
-
-  useEffect(() => {
-    return () => {
-      const widgetContainer = document.querySelector('[data-widget-container="true"]');
-      if (widgetContainer) {
-        widgetContainer.remove();
-      }
-      const script = document.getElementById('convai-widget-script');
-      if (script) {
-        script.remove();
-      }
-    };
-  }, []);
 
   return (
     <div className="min-h-screen">
@@ -178,6 +117,18 @@ const Index = () => {
           </div>
         </div>
       </section>
+
+      {showWidget && (
+        <div className="fixed bottom-0 right-0 z-[9999] min-w-[320px]">
+          <div className="relative">
+            <elevenlabs-convai agent-id="CI0HSZaVDE1uT881ruiq"></elevenlabs-convai>
+            <div className="absolute bottom-0 left-0 right-0 h-6 bg-[#E94E87] text-white text-xs font-medium flex items-center justify-center">
+              AI Voice Demo
+            </div>
+          </div>
+          <script src="https://elevenlabs.io/convai-widget/index.js" async type="text/javascript"></script>
+        </div>
+      )}
     </div>
   );
 };
