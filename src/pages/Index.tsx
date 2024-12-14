@@ -43,7 +43,7 @@ const Index = () => {
         wrapper.className = 'relative';
         
         const widget = document.createElement('elevenlabs-convai');
-        widget.setAttribute('agent-id', 'tESkAImW1ibEAaF64sKJ');
+        widget.setAttribute('agent-id', 'CI0HSZaVDE1uT881ruiq');
         widget.style.cssText = 'display: block; position: relative; z-index: 1;';
         
         const pinkBar = document.createElement('div');
