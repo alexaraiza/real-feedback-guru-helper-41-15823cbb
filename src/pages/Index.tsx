@@ -53,7 +53,7 @@ const Index = () => {
 
         <ReviewCard
           businessName="The Local Kitchen & Bar"
-          businessImage="/placeholder.svg"
+          businessImage="/lovable-uploads/23bef056-e873-4e3d-b77b-8ac3c49fa8d8.png"
         />
 
         <div className="text-center text-sm text-muted-foreground space-y-2 fade-in">
@@ -77,9 +77,10 @@ const Index = () => {
         <ExampleReviews />
       </div>
       {showWidget && (
-        <elevenlabs-convai 
-          agent-id="tESkAImW1ibEAaF64sKJ" 
-          style={{ position: 'fixed', bottom: '20px', right: '20px', zIndex: 1000 }}
+        <div
+          dangerouslySetInnerHTML={{
+            __html: '<elevenlabs-convai agent-id="tESkAImW1ibEAaF64sKJ" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;"></elevenlabs-convai>'
+          }}
         />
       )}
     </div>
