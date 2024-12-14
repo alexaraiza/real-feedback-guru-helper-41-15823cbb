@@ -3,7 +3,7 @@ import { ExampleReviews } from "@/components/ExampleReviews";
 import { Button } from "@/components/ui/button";
 import { Building2, Bot, MessageSquare } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import { HeroSection } from "@/components/sections/HeroSection";
 import { FeaturesSection } from "@/components/sections/FeaturesSection";
 
