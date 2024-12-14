@@ -1,10 +1,12 @@
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { Star, MapPin, Phone, DollarSign, MessageSquare } from "lucide-react";
+import { Star, MapPin, DollarSign, Home } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Link } from "react-router-dom";
+import { ExampleReviews } from "@/components/ExampleReviews";
 
 const RestaurantDetail = () => {
   const { id } = useParams();
@@ -63,6 +65,12 @@ const RestaurantDetail = () => {
 
   return (
     <div className="container mx-auto px-4 py-8 animate-fade-in">
+      <Link to="/">
+        <Button variant="ghost" size="icon" className="absolute top-4 left-4">
+          <Home className="h-6 w-6" />
+        </Button>
+      </Link>
+
       {/* Hero Section */}
       <div className="relative h-[400px] rounded-2xl overflow-hidden mb-8">
         <img
@@ -130,35 +138,15 @@ const RestaurantDetail = () => {
             </Card>
           </section>
 
-          {/* Cuisine Types */}
-          {restaurant.cuisine_type && restaurant.cuisine_type.length > 0 && (
-            <section>
-              <h2 className="text-2xl font-semibold mb-4">Cuisine</h2>
-              <div className="flex flex-wrap gap-2">
-                {restaurant.cuisine_type.map((cuisine) => (
-                  <span
-                    key={cuisine}
-                    className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm"
-                  >
-                    {cuisine}
-                  </span>
-                ))}
-              </div>
-            </section>
-          )}
+          {/* Reviews Section */}
+          <section>
+            <h2 className="text-2xl font-semibold mb-4">Recent Reviews</h2>
+            <ExampleReviews />
+          </section>
         </div>
 
-        {/* Right Column */}
+        {/* Right Column - Special Offers */}
         <div className="space-y-8">
-          {/* Action Buttons */}
-          <div className="flex flex-col gap-4">
-            <Button className="w-full" size="lg">
-              <MessageSquare className="mr-2 h-5 w-5" />
-              Write a Review
-            </Button>
-          </div>
-
-          {/* Special Offers */}
           {restaurant.restaurant_offers && restaurant.restaurant_offers.length > 0 && (
             <section>
               <h2 className="text-2xl font-semibold mb-4">Special Offers</h2>
