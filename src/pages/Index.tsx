@@ -12,12 +12,10 @@ const Index = () => {
 
   const handleSurveyCallClick = () => {
     if (showWidget) {
-      // First, find and remove the widget container
       const widgetContainer = document.querySelector('[data-widget-container="true"]');
       if (widgetContainer) {
         widgetContainer.remove();
       }
-      // Then remove the script
       const script = document.getElementById('convai-widget-script');
       if (script) {
         script.remove();
@@ -31,29 +29,26 @@ const Index = () => {
       script.async = true;
       
       script.onload = () => {
-        // Create container with a data attribute for easier selection
         const widgetContainer = document.createElement('div');
         widgetContainer.setAttribute('data-widget-container', 'true');
         widgetContainer.className = 'fixed bottom-0 right-0';
         widgetContainer.style.cssText = 'z-index: 9999; min-width: 320px;';
         
-        // Create a wrapper for proper positioning
         const wrapper = document.createElement('div');
         wrapper.className = 'relative';
         
-        // Create the widget element
         const widget = document.createElement('elevenlabs-convai');
         widget.setAttribute('agent-id', 'tESkAImW1ibEAaF64sKJ');
         widget.style.cssText = 'display: block; position: relative; z-index: 1;';
         
-        // Create the black overlay
-        const blackBar = document.createElement('div');
-        blackBar.className = 'absolute bottom-0 left-0 right-0';
-        blackBar.style.cssText = 'height: 24px; background: black; z-index: 2;';
+        // Create the pink bar with text
+        const pinkBar = document.createElement('div');
+        pinkBar.className = 'absolute bottom-0 left-0 right-0 flex items-center justify-center';
+        pinkBar.style.cssText = 'height: 24px; background: #E94E87; z-index: 2; color: white; font-size: 12px; font-weight: 500;';
+        pinkBar.textContent = 'AI Voice Demo';
         
-        // Assemble the elements
         wrapper.appendChild(widget);
-        wrapper.appendChild(blackBar);
+        wrapper.appendChild(pinkBar);
         widgetContainer.appendChild(wrapper);
         document.body.appendChild(widgetContainer);
       };
@@ -69,7 +64,6 @@ const Index = () => {
   };
 
   useEffect(() => {
-    // Cleanup function
     return () => {
       const widgetContainer = document.querySelector('[data-widget-container="true"]');
       if (widgetContainer) {
