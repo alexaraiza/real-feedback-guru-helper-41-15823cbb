@@ -78,6 +78,101 @@ export type Database = {
         }
         Relationships: []
       }
+      restaurant_offers: {
+        Row: {
+          created_at: string
+          description: string
+          discount_value: string
+          id: string
+          restaurant_id: string | null
+          status: string | null
+          terms_conditions: string | null
+          title: string
+          valid_from: string
+          valid_until: string | null
+        }
+        Insert: {
+          created_at?: string
+          description: string
+          discount_value: string
+          id?: string
+          restaurant_id?: string | null
+          status?: string | null
+          terms_conditions?: string | null
+          title: string
+          valid_from?: string
+          valid_until?: string | null
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          discount_value?: string
+          id?: string
+          restaurant_id?: string | null
+          status?: string | null
+          terms_conditions?: string | null
+          title?: string
+          valid_from?: string
+          valid_until?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "restaurant_offers_restaurant_id_fkey"
+            columns: ["restaurant_id"]
+            isOneToOne: false
+            referencedRelation: "restaurants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      restaurants: {
+        Row: {
+          address: string
+          average_rating: number | null
+          cover_photo_url: string | null
+          created_at: string
+          cuisine_type: string[] | null
+          description: string | null
+          google_maps_url: string | null
+          id: string
+          logo_url: string | null
+          name: string
+          owner_id: string | null
+          price_range: string | null
+          status: string | null
+        }
+        Insert: {
+          address: string
+          average_rating?: number | null
+          cover_photo_url?: string | null
+          created_at?: string
+          cuisine_type?: string[] | null
+          description?: string | null
+          google_maps_url?: string | null
+          id?: string
+          logo_url?: string | null
+          name: string
+          owner_id?: string | null
+          price_range?: string | null
+          status?: string | null
+        }
+        Update: {
+          address?: string
+          average_rating?: number | null
+          cover_photo_url?: string | null
+          created_at?: string
+          cuisine_type?: string[] | null
+          description?: string | null
+          google_maps_url?: string | null
+          id?: string
+          logo_url?: string | null
+          name?: string
+          owner_id?: string | null
+          price_range?: string | null
+          status?: string | null
+        }
+        Relationships: []
+      }
       reviews: {
         Row: {
           business_name: string
