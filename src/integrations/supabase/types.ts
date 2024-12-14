@@ -78,6 +78,33 @@ export type Database = {
         }
         Relationships: []
       }
+      reviews: {
+        Row: {
+          business_name: string
+          created_at: string
+          id: string
+          review_text: string
+          status: string | null
+          unique_code: string
+        }
+        Insert: {
+          business_name: string
+          created_at?: string
+          id?: string
+          review_text: string
+          status?: string | null
+          unique_code: string
+        }
+        Update: {
+          business_name?: string
+          created_at?: string
+          id?: string
+          review_text?: string
+          status?: string | null
+          unique_code?: string
+        }
+        Relationships: []
+      }
       saved_plans: {
         Row: {
           coach_personality: Json | null

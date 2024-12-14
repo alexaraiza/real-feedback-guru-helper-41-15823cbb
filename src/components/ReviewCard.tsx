@@ -4,6 +4,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { Copy, RefreshCw } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { nanoid } from 'nanoid';
 
 interface ReviewCardProps {
   businessName: string;
@@ -13,6 +14,8 @@ interface ReviewCardProps {
 export const ReviewCard = ({ businessName, businessImage }: ReviewCardProps) => {
   const [review, setReview] = useState("");
   const [isRefining, setIsRefining] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [uniqueCode, setUniqueCode] = useState<string | null>(null);
   const { toast } = useToast();
 
   const handleRefineReview = async () => {
@@ -40,6 +43,40 @@ export const ReviewCard = ({ businessName, businessImage }: ReviewCardProps) => 
       });
     } finally {
       setIsRefining(false);
+    }
+  };
+
+  const handleSubmitReview = async () => {
+    if (!review.trim()) return;
+
+    setIsSubmitting(true);
+    const code = nanoid(8);
+
+    try {
+      const { error } = await supabase
+        .from('reviews')
+        .insert({
+          review_text: review,
+          unique_code: code,
+          business_name: businessName,
+        });
+
+      if (error) throw error;
+
+      setUniqueCode(code);
+      toast({
+        title: "Review submitted!",
+        description: "Your review has been submitted successfully.",
+      });
+    } catch (error) {
+      console.error('Error submitting review:', error);
+      toast({
+        title: "Error",
+        description: "Failed to submit review. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -90,15 +127,35 @@ export const ReviewCard = ({ businessName, businessImage }: ReviewCardProps) => 
           Refine Review
         </Button>
 
-        <Button
-          onClick={handleCopyAndRedirect}
-          disabled={!review}
-          className="button-hover flex-1"
-        >
-          <Copy className="mr-2 h-4 w-4" />
-          Copy & Submit to Google
-        </Button>
+        {!uniqueCode ? (
+          <Button
+            onClick={handleSubmitReview}
+            disabled={!review || isSubmitting}
+            className="button-hover flex-1"
+          >
+            Submit Review
+          </Button>
+        ) : (
+          <Button
+            onClick={handleCopyAndRedirect}
+            className="button-hover flex-1"
+          >
+            <Copy className="mr-2 h-4 w-4" />
+            Copy & Submit to Google
+          </Button>
+        )}
       </div>
+
+      {uniqueCode && (
+        <div className="mt-4 p-4 bg-secondary rounded-lg">
+          <p className="text-center">
+            Your unique review code: <span className="font-mono font-bold">{uniqueCode}</span>
+          </p>
+          <p className="text-sm text-center text-muted-foreground mt-2">
+            Save this code to track your review status
+          </p>
+        </div>
+      )}
     </div>
   );
 };
