@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { Copy, RefreshCw, Gift, ExternalLink } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { nanoid } from 'nanoid';
+import { ReviewInput } from "./review/ReviewInput";
+import { ReviewActions } from "./review/ReviewActions";
+import { ReviewCode } from "./review/ReviewCode";
+import { UnlockedOffers } from "./review/UnlockedOffers";
 
 interface ReviewCardProps {
   businessName: string;
@@ -91,104 +92,27 @@ export const ReviewCard = ({ businessName, businessImage }: ReviewCardProps) => 
 
   return (
     <div className="glass-card rounded-xl p-6 max-w-xl w-full mx-auto space-y-6 fade-in">
-      <div className="flex items-center space-x-4">
-        {businessImage && (
-          <img
-            src={businessImage}
-            alt={businessName}
-            className="w-12 h-12 rounded-full object-cover"
-          />
-        )}
-        <div>
-          <h2 className="text-xl font-semibold">{businessName}</h2>
-          <p className="text-sm text-muted-foreground">Write your review below</p>
-        </div>
-      </div>
-
-      <Textarea
-        value={review}
-        onChange={(e) => setReview(e.target.value)}
-        placeholder="Share your experience..."
-        className="min-h-[150px] resize-none"
+      <ReviewInput
+        review={review}
+        onChange={setReview}
+        businessName={businessName}
+        businessImage={businessImage}
       />
 
-      <div className="flex flex-col sm:flex-row gap-4">
-        <Button
-          onClick={handleRefineReview}
-          disabled={!review || isRefining}
-          className="button-hover flex-1 bg-secondary hover:bg-secondary/90"
-          variant="outline"
-        >
-          {isRefining ? (
-            <RefreshCw className="mr-2 h-4 w-4 animate-spin" />
-          ) : (
-            <RefreshCw className="mr-2 h-4 w-4" />
-          )}
-          Refine Review
-        </Button>
-
-        {!uniqueCode ? (
-          <Button
-            onClick={handleSubmitReview}
-            disabled={!review || isSubmitting}
-            className="button-hover flex-1 bg-primary hover:bg-primary/90"
-          >
-            Submit Review
-          </Button>
-        ) : (
-          <Button
-            onClick={handleCopyAndRedirect}
-            className="button-hover flex-1 bg-primary hover:bg-primary/90"
-          >
-            <Copy className="mr-2 h-4 w-4" />
-            Copy & Submit to Google
-          </Button>
-        )}
-      </div>
+      <ReviewActions
+        review={review}
+        isRefining={isRefining}
+        isSubmitting={isSubmitting}
+        uniqueCode={uniqueCode}
+        onRefine={handleRefineReview}
+        onSubmit={handleSubmitReview}
+        onCopyAndRedirect={handleCopyAndRedirect}
+      />
 
       {uniqueCode && (
         <div className="space-y-6">
-          <div className="p-4 bg-secondary/5 rounded-lg border border-secondary/10">
-            <p className="text-center">
-              Your unique review code: <span className="font-mono font-bold">{uniqueCode}</span>
-            </p>
-            <p className="text-sm text-center text-muted-foreground mt-2">
-              Save this code to track your review status
-            </p>
-          </div>
-          
-          <div className="bg-primary/5 rounded-lg p-6 border border-primary/10">
-            <div className="flex items-center justify-center gap-2 mb-4 text-primary">
-              <Gift className="h-6 w-6" />
-              <h3 className="font-semibold text-lg">Unlocked Offers!</h3>
-            </div>
-            <div className="space-y-4">
-              <div className="bg-white/80 p-4 rounded-lg shadow-sm">
-                <div className="flex justify-between items-center">
-                  <div>
-                    <h4 className="font-semibold">20% Off Your Next Visit</h4>
-                    <p className="text-sm text-muted-foreground">Valid for 30 days</p>
-                  </div>
-                  <Button variant="outline" size="sm" className="text-primary">
-                    <ExternalLink className="h-4 w-4 mr-2" />
-                    Claim
-                  </Button>
-                </div>
-              </div>
-              <div className="bg-white/80 p-4 rounded-lg shadow-sm">
-                <div className="flex justify-between items-center">
-                  <div>
-                    <h4 className="font-semibold">Free Dessert</h4>
-                    <p className="text-sm text-muted-foreground">With any main course</p>
-                  </div>
-                  <Button variant="outline" size="sm" className="text-primary">
-                    <ExternalLink className="h-4 w-4 mr-2" />
-                    Claim
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </div>
+          <ReviewCode uniqueCode={uniqueCode} />
+          <UnlockedOffers />
         </div>
       )}
     </div>
