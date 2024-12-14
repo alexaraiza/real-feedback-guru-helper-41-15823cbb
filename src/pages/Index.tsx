@@ -1,14 +1,19 @@
 import { ReviewCard } from "@/components/ReviewCard";
 import { ExampleReviews } from "@/components/ExampleReviews";
 import { Button } from "@/components/ui/button";
-import { Building2, Bot } from "lucide-react";
+import { Building2, Bot, MessageSquare } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { HeroSection } from "@/components/sections/HeroSection";
 import { FeaturesSection } from "@/components/sections/FeaturesSection";
 
 const Index = () => {
   const [showWidget, setShowWidget] = useState(false);
+  const experienceSectionRef = useRef<HTMLDivElement>(null);
+
+  const scrollToExperience = () => {
+    experienceSectionRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
 
   const handleSurveyCallClick = () => {
     if (showWidget) {
@@ -41,7 +46,6 @@ const Index = () => {
         widget.setAttribute('agent-id', 'tESkAImW1ibEAaF64sKJ');
         widget.style.cssText = 'display: block; position: relative; z-index: 1;';
         
-        // Create the pink bar with text
         const pinkBar = document.createElement('div');
         pinkBar.className = 'absolute bottom-0 left-0 right-0 flex items-center justify-center';
         pinkBar.style.cssText = 'height: 24px; background: #E94E87; z-index: 2; color: white; font-size: 12px; font-weight: 500;';
@@ -78,11 +82,11 @@ const Index = () => {
 
   return (
     <div className="min-h-screen">
-      <HeroSection onTryDemo={handleSurveyCallClick} />
+      <HeroSection onTryDemo={scrollToExperience} />
       <FeaturesSection />
 
       {/* Demo Section */}
-      <section className="py-20 bg-gradient-to-b from-white to-[#FFE5ED]/20">
+      <section ref={experienceSectionRef} className="py-20 bg-gradient-to-b from-white to-[#FFE5ED]/20">
         <div className="max-w-7xl mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-12 bg-gradient-to-r from-[#E94E87] via-[#F17BA3] to-[#FF9B9B] text-transparent bg-clip-text">
             Experience EatUP!
@@ -104,6 +108,13 @@ const Index = () => {
                 Try our innovative review system that makes sharing your dining experience easy and rewarding. 
                 Use text or voice to share your feedback and earn rewards from your favorite restaurants.
               </p>
+              <Button
+                onClick={handleSurveyCallClick}
+                className="w-full bg-gradient-to-r from-[#E94E87] to-[#F17BA3] hover:from-[#D13D73] hover:to-[#E94E87] text-white shadow-lg hover:shadow-xl transition-all duration-300"
+              >
+                <Bot className="mr-2 h-5 w-5" />
+                Try AI Voice Feedback Demo
+              </Button>
             </div>
             <div className="bg-white p-6 rounded-xl shadow-xl">
               <ReviewCard
@@ -156,11 +167,11 @@ const Index = () => {
                 <Button 
                   variant="outline"
                   size="lg"
-                  onClick={handleSurveyCallClick}
+                  onClick={scrollToExperience}
                   className="border-[#E94E87] text-[#E94E87] hover:bg-[#E94E87] hover:text-white"
                 >
-                  <Bot className="mr-2 h-5 w-5" />
-                  Try Demo
+                  <MessageSquare className="mr-2 h-5 w-5" />
+                  Try Review Demo
                 </Button>
               </div>
             </div>

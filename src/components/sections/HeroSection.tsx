@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Phone, Utensils } from "lucide-react";
+import { MessageSquare, Utensils } from "lucide-react";
 import { Link } from "react-router-dom";
 
 interface HeroSectionProps {
@@ -35,8 +35,8 @@ export const HeroSection = ({ onTryDemo }: HeroSectionProps) => {
             className="bg-gradient-to-r from-[#E94E87] to-[#F17BA3] hover:from-[#D13D73] hover:to-[#E94E87] text-white shadow-lg hover:shadow-xl transition-all duration-300 group"
             size="lg"
           >
-            <Phone className="mr-2 h-5 w-5 group-hover:rotate-12 transition-transform" />
-            Try Voice Review Demo
+            <MessageSquare className="mr-2 h-5 w-5 group-hover:rotate-12 transition-transform" />
+            Review Refinement and Voice Review Demo
           </Button>
           <Link to="/restaurants/register-interest">
             <Button 
