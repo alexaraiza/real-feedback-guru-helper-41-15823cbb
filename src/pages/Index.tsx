@@ -1,5 +1,4 @@
 import { ReviewCard } from "@/components/ReviewCard";
-import { ExampleReviews } from "@/components/ExampleReviews";
 
 const Index = () => {
   return (
@@ -23,8 +22,6 @@ const Index = () => {
             By submitting a review, you agree to receive exclusive offers via email.
           </p>
         </div>
-
-        <ExampleReviews />
       </div>
     </div>
   );
