@@ -117,7 +117,7 @@ export const ReviewCard = ({ businessName, businessImage, onTakeAiSurvey }: Revi
       title: "Review copied to clipboard!",
       description: "Opening Google Reviews in a new tab. Please paste your review there.",
     });
-    window.open("https://www.google.com/maps/place/Zazza+Korean+Noodles/@51.3982505,-0.2578757,17z/data=!4m8!3m7!1s0x48760935f81aa75f:0x3aef8055280973ef!8m2!3d51.3982505!4d-0.2553008!9m1!1b1!16s%2Fg%2F11y1t9314m?entry=ttu&g_ep=EgoyMDI0MTIxMS4wIKXMDSoASAFQAw%3D%3D", "_blank");
+    window.open("https://maps.app.goo.gl/Nx23mQHet4TBfctJ6", "_blank");
   };
 
   return (
