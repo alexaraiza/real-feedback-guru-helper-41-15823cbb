@@ -17,6 +17,7 @@ import { supabase } from "@/integrations/supabase/client";
 
 interface RestaurantFormData {
   name: string;
+  address: string;  // Added address field
   google_maps_url: string;
   logo_url?: string;
   offer_title: string;
@@ -32,6 +33,7 @@ export function SimpleRestaurantForm() {
   const form = useForm<RestaurantFormData>({
     defaultValues: {
       name: "",
+      address: "",  // Added address default value
       google_maps_url: "",
       logo_url: "",
       offer_title: "",
@@ -94,6 +96,7 @@ export function SimpleRestaurantForm() {
         .from("restaurants")
         .insert({
           name: data.name,
+          address: data.address,  // Added address field
           google_maps_url: data.google_maps_url,
           logo_url: data.logo_url,
           owner_id: user.id,
@@ -150,6 +153,20 @@ export function SimpleRestaurantForm() {
                 <FormLabel>Restaurant Name</FormLabel>
                 <FormControl>
                   <Input placeholder="Enter restaurant name" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="address"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Address</FormLabel>
+                <FormControl>
+                  <Input placeholder="Enter restaurant address" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
