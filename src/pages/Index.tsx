@@ -3,15 +3,20 @@ import { ExampleReviews } from "@/components/ExampleReviews";
 import { Button } from "@/components/ui/button";
 import { Phone, Bot } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useState } from "react";
 
 const Index = () => {
   const { toast } = useToast();
+  const [showWidget, setShowWidget] = useState(false);
 
   const handleSurveyCallClick = () => {
-    toast({
-      title: "Coming Soon!",
-      description: "Our AI-powered survey calls will be available shortly. Join the prize pool by sharing your written feedback for now!",
-    });
+    setShowWidget(true);
+    
+    // Add the script dynamically when button is clicked
+    const script = document.createElement('script');
+    script.src = "https://elevenlabs.io/convai-widget/index.js";
+    script.async = true;
+    document.body.appendChild(script);
   };
 
   return (
@@ -71,6 +76,12 @@ const Index = () => {
 
         <ExampleReviews />
       </div>
+      {showWidget && (
+        <elevenlabs-convai 
+          agent-id="tESkAImW1ibEAaF64sKJ" 
+          style={{ position: 'fixed', bottom: '20px', right: '20px', zIndex: 1000 }}
+        />
+      )}
     </div>
   );
 };
