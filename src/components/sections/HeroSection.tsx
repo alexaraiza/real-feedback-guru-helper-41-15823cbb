@@ -8,7 +8,7 @@ interface HeroSectionProps {
 
 export const HeroSection = ({ onTryDemo }: HeroSectionProps) => {
   return (
-    <section className="relative bg-gradient-to-b from-white via-[#E5DEFF] to-[#D6BCFA]/20 py-20">
+    <section className="relative bg-gradient-to-b from-white via-[#FFE5ED] to-[#FFD5E2]/20 py-20">
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-white/90 to-white/50" />
         <img
@@ -32,7 +32,7 @@ export const HeroSection = ({ onTryDemo }: HeroSectionProps) => {
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <Button
             onClick={onTryDemo}
-            className="bg-gradient-to-r from-[#9b87f5] to-[#D6BCFA] hover:from-[#8a74f3] hover:to-[#c5a6f9] text-white shadow-lg hover:shadow-xl transition-all duration-300 group"
+            className="bg-gradient-to-r from-[#E94E87] to-[#F17BA3] hover:from-[#D13D73] hover:to-[#E94E87] text-white shadow-lg hover:shadow-xl transition-all duration-300 group"
             size="lg"
           >
             <Phone className="mr-2 h-5 w-5 group-hover:rotate-12 transition-transform" />
@@ -42,7 +42,7 @@ export const HeroSection = ({ onTryDemo }: HeroSectionProps) => {
             <Button 
               variant="outline"
               size="lg"
-              className="border-[#9b87f5] text-[#9b87f5] hover:bg-[#9b87f5] hover:text-white"
+              className="border-[#E94E87] text-[#E94E87] hover:bg-[#E94E87] hover:text-white"
             >
               <Utensils className="mr-2 h-5 w-5" />
               Register Restaurant Interest

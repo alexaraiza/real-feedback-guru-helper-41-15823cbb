@@ -25,9 +25,9 @@ export default {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: {
-          DEFAULT: "#9b87f5", // Cooler pink/purple
-          light: "#D6BCFA",
-          dark: "#7E69AB",
+          DEFAULT: "#E94E87", // Logo pink
+          light: "#F17BA3",
+          dark: "#D13D73",
           foreground: "hsl(var(--primary-foreground))",
         },
         secondary: {
