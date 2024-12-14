@@ -1,7 +1,7 @@
 import { ReviewCard } from "@/components/ReviewCard";
 import { ExampleReviews } from "@/components/ExampleReviews";
 import { Button } from "@/components/ui/button";
-import { Phone, Bot, ChevronDown, MapPin } from "lucide-react";
+import { Phone, Bot, ChevronDown, MapPin, Restaurant, Share2, Info } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
@@ -12,7 +12,6 @@ const Index = () => {
 
   const handleSurveyCallClick = () => {
     if (showWidget) {
-      // If widget is showing, remove it and the script
       const widget = document.querySelector('elevenlabs-convai');
       if (widget) {
         widget.remove();
@@ -23,7 +22,6 @@ const Index = () => {
       }
       setShowWidget(false);
     } else {
-      // If widget is not showing, add it and the script
       const existingScript = document.getElementById('convai-widget-script');
       if (!existingScript) {
         const script = document.createElement('script');
@@ -31,14 +29,12 @@ const Index = () => {
         script.src = "https://elevenlabs.io/convai-widget/index.js";
         script.async = true;
         script.onload = () => {
-          // Create and append widget after script is loaded
           const widgetHtml = document.createElement('div');
           widgetHtml.innerHTML = '<elevenlabs-convai agent-id="tESkAImW1ibEAaF64sKJ" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;"></elevenlabs-convai>';
           document.body.appendChild(widgetHtml.firstChild);
         };
         document.body.appendChild(script);
       } else {
-        // If script exists but widget was removed, just add widget
         const widgetHtml = document.createElement('div');
         widgetHtml.innerHTML = '<elevenlabs-convai agent-id="tESkAImW1ibEAaF64sKJ" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;"></elevenlabs-convai>';
         document.body.appendChild(widgetHtml.firstChild);
@@ -60,96 +56,133 @@ const Index = () => {
     };
   }, []);
 
+  const features = [
+    {
+      icon: <Share2 className="h-8 w-8 text-primary" />,
+      title: "Share Reviews",
+      description: "Share your dining experiences and help others discover great restaurants"
+    },
+    {
+      icon: <Restaurant className="h-8 w-8 text-primary" />,
+      title: "Restaurant Rewards",
+      description: "Get exclusive rewards and discounts for your honest feedback"
+    },
+    {
+      icon: <Bot className="h-8 w-8 text-primary" />,
+      title: "AI-Powered",
+      description: "Use our AI assistant to easily share your experience through voice"
+    }
+  ];
+
   return (
     <div className="min-h-screen">
-      <div className="max-w-7xl mx-auto px-4 py-12 space-y-12">
-        <div className="text-center space-y-6 fade-in">
+      {/* Hero Section */}
+      <section className="relative bg-gradient-to-b from-white to-primary/5 py-20">
+        <div className="max-w-7xl mx-auto px-4 text-center">
           <img 
             src="/lovable-uploads/50980a14-589f-4bd1-8267-536c582ff4e1.png" 
             alt="EatUP! Logo" 
-            className="h-28 mx-auto hover:scale-105 transition-transform duration-300"
+            className="h-28 mx-auto mb-8 hover:scale-105 transition-transform duration-300"
           />
-          <div className="space-y-4 max-w-2xl mx-auto">
-            <h1 className="text-5xl font-bold tracking-tight text-secondary bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-              Share & Save!
-            </h1>
-            <p className="text-lg text-muted-foreground leading-relaxed">
-              Share your dining experience and unlock exclusive rewards! Get instant savings 
-              on your next visit when you submit a review. It's that simple!
-            </p>
-          </div>
-
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+          <h1 className="text-5xl font-bold tracking-tight text-secondary mb-6">
+            Share Reviews, Earn Rewards!
+          </h1>
+          <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
+            Join the EatUP! community where your dining experiences turn into rewards. 
+            Share authentic reviews and unlock exclusive offers at your favorite restaurants.
+          </p>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Button
               onClick={handleSurveyCallClick}
-              className="bg-secondary hover:bg-secondary/90 text-white shadow-lg hover:shadow-xl transition-all duration-300 group w-full sm:w-auto"
+              className="bg-primary hover:bg-primary/90 text-white shadow-lg hover:shadow-xl transition-all duration-300 group"
               size="lg"
             >
               <Phone className="mr-2 h-5 w-5 group-hover:rotate-12 transition-transform" />
-              {showWidget ? 'Close AI Survey Call' : 'Take AI Survey Call'}
-              <Bot className="ml-2 h-5 w-5 group-hover:scale-110 transition-transform" />
+              Try Voice Review Demo
             </Button>
-
-            <Link to="/restaurants" className="w-full sm:w-auto">
+            <Link to="/restaurants/onboard">
               <Button 
                 variant="outline"
                 size="lg"
-                className="w-full border-primary text-primary hover:bg-primary hover:text-white group"
+                className="border-primary text-primary hover:bg-primary hover:text-white"
               >
-                <MapPin className="mr-2 h-5 w-5 group-hover:scale-110 transition-transform" />
-                Browse Restaurants
+                <Restaurant className="mr-2 h-5 w-5" />
+                Register Your Restaurant
               </Button>
             </Link>
           </div>
-          
-          <div className="text-sm font-medium text-primary animate-bounce">
-            Complete the AI survey call to enter our monthly prize pool! 🎉
+        </div>
+      </section>
+
+      {/* Features Section */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4">
+          <h2 className="text-3xl font-bold text-center mb-12">How It Works</h2>
+          <div className="grid md:grid-cols-3 gap-8">
+            {features.map((feature, index) => (
+              <div key={index} className="text-center p-6 rounded-xl bg-white shadow-lg hover:shadow-xl transition-shadow">
+                <div className="mb-4 inline-block p-3 bg-primary/5 rounded-full">
+                  {feature.icon}
+                </div>
+                <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
+                <p className="text-muted-foreground">{feature.description}</p>
+              </div>
+            ))}
           </div>
         </div>
+      </section>
 
-        <ReviewCard
-          businessName="The Local Kitchen & Bar"
-          businessImage="/lovable-uploads/23bef056-e873-4e3d-b77b-8ac3c49fa8d8.png"
-          onTakeAiSurvey={handleSurveyCallClick}
-        />
-
-        <div className="relative">
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/50 to-white pointer-events-none" />
-          <div className="text-center space-y-6 relative z-10 py-12">
-            <h2 className="text-2xl font-semibold text-secondary">How it works:</h2>
-            <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-              <div className="glass-card p-6 rounded-2xl space-y-3">
-                <div className="text-3xl font-bold text-primary">1</div>
-                <p className="text-secondary/80">
-                  Share your experience (written or AI call)
-                </p>
-              </div>
-              <div className="glass-card p-6 rounded-2xl space-y-3">
-                <div className="text-3xl font-bold text-primary">2</div>
-                <p className="text-secondary/80">
-                  Get your unique reward code
-                </p>
-              </div>
-              <div className="glass-card p-6 rounded-2xl space-y-3">
-                <div className="text-3xl font-bold text-primary">3</div>
-                <p className="text-secondary/80">
-                  Show your code on your next visit to claim rewards!
-                </p>
-              </div>
-            </div>
-            <p className="text-primary font-medium text-lg mt-8 animate-pulse">
-              ✨ AI Survey Call participants are automatically entered into our monthly prize pool! ✨
-            </p>
-          </div>
+      {/* Demo Section */}
+      <section className="py-20 bg-secondary/5">
+        <div className="max-w-7xl mx-auto px-4">
+          <h2 className="text-3xl font-bold text-center mb-12">Try Our Review System</h2>
+          <ReviewCard
+            businessName="The Local Kitchen & Bar"
+            businessImage="/lovable-uploads/23bef056-e873-4e3d-b77b-8ac3c49fa8d8.png"
+            onTakeAiSurvey={handleSurveyCallClick}
+          />
         </div>
+      </section>
 
-        <div className="relative pt-12">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2">
-            <ChevronDown className="h-8 w-8 text-primary/50 animate-bounce" />
-          </div>
+      {/* Recent Reviews Section */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4">
+          <h2 className="text-3xl font-bold text-center mb-12">Recent Reviews</h2>
           <ExampleReviews />
         </div>
-      </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-20 bg-primary/5">
+        <div className="max-w-7xl mx-auto px-4 text-center">
+          <h2 className="text-3xl font-bold mb-6">Ready to Join EatUP!?</h2>
+          <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
+            Start sharing your dining experiences and earning rewards today!
+          </p>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <Link to="/restaurants">
+              <Button 
+                variant="default"
+                size="lg"
+                className="bg-primary hover:bg-primary/90"
+              >
+                <MapPin className="mr-2 h-5 w-5" />
+                Browse Restaurants
+              </Button>
+            </Link>
+            <Link to="/restaurants/onboard">
+              <Button 
+                variant="outline"
+                size="lg"
+                className="border-primary text-primary hover:bg-primary hover:text-white"
+              >
+                <Restaurant className="mr-2 h-5 w-5" />
+                Register Your Restaurant
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </section>
     </div>
   );
 };

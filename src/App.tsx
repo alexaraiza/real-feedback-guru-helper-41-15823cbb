@@ -3,6 +3,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import RestaurantDirectory from "@/pages/restaurants";
 import RestaurantDetails from "@/pages/restaurants/[id]";
 import RestaurantOnboard from "@/pages/restaurants/onboard";
+import Index from "@/pages/Index";
 import { Home } from "lucide-react";
 import { Button } from "./components/ui/button";
 import { Link } from "react-router-dom";
@@ -28,7 +29,6 @@ function MainLayout() {
         </TabsContent>
         <TabsContent value="offers">
           <div className="grid gap-6">
-            {/* We'll implement the offers view in the next iteration */}
             <div className="text-center py-8">
               <h2 className="text-2xl font-semibold mb-4">Restaurant Offers</h2>
               <p className="text-muted-foreground">
@@ -46,7 +46,8 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<MainLayout />} />
+        <Route path="/" element={<Index />} />
+        <Route path="/restaurants" element={<MainLayout />} />
         <Route path="/restaurants/onboard" element={<RestaurantOnboard />} />
         <Route path="/restaurants/:id" element={<RestaurantDetails />} />
       </Routes>
