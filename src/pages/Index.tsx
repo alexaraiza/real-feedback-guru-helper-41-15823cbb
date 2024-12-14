@@ -3,13 +3,26 @@ import { ExampleReviews } from "@/components/ExampleReviews";
 import { Button } from "@/components/ui/button";
 import { Building2, Bot, MessageSquare } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { HeroSection } from "@/components/sections/HeroSection";
 import { FeaturesSection } from "@/components/sections/FeaturesSection";
 
 const Index = () => {
   const [showWidget, setShowWidget] = useState(false);
   const experienceSectionRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (showWidget) {
+      const script = document.createElement('script');
+      script.src = "https://elevenlabs.io/convai-widget/index.js";
+      script.async = true;
+      document.body.appendChild(script);
+
+      return () => {
+        document.body.removeChild(script);
+      };
+    }
+  }, [showWidget]);
 
   const scrollToExperience = () => {
     experienceSectionRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -126,7 +139,6 @@ const Index = () => {
               AI Voice Demo
             </div>
           </div>
-          <script src="https://elevenlabs.io/convai-widget/index.js" async type="text/javascript"></script>
         </div>
       )}
     </div>
