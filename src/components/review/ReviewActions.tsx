@@ -6,6 +6,7 @@ interface ReviewActionsProps {
   isRefining: boolean;
   isSubmitting: boolean;
   uniqueCode: string | null;
+  isRefined: boolean;
   onRefine: () => void;
   onSubmit: () => void;
   onCopyAndRedirect: () => void;
@@ -16,6 +17,7 @@ export const ReviewActions = ({
   isRefining,
   isSubmitting,
   uniqueCode,
+  isRefined,
   onRefine,
   onSubmit,
   onCopyAndRedirect,
@@ -36,7 +38,7 @@ export const ReviewActions = ({
         Refine Review
       </Button>
 
-      {!uniqueCode ? (
+      {!uniqueCode && isRefined && (
         <Button
           onClick={onSubmit}
           disabled={!review || isSubmitting}
@@ -44,7 +46,9 @@ export const ReviewActions = ({
         >
           Submit Review
         </Button>
-      ) : (
+      )}
+
+      {uniqueCode && (
         <Button
           onClick={onCopyAndRedirect}
           className="button-hover flex-1 bg-primary hover:bg-primary/90"

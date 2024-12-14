@@ -21,6 +21,7 @@ export const ReviewCard = ({ businessName, businessImage, onTakeAiSurvey }: Revi
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [uniqueCode, setUniqueCode] = useState<string | null>(null);
   const [showComplaintPrompt, setShowComplaintPrompt] = useState(false);
+  const [isRefined, setIsRefined] = useState(false);
   const { toast } = useToast();
 
   const checkForComplaints = (text: string) => {
@@ -39,20 +40,29 @@ export const ReviewCard = ({ businessName, businessImage, onTakeAiSurvey }: Revi
 
       if (error) throw error;
       
-      setReview(data.refinedReview);
-
-      // Check if refined review contains complaints
-      if (checkForComplaints(data.refinedReview)) {
-        setShowComplaintPrompt(true);
+      if (data.refinedReview === review || !data.refinedReview) {
         toast({
-          title: "We notice you had some concerns",
-          description: "Would you like to share your feedback directly through our AI survey call? We'd love to make it right.",
+          title: "More details needed",
+          description: "Please add more specific details about your experience to help us refine your review.",
         });
+        setIsRefined(false);
       } else {
-        toast({
-          title: "Review refined!",
-          description: "Your review has been professionally refined.",
-        });
+        setReview(data.refinedReview);
+        setIsRefined(true);
+
+        // Check if refined review contains complaints
+        if (checkForComplaints(data.refinedReview)) {
+          setShowComplaintPrompt(true);
+          toast({
+            title: "We notice you had some concerns",
+            description: "Would you like to share your feedback directly through our AI survey call? We'd love to make it right.",
+          });
+        } else {
+          toast({
+            title: "Review refined!",
+            description: "Your review has been professionally refined.",
+          });
+        }
       }
     } catch (error) {
       console.error('Error refining review:', error);
@@ -67,7 +77,7 @@ export const ReviewCard = ({ businessName, businessImage, onTakeAiSurvey }: Revi
   };
 
   const handleSubmitReview = async () => {
-    if (!review.trim()) return;
+    if (!review.trim() || !isRefined) return;
 
     setIsSubmitting(true);
     const code = nanoid(8);
@@ -144,6 +154,7 @@ export const ReviewCard = ({ businessName, businessImage, onTakeAiSurvey }: Revi
         onRefine={handleRefineReview}
         onSubmit={handleSubmitReview}
         onCopyAndRedirect={handleCopyAndRedirect}
+        isRefined={isRefined}
       />
 
       {uniqueCode && (
