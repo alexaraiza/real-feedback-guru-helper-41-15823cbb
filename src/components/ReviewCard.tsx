@@ -22,7 +22,6 @@ export const ReviewCard = ({ businessName, businessImage, onTakeAiSurvey }: Revi
   const [uniqueCode, setUniqueCode] = useState<string | null>(null);
   const [showComplaintPrompt, setShowComplaintPrompt] = useState(false);
   const [isRefined, setIsRefined] = useState(false);
-  const [suggestions, setSuggestions] = useState<string[]>([]);
   const { toast } = useToast();
 
   const checkForComplaints = (text: string) => {
@@ -35,23 +34,6 @@ export const ReviewCard = ({ businessName, businessImage, onTakeAiSurvey }: Revi
 
     setIsRefining(true);
     try {
-      // If review is too short (less than 50 characters), get suggestions
-      if (review.length < 50) {
-        const { data: suggestionsData, error: suggestionsError } = await supabase.functions.invoke('generate-suggestions', {
-          body: { review, businessName },
-        });
-
-        if (suggestionsError) throw suggestionsError;
-        setSuggestions(suggestionsData.suggestions);
-        
-        toast({
-          title: "Review seems a bit short",
-          description: "We've generated some suggestions to help you expand your review!",
-        });
-        setIsRefined(false);
-        return;
-      }
-
       const { data, error } = await supabase.functions.invoke('refine-review', {
         body: { review },
       });
@@ -67,8 +49,8 @@ export const ReviewCard = ({ businessName, businessImage, onTakeAiSurvey }: Revi
       } else {
         setReview(data.refinedReview);
         setIsRefined(true);
-        setSuggestions([]); // Clear any previous suggestions
 
+        // Check if refined review contains complaints
         if (checkForComplaints(data.refinedReview)) {
           setShowComplaintPrompt(true);
           toast({
@@ -113,8 +95,8 @@ export const ReviewCard = ({ businessName, businessImage, onTakeAiSurvey }: Revi
 
       setUniqueCode(code);
       toast({
-        title: "Review saved!",
-        description: "Your review has been saved. Click 'Copy & Post to Google' to share it.",
+        title: "Review submitted!",
+        description: "Your review has been submitted successfully.",
       });
     } catch (error) {
       console.error('Error submitting review:', error);
@@ -131,8 +113,8 @@ export const ReviewCard = ({ businessName, businessImage, onTakeAiSurvey }: Revi
   const handleCopyAndRedirect = () => {
     navigator.clipboard.writeText(review);
     toast({
-      title: "Review copied to clipboard!",
-      description: "Opening Google Reviews where you can paste your review...",
+      title: "Review copied!",
+      description: "Opening Google Reviews in a new tab...",
     });
     window.open("https://www.google.com/maps", "_blank");
   };
@@ -144,11 +126,6 @@ export const ReviewCard = ({ businessName, businessImage, onTakeAiSurvey }: Revi
         onChange={setReview}
         businessName={businessName}
         businessImage={businessImage}
-        suggestions={suggestions}
-        onSelectSuggestion={(suggestion) => {
-          setReview(review + " " + suggestion);
-          setSuggestions([]);
-        }}
       />
 
       {showComplaintPrompt && (
