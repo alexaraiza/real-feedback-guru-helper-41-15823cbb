@@ -1,9 +1,10 @@
 import { ReviewCard } from "@/components/ReviewCard";
 import { ExampleReviews } from "@/components/ExampleReviews";
 import { Button } from "@/components/ui/button";
-import { Phone, Bot, ChevronDown } from "lucide-react";
+import { Phone, Bot, ChevronDown, MapPin } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 const Index = () => {
   const { toast } = useToast();
@@ -78,20 +79,31 @@ const Index = () => {
             </p>
           </div>
 
-          <div className="flex flex-col items-center gap-6 pt-4">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
             <Button
               onClick={handleSurveyCallClick}
-              className="bg-secondary hover:bg-secondary/90 text-white shadow-lg hover:shadow-xl transition-all duration-300 group"
+              className="bg-secondary hover:bg-secondary/90 text-white shadow-lg hover:shadow-xl transition-all duration-300 group w-full sm:w-auto"
               size="lg"
             >
               <Phone className="mr-2 h-5 w-5 group-hover:rotate-12 transition-transform" />
               {showWidget ? 'Close AI Survey Call' : 'Take AI Survey Call'}
               <Bot className="ml-2 h-5 w-5 group-hover:scale-110 transition-transform" />
             </Button>
-            
-            <div className="text-sm font-medium text-primary animate-bounce">
-              Complete the AI survey call to enter our monthly prize pool! 🎉
-            </div>
+
+            <Link to="/restaurants" className="w-full sm:w-auto">
+              <Button 
+                variant="outline"
+                size="lg"
+                className="w-full border-primary text-primary hover:bg-primary hover:text-white group"
+              >
+                <MapPin className="mr-2 h-5 w-5 group-hover:scale-110 transition-transform" />
+                Browse Restaurants
+              </Button>
+            </Link>
+          </div>
+          
+          <div className="text-sm font-medium text-primary animate-bounce">
+            Complete the AI survey call to enter our monthly prize pool! 🎉
           </div>
         </div>
 
