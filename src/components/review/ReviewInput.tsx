@@ -54,10 +54,13 @@ export const ReviewInput = ({
       const fileName = `${Math.random()}.${fileExt}`;
       const filePath = `${fileName}`;
 
+      // Create a File object from the uploaded file
+      const fileData = new File([file], fileName, { type: file.type });
+
       // Upload to Supabase storage
       const { data, error: uploadError } = await supabase.storage
         .from('review_photos')
-        .upload(filePath, file);
+        .upload(filePath, fileData);
 
       if (uploadError) throw uploadError;
 
@@ -159,13 +162,14 @@ export const ReviewInput = ({
               />
               <label
                 htmlFor="photo-upload"
-                className="cursor-pointer flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors"
+                className="cursor-pointer"
               >
                 <Button
                   type="button"
                   variant="outline"
                   size="sm"
                   disabled={uploading}
+                  className="bg-primary hover:bg-primary/90 text-white border-primary"
                 >
                   <Camera className="w-4 h-4 mr-2" />
                   {uploading ? "Uploading..." : "Add Photo"}
