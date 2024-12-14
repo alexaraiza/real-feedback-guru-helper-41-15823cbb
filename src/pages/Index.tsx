@@ -10,16 +10,28 @@ const Index = () => {
   const [showWidget, setShowWidget] = useState(false);
 
   const handleSurveyCallClick = () => {
-    setShowWidget(true);
-    
-    // Add the script dynamically when button is clicked
-    const existingScript = document.getElementById('convai-widget-script');
-    if (!existingScript) {
-      const script = document.createElement('script');
-      script.id = 'convai-widget-script';
-      script.src = "https://elevenlabs.io/convai-widget/index.js";
-      script.async = true;
-      document.body.appendChild(script);
+    if (showWidget) {
+      // If widget is showing, remove it and the script
+      const widget = document.querySelector('elevenlabs-convai');
+      if (widget) {
+        widget.remove();
+      }
+      const script = document.getElementById('convai-widget-script');
+      if (script) {
+        script.remove();
+      }
+      setShowWidget(false);
+    } else {
+      // If widget is not showing, add it and the script
+      setShowWidget(true);
+      const existingScript = document.getElementById('convai-widget-script');
+      if (!existingScript) {
+        const script = document.createElement('script');
+        script.id = 'convai-widget-script';
+        script.src = "https://elevenlabs.io/convai-widget/index.js";
+        script.async = true;
+        document.body.appendChild(script);
+      }
     }
   };
 
@@ -59,7 +71,7 @@ const Index = () => {
               size="lg"
             >
               <Phone className="mr-2 h-4 w-4" />
-              Take AI Survey Call
+              {showWidget ? 'Close AI Survey Call' : 'Take AI Survey Call'}
               <Bot className="ml-2 h-4 w-4" />
             </Button>
           </div>
