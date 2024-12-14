@@ -1,7 +1,7 @@
 import { ReviewCard } from "@/components/ReviewCard";
 import { ExampleReviews } from "@/components/ExampleReviews";
 import { Button } from "@/components/ui/button";
-import { Phone, Bot, ChevronDown, MapPin, Restaurant, Share2, Info } from "lucide-react";
+import { Phone, Bot, ChevronDown, MapPin, Utensils, Share2, Info } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
@@ -63,7 +63,7 @@ const Index = () => {
       description: "Share your dining experiences and help others discover great restaurants"
     },
     {
-      icon: <Restaurant className="h-8 w-8 text-primary" />,
+      icon: <Utensils className="h-8 w-8 text-primary" />,
       title: "Restaurant Rewards",
       description: "Get exclusive rewards and discounts for your honest feedback"
     },
@@ -106,7 +106,7 @@ const Index = () => {
                 size="lg"
                 className="border-primary text-primary hover:bg-primary hover:text-white"
               >
-                <Restaurant className="mr-2 h-5 w-5" />
+                <Utensils className="mr-2 h-5 w-5" />
                 Register Your Restaurant
               </Button>
             </Link>
@@ -176,7 +176,7 @@ const Index = () => {
                 size="lg"
                 className="border-primary text-primary hover:bg-primary hover:text-white"
               >
-                <Restaurant className="mr-2 h-5 w-5" />
+                <Utensils className="mr-2 h-5 w-5" />
                 Register Your Restaurant
               </Button>
             </Link>
