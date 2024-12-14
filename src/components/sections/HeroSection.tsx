@@ -36,7 +36,7 @@ export const HeroSection = ({ onTryDemo }: HeroSectionProps) => {
             size="lg"
           >
             <MessageSquare className="mr-2 h-5 w-5 group-hover:rotate-12 transition-transform" />
-            Review Refinement and Voice Review Demo
+            Try Voice Review Demo
           </Button>
           <Link to="/restaurants/register-interest">
             <Button 

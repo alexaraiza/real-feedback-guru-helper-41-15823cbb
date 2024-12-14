@@ -1,49 +1,28 @@
-import { Share2, Gift, Star, Users, Building2, Bot } from "lucide-react";
+import { Share2, Gift, MessageSquare } from "lucide-react";
 import { motion } from "framer-motion";
 
-const customerFeatures = [
+const features = [
   {
     icon: <Share2 className="h-8 w-8 text-[#E94E87]" />,
-    title: "Share Reviews",
-    description: "Share your dining experiences through text or voice and help others discover great restaurants",
-    image: "/lovable-uploads/6a8c9c78-c1cc-48a8-ab6f-089851ea1e78.png"
+    title: "Restaurant Signs Up & Shares",
+    description: "Restaurants join EatUP! and share their unique page with customers to collect valuable feedback",
+    image: "/lovable-uploads/23bef056-e873-4e3d-b77b-8ac3c49fa8d8.png"
+  },
+  {
+    icon: <MessageSquare className="h-8 w-8 text-[#E94E87]" />,
+    title: "Customers Share Feedback",
+    description: "Customers can share refined reviews or use our AI voice feedback system to earn exclusive offers",
+    image: "/lovable-uploads/f790e463-d057-4fec-b168-02e376930c1c.png"
   },
   {
     icon: <Gift className="h-8 w-8 text-[#E94E87]" />,
-    title: "Earn Rewards",
-    description: "Get exclusive rewards and discounts for your honest feedback",
+    title: "Redeem Rewards",
+    description: "Show your EatUP! email confirmation at the restaurant to claim your exclusive offers and rewards",
     image: "/lovable-uploads/1d52bc29-0436-422b-9e81-c0a0a1881f10.png"
-  },
-  {
-    icon: <Star className="h-8 w-8 text-[#E94E87]" />,
-    title: "Quality Assurance",
-    description: "AI-powered review refinement ensures your feedback is constructive and helpful",
-    image: "/lovable-uploads/159a55f7-95f4-4918-bcb6-0b5ee150a6ae.png"
   }
 ];
 
-const restaurantFeatures = [
-  {
-    icon: <Users className="h-8 w-8 text-[#E94E87]" />,
-    title: "Customer Insights",
-    description: "Get valuable feedback and insights from your customers",
-    image: "/lovable-uploads/9d633d08-e001-4a53-ad3f-9ac7f75ef09b.png"
-  },
-  {
-    icon: <Building2 className="h-8 w-8 text-[#E94E87]" />,
-    title: "Brand Building",
-    description: "Build your restaurant's online presence and reputation",
-    image: "/lovable-uploads/1d52bc29-0436-422b-9e81-c0a0a1881f10.png"
-  },
-  {
-    icon: <Bot className="h-8 w-8 text-[#E94E87]" />,
-    title: "AI-Powered Tools",
-    description: "Leverage AI to better understand and respond to customer feedback",
-    image: "/lovable-uploads/159a55f7-95f4-4918-bcb6-0b5ee150a6ae.png"
-  }
-];
-
-const FeatureCard = ({ feature, index, isCustomer = true }) => {
+const FeatureCard = ({ feature, index }) => {
   const isEven = index % 2 === 0;
   const containerClass = isEven
     ? "md:flex-row"
@@ -80,71 +59,34 @@ const FeatureCard = ({ feature, index, isCustomer = true }) => {
 
 export const FeaturesSection = () => {
   return (
-    <>
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center mb-16">
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              viewport={{ once: true }}
-              className="text-4xl font-bold mb-4 bg-gradient-to-r from-[#E94E87] via-[#F17BA3] to-[#FF9B9B] text-transparent bg-clip-text"
-            >
-              How It Works For Customers
-            </motion.h2>
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              viewport={{ once: true }}
-              className="text-xl text-muted-foreground max-w-2xl mx-auto"
-            >
-              Share your dining experiences and earn rewards while helping others discover great restaurants
-            </motion.p>
-          </div>
-          <div className="space-y-12">
-            {customerFeatures.map((feature, index) => (
-              <FeatureCard key={index} feature={feature} index={index} />
-            ))}
-          </div>
+    <section className="py-20 bg-gradient-to-b from-white via-[#FFE5ED]/30 to-[#FFD5E2]/20">
+      <div className="max-w-7xl mx-auto px-4">
+        <div className="text-center mb-16">
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            viewport={{ once: true }}
+            className="text-4xl font-bold mb-4 bg-gradient-to-r from-[#E94E87] via-[#F17BA3] to-[#FF9B9B] text-transparent bg-clip-text"
+          >
+            How EatUP! Works
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            viewport={{ once: true }}
+            className="text-xl text-muted-foreground max-w-2xl mx-auto"
+          >
+            A simple three-step process to connect restaurants with their customers through meaningful feedback
+          </motion.p>
         </div>
-      </section>
-
-      <section className="py-20 bg-gradient-to-b from-white via-[#FFE5ED]/30 to-[#FFD5E2]/20">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center mb-16">
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              viewport={{ once: true }}
-              className="text-4xl font-bold mb-4 bg-gradient-to-r from-[#E94E87] via-[#F17BA3] to-[#FF9B9B] text-transparent bg-clip-text"
-            >
-              How It Works For Restaurants
-            </motion.h2>
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              viewport={{ once: true }}
-              className="text-xl text-muted-foreground max-w-2xl mx-auto"
-            >
-              Transform customer feedback into growth opportunities for your restaurant
-            </motion.p>
-          </div>
-          <div className="space-y-12">
-            {restaurantFeatures.map((feature, index) => (
-              <FeatureCard 
-                key={index} 
-                feature={feature} 
-                index={index} 
-                isCustomer={false}
-              />
-            ))}
-          </div>
+        <div className="space-y-12">
+          {features.map((feature, index) => (
+            <FeatureCard key={index} feature={feature} index={index} />
+          ))}
         </div>
-      </section>
-    </>
+      </div>
+    </section>
   );
 };
