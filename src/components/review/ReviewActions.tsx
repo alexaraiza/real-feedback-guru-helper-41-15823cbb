@@ -25,7 +25,7 @@ export const ReviewActions = ({
       <Button
         onClick={onRefine}
         disabled={!review || isRefining}
-        className="button-hover flex-1 bg-secondary hover:bg-secondary/90"
+        className="button-hover flex-1 bg-secondary hover:bg-secondary/90 text-white"
         variant="outline"
       >
         {isRefining ? (
