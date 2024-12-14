@@ -12,10 +12,12 @@ const Index = () => {
 
   const handleSurveyCallClick = () => {
     if (showWidget) {
-      const widget = document.querySelector('elevenlabs-convai');
-      if (widget) {
-        widget.remove();
+      // First, find and remove the widget container
+      const widgetContainer = document.querySelector('[data-widget-container="true"]');
+      if (widgetContainer) {
+        widgetContainer.remove();
       }
+      // Then remove the script
       const script = document.getElementById('convai-widget-script');
       if (script) {
         script.remove();
@@ -25,32 +27,39 @@ const Index = () => {
       const script = document.createElement('script');
       script.id = 'convai-widget-script';
       script.src = "https://elevenlabs.io/convai-widget/index.js";
+      script.crossOrigin = "anonymous";
       script.async = true;
+      
       script.onload = () => {
-        // Create a container for the widget and black bar
+        // Create container with a data attribute for easier selection
         const widgetContainer = document.createElement('div');
-        widgetContainer.className = 'fixed bottom-0 right-0 z-50';
-        widgetContainer.style.cssText = 'min-width: 320px;'; // Ensure minimum width for the widget
+        widgetContainer.setAttribute('data-widget-container', 'true');
+        widgetContainer.className = 'fixed bottom-0 right-0';
+        widgetContainer.style.cssText = 'z-index: 9999; min-width: 320px;';
+        
+        // Create a wrapper for proper positioning
+        const wrapper = document.createElement('div');
+        wrapper.className = 'relative';
         
         // Create the widget element
         const widget = document.createElement('elevenlabs-convai');
         widget.setAttribute('agent-id', 'tESkAImW1ibEAaF64sKJ');
-        widget.style.cssText = 'position: relative; z-index: 1000;';
+        widget.style.cssText = 'display: block; position: relative; z-index: 1;';
         
-        // Create the black bar
+        // Create the black overlay
         const blackBar = document.createElement('div');
-        blackBar.className = 'absolute bottom-0 left-0 right-0 h-8 bg-black';
-        blackBar.style.cssText = 'z-index: 999;'; // Ensure it's below the widget but above other content
+        blackBar.className = 'absolute bottom-0 left-0 right-0';
+        blackBar.style.cssText = 'height: 24px; background: black; z-index: 2;';
         
-        // Append elements in the correct order
-        widgetContainer.appendChild(widget);
-        widgetContainer.appendChild(blackBar);
+        // Assemble the elements
+        wrapper.appendChild(widget);
+        wrapper.appendChild(blackBar);
+        widgetContainer.appendChild(wrapper);
         document.body.appendChild(widgetContainer);
       };
       
-      // Add error handling for the script
       script.onerror = (error) => {
-        console.error('Error loading ElevenLabs widget script:', error);
+        console.error('Failed to load ElevenLabs widget:', error);
         setShowWidget(false);
       };
       
@@ -60,15 +69,15 @@ const Index = () => {
   };
 
   useEffect(() => {
+    // Cleanup function
     return () => {
-      // Cleanup function
+      const widgetContainer = document.querySelector('[data-widget-container="true"]');
+      if (widgetContainer) {
+        widgetContainer.remove();
+      }
       const script = document.getElementById('convai-widget-script');
       if (script) {
         script.remove();
-      }
-      const widget = document.querySelector('elevenlabs-convai')?.parentElement;
-      if (widget) {
-        widget.remove();
       }
     };
   }, []);
