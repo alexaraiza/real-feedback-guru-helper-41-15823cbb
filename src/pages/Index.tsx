@@ -76,9 +76,11 @@ const Index = () => {
       <FeaturesSection />
 
       {/* Demo Section */}
-      <section className="py-20 bg-gradient-to-b from-white to-[#D6BCFA]/20">
+      <section className="py-20 bg-gradient-to-b from-white to-[#FFE5ED]/20">
         <div className="max-w-7xl mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-12">Experience EatUP!</h2>
+          <h2 className="text-3xl font-bold text-center mb-12 bg-gradient-to-r from-[#E94E87] via-[#F17BA3] to-[#FF9B9B] text-transparent bg-clip-text">
+            Experience EatUP!
+          </h2>
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div className="space-y-6">
               <div className="relative">
@@ -87,9 +89,11 @@ const Index = () => {
                   alt="Dining experience"
                   className="rounded-lg shadow-xl"
                 />
-                <div className="absolute inset-0 bg-gradient-to-r from-[#9b87f5]/20 to-transparent rounded-lg" />
+                <div className="absolute inset-0 bg-gradient-to-r from-[#E94E87]/20 to-transparent rounded-lg" />
               </div>
-              <h3 className="text-2xl font-semibold">Share Your Experience</h3>
+              <h3 className="text-2xl font-semibold bg-gradient-to-r from-[#E94E87] to-[#F17BA3] text-transparent bg-clip-text">
+                Share Your Experience
+              </h3>
               <p className="text-muted-foreground">
                 Try our innovative review system that makes sharing your dining experience easy and rewarding. 
                 Use text or voice to share your feedback and earn rewards from your favorite restaurants.
@@ -109,13 +113,15 @@ const Index = () => {
       {/* Restaurant Success Stories */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-12">Restaurant Success Stories</h2>
+          <h2 className="text-3xl font-bold text-center mb-12 bg-gradient-to-r from-[#E94E87] via-[#F17BA3] to-[#FF9B9B] text-transparent bg-clip-text">
+            Restaurant Success Stories
+          </h2>
           <ExampleReviews />
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-t from-[#D6BCFA]/20 to-white">
+      <section className="py-20 bg-gradient-to-t from-[#FFE5ED]/20 to-white">
         <div className="max-w-7xl mx-auto px-4 text-center">
           <div className="relative">
             <img
@@ -124,7 +130,9 @@ const Index = () => {
               className="absolute inset-0 w-full h-full object-cover opacity-10"
             />
             <div className="relative">
-              <h2 className="text-3xl font-bold mb-6">Ready to Transform Your Restaurant?</h2>
+              <h2 className="text-3xl font-bold mb-6 bg-gradient-to-r from-[#E94E87] via-[#F17BA3] to-[#FF9B9B] text-transparent bg-clip-text">
+                Ready to Transform Your Restaurant?
+              </h2>
               <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
                 Join EatUP! and start building stronger connections with your customers through meaningful feedback and rewards.
               </p>
@@ -133,7 +141,7 @@ const Index = () => {
                   <Button 
                     variant="default"
                     size="lg"
-                    className="bg-gradient-to-r from-[#9b87f5] to-[#D6BCFA] hover:from-[#8a74f3] hover:to-[#c5a6f9]"
+                    className="bg-gradient-to-r from-[#E94E87] to-[#F17BA3] hover:from-[#D13D73] hover:to-[#E94E87]"
                   >
                     <Building2 className="mr-2 h-5 w-5" />
                     Register Your Interest
@@ -143,7 +151,7 @@ const Index = () => {
                   variant="outline"
                   size="lg"
                   onClick={handleSurveyCallClick}
-                  className="border-[#9b87f5] text-[#9b87f5] hover:bg-[#9b87f5] hover:text-white"
+                  className="border-[#E94E87] text-[#E94E87] hover:bg-[#E94E87] hover:text-white"
                 >
                   <Bot className="mr-2 h-5 w-5" />
                   Try Demo

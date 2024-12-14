@@ -42,7 +42,9 @@ export const FeaturesSection = () => {
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">How It Works For Customers</h2>
+            <h2 className="text-3xl font-bold mb-4 bg-gradient-to-r from-[#E94E87] via-[#F17BA3] to-[#FF9B9B] text-transparent bg-clip-text">
+              How It Works For Customers
+            </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
               Share your dining experiences and earn rewards while helping others discover great restaurants
             </p>
@@ -53,7 +55,9 @@ export const FeaturesSection = () => {
                 <div className="mb-4 inline-block p-3 bg-[#E94E87]/5 rounded-full">
                   {feature.icon}
                 </div>
-                <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
+                <h3 className="text-xl font-semibold mb-2 bg-gradient-to-r from-[#E94E87] to-[#F17BA3] text-transparent bg-clip-text">
+                  {feature.title}
+                </h3>
                 <p className="text-muted-foreground">{feature.description}</p>
               </div>
             ))}
@@ -64,7 +68,9 @@ export const FeaturesSection = () => {
       <section className="py-20 bg-gradient-to-b from-white via-[#FFE5ED]/30 to-[#FFD5E2]/20">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">How It Works For Restaurants</h2>
+            <h2 className="text-3xl font-bold mb-4 bg-gradient-to-r from-[#E94E87] via-[#F17BA3] to-[#FF9B9B] text-transparent bg-clip-text">
+              How It Works For Restaurants
+            </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
               Transform customer feedback into growth opportunities for your restaurant
             </p>
@@ -75,7 +81,9 @@ export const FeaturesSection = () => {
                 <div className="mb-4 inline-block p-3 bg-[#E94E87]/5 rounded-full">
                   {feature.icon}
                 </div>
-                <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
+                <h3 className="text-xl font-semibold mb-2 bg-gradient-to-r from-[#E94E87] to-[#F17BA3] text-transparent bg-clip-text">
+                  {feature.title}
+                </h3>
                 <p className="text-muted-foreground">{feature.description}</p>
               </div>
             ))}
