@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { ArrowRight, Copy, RefreshCw } from "lucide-react";
+import { Copy, RefreshCw } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
 interface ReviewCardProps {
@@ -49,7 +49,7 @@ export const ReviewCard = ({ businessName, businessImage }: ReviewCardProps) => 
       title: "Review copied!",
       description: "Opening Google Reviews in a new tab...",
     });
-    window.open("https://google.com", "_blank");
+    window.open("https://www.google.com/maps/place/Multiplier/@51.5149056,-0.1261213,17z/data=!3m1!4b1!4m6!3m5!1s0x487605aa8ce68713:0x3e67ee3bbf612e91!8m2!3d51.5149056!4d-0.1235464!16s%2Fg%2F11g_rx295s?entry=ttu&g_ep=EgoyMDI0MTIxMS4wIKXMDSoASAFQAw%3D%3D", "_blank");
   };
 
   return (
