@@ -22,37 +22,24 @@ const Index = () => {
       }
       setShowWidget(false);
     } else {
-      const existingScript = document.getElementById('convai-widget-script');
-      if (!existingScript) {
-        const script = document.createElement('script');
-        script.id = 'convai-widget-script';
-        script.src = "https://elevenlabs.io/convai-widget/index.js";
-        script.async = true;
-        script.onload = () => {
-          const widgetHtml = document.createElement('div');
-          widgetHtml.innerHTML = `
-            <div class="fixed bottom-0 right-0 z-50">
-              <div class="relative">
-                <elevenlabs-convai agent-id="tESkAImW1ibEAaF64sKJ" style="position: relative; z-index: 1000;"></elevenlabs-convai>
-                <div class="absolute bottom-0 left-0 right-0 h-16 bg-black/80 backdrop-blur-sm"></div>
-              </div>
-            </div>
-          `;
-          document.body.appendChild(widgetHtml.firstChild);
-        };
-        document.body.appendChild(script);
-      } else {
-        const widgetHtml = document.createElement('div');
-        widgetHtml.innerHTML = `
+      const script = document.createElement('script');
+      script.id = 'convai-widget-script';
+      script.src = "https://elevenlabs.io/convai-widget/index.js";
+      script.async = true;
+      script.onload = () => {
+        const widgetContainer = document.createElement('div');
+        widgetContainer.id = 'elevenlabs-widget-container';
+        widgetContainer.innerHTML = `
           <div class="fixed bottom-0 right-0 z-50">
             <div class="relative">
-              <elevenlabs-convai agent-id="tESkAImW1ibEAaF64sKJ" style="position: relative; z-index: 1000;"></elevenlabs-convai>
+              <elevenlabs-convai agent-id="tESkAImW1ibEAaF64sKJ"></elevenlabs-convai>
               <div class="absolute bottom-0 left-0 right-0 h-16 bg-black/80 backdrop-blur-sm"></div>
             </div>
           </div>
         `;
-        document.body.appendChild(widgetHtml.firstChild);
-      }
+        document.body.appendChild(widgetContainer);
+      };
+      document.body.appendChild(script);
       setShowWidget(true);
     }
   };
@@ -63,9 +50,9 @@ const Index = () => {
       if (script) {
         script.remove();
       }
-      const widget = document.querySelector('elevenlabs-convai');
-      if (widget) {
-        widget.remove();
+      const widgetContainer = document.getElementById('elevenlabs-widget-container');
+      if (widgetContainer) {
+        widgetContainer.remove();
       }
     };
   }, []);
