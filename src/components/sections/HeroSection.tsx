@@ -18,15 +18,17 @@ export const HeroSection = ({ onTryDemo }: HeroSectionProps) => {
         />
       </div>
       <div className="max-w-7xl mx-auto px-4 text-center relative">
-        <img 
-          src="/lovable-uploads/50980a14-589f-4bd1-8267-536c582ff4e1.png" 
-          alt="EatUP! Logo" 
-          className="h-28 mx-auto mb-8 hover:scale-105 transition-transform duration-300"
-        />
-        <h1 className="text-5xl font-bold tracking-tight text-secondary mb-6">
+        <div className="w-full flex justify-center mb-8">
+          <img 
+            src="/lovable-uploads/50980a14-589f-4bd1-8267-536c582ff4e1.png" 
+            alt="EatUP! Logo" 
+            className="h-20 md:h-28 w-auto hover:scale-105 transition-transform duration-300"
+          />
+        </div>
+        <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-secondary mb-6">
           The Future of Restaurant Reviews
         </h1>
-        <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
+        <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
           Join the EatUP! community where authentic dining experiences create meaningful connections between restaurants and their customers.
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
