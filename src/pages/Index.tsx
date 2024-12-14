@@ -27,18 +27,33 @@ const Index = () => {
       script.src = "https://elevenlabs.io/convai-widget/index.js";
       script.async = true;
       script.onload = () => {
+        // Create a container for the widget and black bar
         const widgetContainer = document.createElement('div');
-        widgetContainer.id = 'elevenlabs-widget-container';
-        widgetContainer.innerHTML = `
-          <div class="fixed bottom-0 right-0 z-50">
-            <div class="relative">
-              <elevenlabs-convai agent-id="tESkAImW1ibEAaF64sKJ"></elevenlabs-convai>
-              <div class="absolute bottom-0 left-0 right-0 h-16 bg-black/80 backdrop-blur-sm"></div>
-            </div>
-          </div>
-        `;
+        widgetContainer.className = 'fixed bottom-0 right-0 z-50';
+        widgetContainer.style.cssText = 'min-width: 320px;'; // Ensure minimum width for the widget
+        
+        // Create the widget element
+        const widget = document.createElement('elevenlabs-convai');
+        widget.setAttribute('agent-id', 'tESkAImW1ibEAaF64sKJ');
+        widget.style.cssText = 'position: relative; z-index: 1000;';
+        
+        // Create the black bar
+        const blackBar = document.createElement('div');
+        blackBar.className = 'absolute bottom-0 left-0 right-0 h-8 bg-black';
+        blackBar.style.cssText = 'z-index: 999;'; // Ensure it's below the widget but above other content
+        
+        // Append elements in the correct order
+        widgetContainer.appendChild(widget);
+        widgetContainer.appendChild(blackBar);
         document.body.appendChild(widgetContainer);
       };
+      
+      // Add error handling for the script
+      script.onerror = (error) => {
+        console.error('Error loading ElevenLabs widget script:', error);
+        setShowWidget(false);
+      };
+      
       document.body.appendChild(script);
       setShowWidget(true);
     }
@@ -46,13 +61,14 @@ const Index = () => {
 
   useEffect(() => {
     return () => {
+      // Cleanup function
       const script = document.getElementById('convai-widget-script');
       if (script) {
         script.remove();
       }
-      const widgetContainer = document.getElementById('elevenlabs-widget-container');
-      if (widgetContainer) {
-        widgetContainer.remove();
+      const widget = document.querySelector('elevenlabs-convai')?.parentElement;
+      if (widget) {
+        widget.remove();
       }
     };
   }, []);
