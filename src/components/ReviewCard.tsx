@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { ArrowRight, Copy, RefreshCw } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
 interface ReviewCardProps {
   businessName: string;
@@ -15,12 +16,31 @@ export const ReviewCard = ({ businessName, businessImage }: ReviewCardProps) => 
   const { toast } = useToast();
 
   const handleRefineReview = async () => {
+    if (!review.trim()) return;
+
     setIsRefining(true);
-    // TODO: Implement OpenAI integration
-    setTimeout(() => {
-      setReview("This is a refined version of your review...");
+    try {
+      const { data, error } = await supabase.functions.invoke('refine-review', {
+        body: { review },
+      });
+
+      if (error) throw error;
+      
+      setReview(data.refinedReview);
+      toast({
+        title: "Review refined!",
+        description: "Your review has been professionally refined.",
+      });
+    } catch (error) {
+      console.error('Error refining review:', error);
+      toast({
+        title: "Error",
+        description: "Failed to refine review. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
       setIsRefining(false);
-    }, 1000);
+    }
   };
 
   const handleCopyAndRedirect = () => {
