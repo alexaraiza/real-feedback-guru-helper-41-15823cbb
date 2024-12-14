@@ -6,18 +6,27 @@ import { ReviewInput } from "./review/ReviewInput";
 import { ReviewActions } from "./review/ReviewActions";
 import { ReviewCode } from "./review/ReviewCode";
 import { UnlockedOffers } from "./review/UnlockedOffers";
+import { Button } from "./ui/button";
+import { Phone, Bot } from "lucide-react";
 
 interface ReviewCardProps {
   businessName: string;
   businessImage?: string;
+  onTakeAiSurvey: () => void;
 }
 
-export const ReviewCard = ({ businessName, businessImage }: ReviewCardProps) => {
+export const ReviewCard = ({ businessName, businessImage, onTakeAiSurvey }: ReviewCardProps) => {
   const [review, setReview] = useState("");
   const [isRefining, setIsRefining] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [uniqueCode, setUniqueCode] = useState<string | null>(null);
+  const [showComplaintPrompt, setShowComplaintPrompt] = useState(false);
   const { toast } = useToast();
+
+  const checkForComplaints = (text: string) => {
+    const negativeKeywords = ['disappointed', 'bad', 'terrible', 'poor', 'worst', 'awful', 'horrible', 'complaint', 'unhappy', 'slow', 'rude'];
+    return negativeKeywords.some(keyword => text.toLowerCase().includes(keyword));
+  };
 
   const handleRefineReview = async () => {
     if (!review.trim()) return;
@@ -31,10 +40,20 @@ export const ReviewCard = ({ businessName, businessImage }: ReviewCardProps) => 
       if (error) throw error;
       
       setReview(data.refinedReview);
-      toast({
-        title: "Review refined!",
-        description: "Your review has been professionally refined.",
-      });
+
+      // Check if refined review contains complaints
+      if (checkForComplaints(data.refinedReview)) {
+        setShowComplaintPrompt(true);
+        toast({
+          title: "We notice you had some concerns",
+          description: "Would you like to share your feedback directly through our AI survey call? We'd love to make it right.",
+        });
+      } else {
+        toast({
+          title: "Review refined!",
+          description: "Your review has been professionally refined.",
+        });
+      }
     } catch (error) {
       console.error('Error refining review:', error);
       toast({
@@ -98,6 +117,24 @@ export const ReviewCard = ({ businessName, businessImage }: ReviewCardProps) => 
         businessName={businessName}
         businessImage={businessImage}
       />
+
+      {showComplaintPrompt && (
+        <div className="bg-secondary/10 p-4 rounded-lg space-y-4">
+          <h3 className="font-semibold text-secondary">We Want to Make It Right!</h3>
+          <p className="text-sm">We're sorry to hear about your experience. Share your feedback through our AI survey call and receive a special offer to give us another chance.</p>
+          <Button
+            onClick={() => {
+              onTakeAiSurvey();
+              setShowComplaintPrompt(false);
+            }}
+            className="bg-secondary hover:bg-secondary/90 text-white"
+          >
+            <Phone className="mr-2 h-4 w-4" />
+            Take AI Survey Call
+            <Bot className="ml-2 h-4 w-4" />
+          </Button>
+        </div>
+      )}
 
       <ReviewActions
         review={review}

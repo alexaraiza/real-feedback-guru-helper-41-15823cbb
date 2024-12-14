@@ -54,6 +54,7 @@ const Index = () => {
         <ReviewCard
           businessName="The Local Kitchen & Bar"
           businessImage="/lovable-uploads/23bef056-e873-4e3d-b77b-8ac3c49fa8d8.png"
+          onTakeAiSurvey={handleSurveyCallClick}
         />
 
         <div className="text-center text-sm text-muted-foreground space-y-2 fade-in">

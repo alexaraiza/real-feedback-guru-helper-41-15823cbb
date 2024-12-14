@@ -20,14 +20,14 @@ export const ReviewInput = ({ review, onChange, businessName, businessImage }: R
         )}
         <div>
           <h2 className="text-xl font-semibold">{businessName}</h2>
-          <p className="text-sm text-muted-foreground">Tell us about your experience</p>
+          <p className="text-sm text-muted-foreground">Share your positive dining experience!</p>
         </div>
       </div>
 
       <Textarea
         value={review}
         onChange={(e) => onChange(e.target.value)}
-        placeholder="What did you enjoy about your visit? How was the food and service? Would you recommend it to others?"
+        placeholder="What did you love about your visit? Tell us about the amazing food, exceptional service, or memorable moments that made your experience special!"
         className="min-h-[150px] resize-none"
       />
     </div>
