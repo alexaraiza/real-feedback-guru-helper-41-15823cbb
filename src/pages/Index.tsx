@@ -3,7 +3,7 @@ import { ExampleReviews } from "@/components/ExampleReviews";
 import { Button } from "@/components/ui/button";
 import { Phone, Bot } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const Index = () => {
   const { toast } = useToast();
@@ -13,11 +13,29 @@ const Index = () => {
     setShowWidget(true);
     
     // Add the script dynamically when button is clicked
-    const script = document.createElement('script');
-    script.src = "https://elevenlabs.io/convai-widget/index.js";
-    script.async = true;
-    document.body.appendChild(script);
+    const existingScript = document.getElementById('convai-widget-script');
+    if (!existingScript) {
+      const script = document.createElement('script');
+      script.id = 'convai-widget-script';
+      script.src = "https://elevenlabs.io/convai-widget/index.js";
+      script.async = true;
+      document.body.appendChild(script);
+    }
   };
+
+  // Cleanup function to remove widget when component unmounts
+  useEffect(() => {
+    return () => {
+      const script = document.getElementById('convai-widget-script');
+      if (script) {
+        script.remove();
+      }
+      const widget = document.querySelector('elevenlabs-convai');
+      if (widget) {
+        widget.remove();
+      }
+    };
+  }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-pink-50">
