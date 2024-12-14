@@ -1,214 +1,196 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Input } from "@/components/ui/input";
-import { Star, List, ArrowUp, ArrowDown } from "lucide-react";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { MapPin, Star, Search, Filter } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Tables } from "@/integrations/supabase/types";
 
-type SortOrder = "rating-desc" | "rating-asc" | "name-asc" | "name-desc";
+type Restaurant = Tables<"restaurants">;
+type SortOption = "rating" | "name";
+type FilterOption = string[];
 
-const RestaurantDirectory = () => {
+export default function RestaurantDirectory() {
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCuisine, setSelectedCuisine] = useState<string>("");
-  const [sortOrder, setSortOrder] = useState<SortOrder>("rating-desc");
+  const [sortBy, setSortBy] = useState<SortOption>("rating");
+  const [selectedCuisines, setSelectedCuisines] = useState<FilterOption>([]);
 
   const { data: restaurants, isLoading } = useQuery({
-    queryKey: ["restaurants", sortOrder, selectedCuisine],
+    queryKey: ["restaurants", sortBy, selectedCuisines, searchQuery],
     queryFn: async () => {
       let query = supabase
         .from("restaurants")
         .select("*")
         .eq("status", "approved");
 
-      if (selectedCuisine) {
-        query = query.contains("cuisine_type", [selectedCuisine]);
+      if (searchQuery) {
+        query = query.ilike("name", `%${searchQuery}%`);
       }
 
-      switch (sortOrder) {
-        case "rating-desc":
-          query = query.order("average_rating", { ascending: false });
-          break;
-        case "rating-asc":
-          query = query.order("average_rating", { ascending: true });
-          break;
-        case "name-asc":
-          query = query.order("name", { ascending: true });
-          break;
-        case "name-desc":
-          query = query.order("name", { ascending: false });
-          break;
+      if (selectedCuisines.length > 0) {
+        query = query.contains("cuisine_type", selectedCuisines);
+      }
+
+      if (sortBy === "rating") {
+        query = query.order("average_rating", { ascending: false });
+      } else {
+        query = query.order("name");
       }
 
       const { data, error } = await query;
       if (error) throw error;
-      return data;
+      return data as Restaurant[];
     },
   });
 
-  const filteredRestaurants = restaurants?.filter((restaurant) =>
-    restaurant.name.toLowerCase().includes(searchQuery.toLowerCase())
+  const uniqueCuisines = Array.from(
+    new Set(
+      restaurants?.flatMap((r) => r.cuisine_type || []).filter(Boolean) || []
+    )
   );
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 py-12">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-secondary mb-4">
-            Discover Great Restaurants
-          </h1>
-          <p className="text-muted-foreground">
-            Find and review the best dining experiences in your area
-          </p>
-        </div>
-
-        <div className="grid gap-6 md:grid-cols-[250px_1fr]">
-          {/* Filters Sidebar */}
-          <div className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Filters</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">Search</label>
-                  <Input
-                    placeholder="Search restaurants..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">Cuisine Type</label>
-                  <Select
-                    value={selectedCuisine}
-                    onValueChange={setSelectedCuisine}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="All cuisines" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="">All cuisines</SelectItem>
-                      <SelectItem value="Italian">Italian</SelectItem>
-                      <SelectItem value="Japanese">Japanese</SelectItem>
-                      <SelectItem value="Mexican">Mexican</SelectItem>
-                      <SelectItem value="Indian">Indian</SelectItem>
-                      <SelectItem value="Chinese">Chinese</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">Sort By</label>
-                  <Select value={sortOrder} onValueChange={(v) => setSortOrder(v as SortOrder)}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Sort by..." />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="rating-desc">
-                        Highest Rated First
-                      </SelectItem>
-                      <SelectItem value="rating-asc">
-                        Lowest Rated First
-                      </SelectItem>
-                      <SelectItem value="name-asc">Name (A-Z)</SelectItem>
-                      <SelectItem value="name-desc">Name (Z-A)</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </CardContent>
-            </Card>
+    <div className="container mx-auto px-4 py-8">
+      {/* Search and Filter Header */}
+      <div className="mb-8 space-y-4">
+        <h1 className="text-4xl font-bold text-secondary">Restaurants</h1>
+        
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+          {/* Search Input */}
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+            <input
+              type="text"
+              placeholder="Search restaurants..."
+              className="w-full rounded-lg border border-gray-300 bg-white py-2 pl-10 pr-4 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
           </div>
 
-          {/* Restaurant Grid */}
-          <div className="space-y-6">
-            {isLoading ? (
-              <div className="text-center py-12">Loading restaurants...</div>
-            ) : filteredRestaurants?.length === 0 ? (
-              <div className="text-center py-12">
-                No restaurants found matching your criteria
-              </div>
-            ) : (
-              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                {filteredRestaurants?.map((restaurant) => (
-                  <Card
-                    key={restaurant.id}
-                    className="overflow-hidden hover:shadow-lg transition-shadow"
+          {/* Sort and Filter Controls */}
+          <div className="flex gap-2">
+            <select
+              className="rounded-lg border border-gray-300 bg-white px-4 py-2 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value as SortOption)}
+            >
+              <option value="rating">Sort by Rating</option>
+              <option value="name">Sort by Name</option>
+            </select>
+
+            <div className="relative">
+              <Button
+                variant="outline"
+                className="flex items-center gap-2"
+                onClick={() => setSelectedCuisines([])}
+              >
+                <Filter className="h-4 w-4" />
+                Filter
+              </Button>
+              <div className="absolute right-0 top-12 z-10 w-48 rounded-lg border border-gray-200 bg-white p-2 shadow-lg">
+                {uniqueCuisines.map((cuisine) => (
+                  <label
+                    key={cuisine}
+                    className="flex cursor-pointer items-center gap-2 px-2 py-1 hover:bg-gray-50"
                   >
-                    <div className="aspect-video relative">
-                      <img
-                        src={
-                          restaurant.cover_photo_url ||
-                          "https://placehold.co/600x400?text=Restaurant"
+                    <input
+                      type="checkbox"
+                      checked={selectedCuisines.includes(cuisine)}
+                      onChange={(e) => {
+                        if (e.target.checked) {
+                          setSelectedCuisines([...selectedCuisines, cuisine]);
+                        } else {
+                          setSelectedCuisines(
+                            selectedCuisines.filter((c) => c !== cuisine)
+                          );
                         }
-                        alt={restaurant.name}
-                        className="object-cover w-full h-full"
-                      />
-                      {restaurant.logo_url && (
-                        <div className="absolute bottom-4 left-4">
-                          <img
-                            src={restaurant.logo_url}
-                            alt={`${restaurant.name} logo`}
-                            className="w-16 h-16 rounded-full border-4 border-white"
-                          />
-                        </div>
-                      )}
-                    </div>
-                    <CardContent className="p-6">
-                      <div className="flex justify-between items-start mb-4">
-                        <div>
-                          <h3 className="text-xl font-semibold mb-2">
-                            {restaurant.name}
-                          </h3>
-                          <div className="flex items-center text-sm text-muted-foreground">
-                            <Star className="w-4 h-4 text-yellow-400 mr-1" />
-                            {restaurant.average_rating.toFixed(1)}
-                          </div>
-                        </div>
-                        {restaurant.cuisine_type && (
-                          <div className="flex flex-wrap gap-2">
-                            {restaurant.cuisine_type.map((cuisine) => (
-                              <span
-                                key={cuisine}
-                                className="inline-flex items-center rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary"
-                              >
-                                {cuisine}
-                              </span>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                      <p className="text-sm text-muted-foreground line-clamp-2 mb-4">
-                        {restaurant.description}
-                      </p>
-                      <Button
-                        variant="secondary"
-                        className="w-full"
-                        onClick={() =>
-                          window.location.href = `/restaurants/${restaurant.id}`
-                        }
-                      >
-                        View Details
-                      </Button>
-                    </CardContent>
-                  </Card>
+                      }}
+                    />
+                    {cuisine}
+                  </label>
                 ))}
               </div>
-            )}
+            </div>
           </div>
         </div>
       </div>
+
+      {/* Restaurant Grid */}
+      {isLoading ? (
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {[1, 2, 3].map((n) => (
+            <Card key={n} className="animate-pulse">
+              <div className="h-48 bg-gray-200" />
+              <CardContent className="p-4">
+                <div className="h-6 w-3/4 bg-gray-200" />
+                <div className="mt-2 h-4 w-1/2 bg-gray-200" />
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      ) : (
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {restaurants?.map((restaurant) => (
+            <Card
+              key={restaurant.id}
+              className="group overflow-hidden transition-all hover:shadow-lg"
+            >
+              <div className="relative h-48 overflow-hidden">
+                <img
+                  src={restaurant.cover_photo_url || "/placeholder.svg"}
+                  alt={restaurant.name}
+                  className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                />
+                {restaurant.logo_url && (
+                  <img
+                    src={restaurant.logo_url}
+                    alt={`${restaurant.name} logo`}
+                    className="absolute bottom-4 left-4 h-16 w-16 rounded-full border-4 border-white object-cover shadow-lg"
+                  />
+                )}
+              </div>
+              <CardContent className="p-4">
+                <h3 className="text-xl font-semibold">{restaurant.name}</h3>
+                <div className="mt-2 flex items-center gap-4 text-sm text-gray-600">
+                  <div className="flex items-center gap-1">
+                    <MapPin className="h-4 w-4" />
+                    <span className="truncate">{restaurant.address}</span>
+                  </div>
+                  {restaurant.average_rating > 0 && (
+                    <div className="flex items-center gap-1">
+                      <Star className="h-4 w-4 text-yellow-400" />
+                      <span>{restaurant.average_rating.toFixed(1)}</span>
+                    </div>
+                  )}
+                </div>
+                {restaurant.cuisine_type && (
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    {restaurant.cuisine_type.map((cuisine) => (
+                      <span
+                        key={cuisine}
+                        className="rounded-full bg-primary/10 px-3 py-1 text-xs text-primary"
+                      >
+                        {cuisine}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      )}
+
+      {/* Empty State */}
+      {!isLoading && (!restaurants || restaurants.length === 0) && (
+        <div className="mt-8 text-center">
+          <h3 className="text-lg font-semibold">No restaurants found</h3>
+          <p className="text-gray-600">
+            Try adjusting your search or filter criteria
+          </p>
+        </div>
+      )}
     </div>
   );
-};
-
-export default RestaurantDirectory;
+}
