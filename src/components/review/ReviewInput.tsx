@@ -15,19 +15,19 @@ export const ReviewInput = ({ review, onChange, businessName, businessImage }: R
           <img
             src={businessImage}
             alt={businessName}
-            className="w-12 h-12 rounded-full object-cover"
+            className="w-16 h-16 rounded-full object-cover border-2 border-primary/10"
           />
         )}
         <div>
           <h2 className="text-xl font-semibold">{businessName}</h2>
-          <p className="text-sm text-muted-foreground">Write your review below</p>
+          <p className="text-sm text-muted-foreground">Tell us about your experience</p>
         </div>
       </div>
 
       <Textarea
         value={review}
         onChange={(e) => onChange(e.target.value)}
-        placeholder="Share your experience..."
+        placeholder="What did you enjoy about your visit? How was the food and service? Would you recommend it to others?"
         className="min-h-[150px] resize-none"
       />
     </div>

@@ -4,12 +4,11 @@ interface ReviewCodeProps {
 
 export const ReviewCode = ({ uniqueCode }: ReviewCodeProps) => {
   return (
-    <div className="p-4 bg-secondary/5 rounded-lg border border-secondary/10">
-      <p className="text-center">
-        Your unique review code: <span className="font-mono font-bold">{uniqueCode}</span>
-      </p>
-      <p className="text-sm text-center text-muted-foreground mt-2">
-        Save this code to track your review status
+    <div className="p-6 bg-secondary/5 rounded-lg border border-secondary/10">
+      <h3 className="font-semibold text-lg text-center mb-2">Your Reward Code</h3>
+      <p className="text-center text-2xl font-mono font-bold text-primary mb-3">{uniqueCode}</p>
+      <p className="text-sm text-center text-muted-foreground">
+        Show this code on your next visit to redeem your rewards!
       </p>
     </div>
   );

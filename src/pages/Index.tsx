@@ -11,21 +11,30 @@ const Index = () => {
             alt="EatUP! Logo" 
             className="h-24 mx-auto"
           />
-          <h1 className="text-4xl font-bold tracking-tight text-secondary">Share Your Experience</h1>
+          <h1 className="text-4xl font-bold tracking-tight text-secondary">Share & Save!</h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Tell us about your visit and help others discover great experiences. Your review will be
-            refined by AI to capture the essence of your experience.
+            Share your dining experience and unlock exclusive rewards! Get instant savings on your next visit
+            when you submit a review. It's that simple!
           </p>
         </div>
 
         <ReviewCard
-          businessName="Sample Restaurant"
+          businessName="The Local Kitchen & Bar"
           businessImage="/placeholder.svg"
         />
 
-        <div className="text-center text-sm text-muted-foreground fade-in">
+        <div className="text-center text-sm text-muted-foreground space-y-2 fade-in">
+          <p className="font-medium text-base text-secondary">
+            How it works:
+          </p>
           <p>
-            Submit a review to unlock exclusive rewards and offers!
+            1. Share your experience
+          </p>
+          <p>
+            2. Get your unique reward code
+          </p>
+          <p>
+            3. Show your code on your next visit to claim rewards!
           </p>
         </div>
 
