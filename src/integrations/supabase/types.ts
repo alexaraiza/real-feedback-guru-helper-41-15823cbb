@@ -83,7 +83,9 @@ export type Database = {
           business_name: string
           created_at: string
           id: string
+          photo_url: string | null
           review_text: string
+          server_name: string | null
           status: string | null
           unique_code: string
         }
@@ -91,7 +93,9 @@ export type Database = {
           business_name: string
           created_at?: string
           id?: string
+          photo_url?: string | null
           review_text: string
+          server_name?: string | null
           status?: string | null
           unique_code: string
         }
@@ -99,7 +103,9 @@ export type Database = {
           business_name?: string
           created_at?: string
           id?: string
+          photo_url?: string | null
           review_text?: string
+          server_name?: string | null
           status?: string | null
           unique_code?: string
         }

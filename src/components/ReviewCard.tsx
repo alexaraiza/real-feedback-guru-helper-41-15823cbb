@@ -22,6 +22,7 @@ export const ReviewCard = ({ businessName, businessImage, onTakeAiSurvey }: Revi
   const [uniqueCode, setUniqueCode] = useState<string | null>(null);
   const [showComplaintPrompt, setShowComplaintPrompt] = useState(false);
   const [isRefined, setIsRefined] = useState(false);
+  const [photoUrl, setPhotoUrl] = useState<string>("");
   const { toast } = useToast();
 
   const checkForComplaints = (text: string) => {
@@ -50,7 +51,6 @@ export const ReviewCard = ({ businessName, businessImage, onTakeAiSurvey }: Revi
         setReview(data.refinedReview);
         setIsRefined(true);
 
-        // Check if refined review contains complaints
         if (checkForComplaints(data.refinedReview)) {
           setShowComplaintPrompt(true);
           toast({
@@ -89,6 +89,7 @@ export const ReviewCard = ({ businessName, businessImage, onTakeAiSurvey }: Revi
           review_text: review,
           unique_code: code,
           business_name: businessName,
+          photo_url: photoUrl || null,
         });
 
       if (error) throw error;
@@ -126,6 +127,7 @@ export const ReviewCard = ({ businessName, businessImage, onTakeAiSurvey }: Revi
         onChange={setReview}
         businessName={businessName}
         businessImage={businessImage}
+        onPhotoUpload={setPhotoUrl}
       />
 
       {showComplaintPrompt && (
