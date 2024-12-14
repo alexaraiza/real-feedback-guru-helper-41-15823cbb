@@ -95,6 +95,7 @@ export const ReviewInput = ({
 
   const handleReviewChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;
+    // Limit to 500 characters
     if (value.length <= 500) {
       onChange(value);
     } else {
@@ -107,48 +108,48 @@ export const ReviewInput = ({
   };
 
   return (
-    <div className="space-y-4">
-      <div className="flex items-center gap-4">
+    <div className="space-y-6">
+      <div className="flex items-center space-x-6">
         {businessImage && (
           <img
             src={businessImage}
             alt={businessName}
-            className="w-16 h-16 rounded-xl object-cover border-2 border-primary/10"
+            className="w-20 h-20 rounded-2xl object-cover border-2 border-primary/10 shadow-lg"
           />
         )}
         <div>
-          <h2 className="text-xl font-bold text-secondary">
+          <h2 className="text-2xl font-bold text-secondary bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
             {businessName}
           </h2>
-          <p className="text-sm text-muted-foreground">Share your positive dining experience!</p>
+          <p className="text-muted-foreground">Share your positive dining experience!</p>
         </div>
       </div>
 
       <Textarea
         value={review}
         onChange={handleReviewChange}
-        placeholder="What did you love about your visit? Tell us about the amazing food, exceptional service, or memorable moments!"
-        className="min-h-[120px] resize-none rounded-xl border-primary/20 focus:border-primary/40 transition-colors text-sm"
+        placeholder="What did you love about your visit? Tell us about the amazing food, exceptional service, or memorable moments that made your experience special!"
+        className="min-h-[150px] resize-none rounded-xl border-primary/20 focus:border-primary/40 transition-colors"
       />
       
       <div className="flex items-center justify-between">
-        <div className="text-xs text-muted-foreground">
+        <div className="text-sm text-muted-foreground">
           {review.length}/500 characters
         </div>
         
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-4">
           {previewUrl ? (
             <div className="relative">
               <img
                 src={previewUrl}
                 alt="Review photo"
-                className="w-16 h-16 rounded-lg object-cover"
+                className="w-20 h-20 rounded-xl object-cover shadow-lg"
               />
               <button
                 onClick={removePhoto}
-                className="absolute -top-2 -right-2 bg-destructive text-white rounded-full p-1 shadow-lg hover:bg-destructive/90 transition-colors"
+                className="absolute -top-2 -right-2 bg-destructive text-white rounded-full p-1.5 shadow-lg hover:bg-destructive/90 transition-colors"
               >
-                <X className="w-3 h-3" />
+                <X className="w-4 h-4" />
               </button>
             </div>
           ) : (
@@ -168,11 +169,11 @@ export const ReviewInput = ({
                 <Button
                   type="button"
                   variant="outline"
-                  size="sm"
+                  size="lg"
                   disabled={uploading}
-                  className="bg-primary hover:bg-primary/90 text-white border-primary"
+                  className="bg-primary hover:bg-primary/90 text-white border-primary shadow-lg hover:shadow-xl transition-all duration-300"
                 >
-                  <Camera className="w-4 h-4 mr-2" />
+                  <Camera className="w-5 h-5 mr-2" />
                   {uploading ? "Uploading..." : "Add Photo"}
                 </Button>
               </label>

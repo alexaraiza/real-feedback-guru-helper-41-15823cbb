@@ -23,17 +23,17 @@ export const ReviewActions = ({
   onCopyAndRedirect,
 }: ReviewActionsProps) => {
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col sm:flex-row gap-4">
       <Button
         onClick={onRefine}
-        disabled={isRefining}
-        className="w-full bg-secondary hover:bg-secondary/90 text-white"
-        size="sm"
+        disabled={isRefining} // Remove the !review check
+        className="button-hover flex-1 bg-secondary hover:bg-secondary/90 text-white shadow-lg"
+        variant="outline"
       >
         {isRefining ? (
-          <RefreshCw className="mr-2 h-4 w-4 animate-spin" />
+          <RefreshCw className="mr-2 h-5 w-5 animate-spin" />
         ) : (
-          <RefreshCw className="mr-2 h-4 w-4" />
+          <RefreshCw className="mr-2 h-5 w-5" />
         )}
         Refine Review
       </Button>
@@ -42,8 +42,7 @@ export const ReviewActions = ({
         <Button
           onClick={onSubmit}
           disabled={!review || isSubmitting}
-          className="w-full bg-primary hover:bg-primary/90 text-white"
-          size="sm"
+          className="button-hover flex-1 bg-primary hover:bg-primary/90 text-white shadow-lg"
         >
           Submit Review
         </Button>
@@ -52,12 +51,13 @@ export const ReviewActions = ({
       {uniqueCode && (
         <Button
           onClick={onCopyAndRedirect}
-          className="w-full bg-primary hover:bg-primary/90 text-white"
-          size="sm"
+          className="button-hover flex-1 bg-primary hover:bg-primary/90 text-white shadow-lg space-x-2"
         >
-          <Copy className="mr-2 h-4 w-4" />
-          Copy & Open Google Reviews
-          <ExternalLink className="ml-2 h-4 w-4" />
+          <div className="flex items-center">
+            <Copy className="mr-2 h-5 w-5" />
+            <span>Copy Review & Open Google Reviews</span>
+            <ExternalLink className="ml-2 h-5 w-5" />
+          </div>
         </Button>
       )}
     </div>

@@ -43,15 +43,15 @@ const Index = () => {
           <h2 className="text-3xl font-bold text-center mb-12 bg-gradient-to-r from-[#E94E87] via-[#F17BA3] to-[#FF9B9B] text-transparent bg-clip-text">
             Experience EatUP!
           </h2>
-          <div className="grid md:grid-cols-2 gap-12 items-start">
+          <div className="grid md:grid-cols-2 gap-12 items-center">
             <div className="space-y-6">
-              <div className="relative rounded-2xl overflow-hidden shadow-xl">
+              <div className="relative">
                 <img
-                  src="/lovable-uploads/8cec7d59-cc36-4f43-bdea-f46a939ed6c1.png"
+                  src="/lovable-uploads/f790e463-d057-4fec-b168-02e376930c1c.png"
                   alt="Dining experience"
-                  className="w-full object-cover"
+                  className="rounded-lg shadow-xl"
                 />
-                <div className="absolute inset-0 bg-gradient-to-r from-[#E94E87]/20 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-r from-[#E94E87]/20 to-transparent rounded-lg" />
               </div>
               <h3 className="text-2xl font-semibold bg-gradient-to-r from-[#E94E87] to-[#F17BA3] text-transparent bg-clip-text">
                 Share Your Experience
@@ -68,7 +68,7 @@ const Index = () => {
                 Try AI Voice Feedback Demo
               </Button>
             </div>
-            <div className="bg-white/80 backdrop-blur-sm p-6 rounded-xl shadow-xl max-w-md mx-auto w-full">
+            <div className="bg-white p-6 rounded-xl shadow-xl">
               <ReviewCard
                 businessName="The Local Kitchen & Bar"
                 businessImage="/lovable-uploads/23bef056-e873-4e3d-b77b-8ac3c49fa8d8.png"
@@ -79,6 +79,7 @@ const Index = () => {
         </div>
       </section>
 
+      {/* Restaurant Success Stories */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-12 bg-gradient-to-r from-[#E94E87] via-[#F17BA3] to-[#FF9B9B] text-transparent bg-clip-text">
