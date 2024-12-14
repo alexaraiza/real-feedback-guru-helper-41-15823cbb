@@ -25,7 +25,7 @@ export default {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: {
-          DEFAULT: "#F2476B", // EatUP! pink
+          DEFAULT: "#D6BCFA", // Cooler pink/purple
           foreground: "hsl(var(--primary-foreground))",
         },
         secondary: {
