@@ -12,6 +12,7 @@ function App() {
         <Route path="/restaurants" element={<RestaurantDirectory />} />
         <Route path="/restaurants/:id" element={<RestaurantDetails />} />
         <Route path="/restaurants/onboard" element={<RestaurantOnboard />} />
+        <Route path="/:restaurantSlug" element={<RestaurantDetails />} />
       </Routes>
     </Router>
   );

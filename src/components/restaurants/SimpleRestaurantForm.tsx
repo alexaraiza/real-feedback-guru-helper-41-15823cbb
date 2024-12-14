@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { MapPin, Image as ImageIcon } from "lucide-react";
+import { MapPin } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import {
@@ -14,16 +14,10 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { supabase } from "@/integrations/supabase/client";
-
-interface RestaurantFormData {
-  name: string;
-  address: string;  // Added address field
-  google_maps_url: string;
-  logo_url?: string;
-  offer_title: string;
-  offer_description: string;
-  offer_discount: string;
-}
+import { generateSlug } from "@/utils/urlUtils";
+import { OfferFormSection } from "./OfferFormSection";
+import { LogoUpload } from "./LogoUpload";
+import { RestaurantFormData } from "./types";
 
 export function SimpleRestaurantForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -33,7 +27,7 @@ export function SimpleRestaurantForm() {
   const form = useForm<RestaurantFormData>({
     defaultValues: {
       name: "",
-      address: "",  // Added address default value
+      address: "",
       google_maps_url: "",
       logo_url: "",
       offer_title: "",
@@ -41,38 +35,6 @@ export function SimpleRestaurantForm() {
       offer_discount: "",
     },
   });
-
-  const handleLogoUpload = async (file: File) => {
-    try {
-      const fileExt = file.name.split(".").pop();
-      const fileName = `${crypto.randomUUID()}.${fileExt}`;
-      const filePath = `${fileName}`;
-
-      const { error: uploadError, data } = await supabase.storage
-        .from("restaurant_photos")
-        .upload(filePath, file);
-
-      if (uploadError) throw uploadError;
-
-      const {
-        data: { publicUrl },
-      } = supabase.storage.from("restaurant_photos").getPublicUrl(filePath);
-
-      form.setValue("logo_url", publicUrl);
-
-      toast({
-        title: "Success",
-        description: "Logo uploaded successfully",
-      });
-    } catch (error) {
-      console.error("Error uploading file:", error);
-      toast({
-        title: "Error",
-        description: "Failed to upload logo. Please try again.",
-        variant: "destructive",
-      });
-    }
-  };
 
   const onSubmit = async (data: RestaurantFormData) => {
     try {
@@ -91,12 +53,14 @@ export function SimpleRestaurantForm() {
         return;
       }
 
+      const slug = generateSlug(data.name);
+
       // Insert restaurant
       const { data: restaurant, error: restaurantError } = await supabase
         .from("restaurants")
         .insert({
           name: data.name,
-          address: data.address,  // Added address field
+          address: data.address,
           google_maps_url: data.google_maps_url,
           logo_url: data.logo_url,
           owner_id: user.id,
@@ -123,7 +87,7 @@ export function SimpleRestaurantForm() {
         description: "Restaurant submitted successfully! We'll review your submission shortly.",
       });
 
-      navigate("/restaurants");
+      navigate(`/restaurants/${slug}`);
     } catch (error) {
       console.error("Error creating restaurant:", error);
       toast({
@@ -187,69 +151,9 @@ export function SimpleRestaurantForm() {
             )}
           />
 
-          <div>
-            <FormLabel>Restaurant Logo</FormLabel>
-            <Input
-              type="file"
-              accept="image/*"
-              onChange={(e) => {
-                const file = e.target.files?.[0];
-                if (file) handleLogoUpload(file);
-              }}
-            />
-            {form.watch("logo_url") && (
-              <img
-                src={form.watch("logo_url")}
-                alt="Logo preview"
-                className="mt-2 h-24 w-24 rounded-full object-cover"
-              />
-            )}
-          </div>
-
-          <div className="space-y-4">
-            <h2 className="text-xl font-semibold">Review Offer</h2>
-            <FormField
-              control={form.control}
-              name="offer_title"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Offer Title</FormLabel>
-                  <FormControl>
-                    <Input placeholder="e.g., Free Dessert" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="offer_description"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Offer Description</FormLabel>
-                  <FormControl>
-                    <Input placeholder="e.g., One free dessert per table" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="offer_discount"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Discount Value</FormLabel>
-                  <FormControl>
-                    <Input placeholder="e.g., 20% OFF or Free Dessert" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
+          <LogoUpload setValue={form.setValue} logoUrl={form.watch("logo_url")} />
+          
+          <OfferFormSection form={form} />
 
           <Button type="submit" disabled={isSubmitting} className="w-full">
             Submit Restaurant
