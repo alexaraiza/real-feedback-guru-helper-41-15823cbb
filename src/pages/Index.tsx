@@ -23,19 +23,30 @@ const Index = () => {
       setShowWidget(false);
     } else {
       // If widget is not showing, add it and the script
-      setShowWidget(true);
       const existingScript = document.getElementById('convai-widget-script');
       if (!existingScript) {
         const script = document.createElement('script');
         script.id = 'convai-widget-script';
         script.src = "https://elevenlabs.io/convai-widget/index.js";
         script.async = true;
+        script.onload = () => {
+          // Create and append widget after script is loaded
+          const widgetHtml = document.createElement('div');
+          widgetHtml.innerHTML = '<elevenlabs-convai agent-id="tESkAImW1ibEAaF64sKJ" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;"></elevenlabs-convai>';
+          document.body.appendChild(widgetHtml.firstChild);
+        };
         document.body.appendChild(script);
+      } else {
+        // If script exists but widget was removed, just add widget
+        const widgetHtml = document.createElement('div');
+        widgetHtml.innerHTML = '<elevenlabs-convai agent-id="tESkAImW1ibEAaF64sKJ" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;"></elevenlabs-convai>';
+        document.body.appendChild(widgetHtml.firstChild);
       }
+      setShowWidget(true);
     }
   };
 
-  // Cleanup function to remove widget when component unmounts
+  // Cleanup function to remove widget and script when component unmounts
   useEffect(() => {
     return () => {
       const script = document.getElementById('convai-widget-script');
@@ -107,13 +118,6 @@ const Index = () => {
 
         <ExampleReviews />
       </div>
-      {showWidget && (
-        <div
-          dangerouslySetInnerHTML={{
-            __html: '<elevenlabs-convai agent-id="tESkAImW1ibEAaF64sKJ" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;"></elevenlabs-convai>'
-          }}
-        />
-      )}
     </div>
   );
 };
