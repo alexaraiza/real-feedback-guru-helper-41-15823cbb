@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { RefreshCw, Copy } from "lucide-react";
+import { RefreshCw, Copy, ExternalLink } from "lucide-react";
 
 interface ReviewActionsProps {
   review: string;
@@ -35,7 +35,7 @@ export const ReviewActions = ({
         ) : (
           <RefreshCw className="mr-2 h-4 w-4" />
         )}
-        Refine Review
+        {review.length < 50 ? "Get Suggestions" : "Refine Review"}
       </Button>
 
       {!uniqueCode && isRefined && (
@@ -44,7 +44,7 @@ export const ReviewActions = ({
           disabled={!review || isSubmitting}
           className="button-hover flex-1 bg-primary hover:bg-primary/90"
         >
-          Submit Review
+          Save Review
         </Button>
       )}
 
@@ -54,7 +54,8 @@ export const ReviewActions = ({
           className="button-hover flex-1 bg-primary hover:bg-primary/90"
         >
           <Copy className="mr-2 h-4 w-4" />
-          Copy & Submit to Google
+          Copy & Post to Google
+          <ExternalLink className="ml-2 h-4 w-4" />
         </Button>
       )}
     </div>
