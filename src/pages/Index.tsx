@@ -1,7 +1,7 @@
 import { ReviewCard } from "@/components/ReviewCard";
 import { ExampleReviews } from "@/components/ExampleReviews";
 import { Button } from "@/components/ui/button";
-import { Phone, Bot } from "lucide-react";
+import { Phone, Bot, ChevronDown } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useState, useEffect } from "react";
 
@@ -46,7 +46,6 @@ const Index = () => {
     }
   };
 
-  // Cleanup function to remove widget and script when component unmounts
   useEffect(() => {
     return () => {
       const script = document.getElementById('convai-widget-script');
@@ -61,34 +60,38 @@ const Index = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-pink-50">
-      <div className="max-w-7xl mx-auto px-4 py-12 space-y-8">
-        <div className="text-center space-y-4 fade-in">
+    <div className="min-h-screen">
+      <div className="max-w-7xl mx-auto px-4 py-12 space-y-12">
+        <div className="text-center space-y-6 fade-in">
           <img 
             src="/lovable-uploads/50980a14-589f-4bd1-8267-536c582ff4e1.png" 
             alt="EatUP! Logo" 
-            className="h-24 mx-auto"
+            className="h-28 mx-auto hover:scale-105 transition-transform duration-300"
           />
-          <h1 className="text-4xl font-bold tracking-tight text-secondary">Share & Save!</h1>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Share your dining experience and unlock exclusive rewards! Get instant savings on your next visit
-            when you submit a review. It's that simple!
-          </p>
+          <div className="space-y-4 max-w-2xl mx-auto">
+            <h1 className="text-5xl font-bold tracking-tight text-secondary bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+              Share & Save!
+            </h1>
+            <p className="text-lg text-muted-foreground leading-relaxed">
+              Share your dining experience and unlock exclusive rewards! Get instant savings 
+              on your next visit when you submit a review. It's that simple!
+            </p>
+          </div>
 
-          <div className="flex justify-center gap-4 pt-4">
+          <div className="flex flex-col items-center gap-6 pt-4">
             <Button
               onClick={handleSurveyCallClick}
-              className="bg-secondary hover:bg-secondary/90 text-white"
+              className="bg-secondary hover:bg-secondary/90 text-white shadow-lg hover:shadow-xl transition-all duration-300 group"
               size="lg"
             >
-              <Phone className="mr-2 h-4 w-4" />
+              <Phone className="mr-2 h-5 w-5 group-hover:rotate-12 transition-transform" />
               {showWidget ? 'Close AI Survey Call' : 'Take AI Survey Call'}
-              <Bot className="ml-2 h-4 w-4" />
+              <Bot className="ml-2 h-5 w-5 group-hover:scale-110 transition-transform" />
             </Button>
-          </div>
-          
-          <div className="text-sm text-muted-foreground mt-2">
-            Complete the AI survey call to enter our monthly prize pool! 🎉
+            
+            <div className="text-sm font-medium text-primary animate-bounce">
+              Complete the AI survey call to enter our monthly prize pool! 🎉
+            </div>
           </div>
         </div>
 
@@ -98,25 +101,42 @@ const Index = () => {
           onTakeAiSurvey={handleSurveyCallClick}
         />
 
-        <div className="text-center text-sm text-muted-foreground space-y-2 fade-in">
-          <p className="font-medium text-base text-secondary">
-            How it works:
-          </p>
-          <p>
-            1. Share your experience (written or AI call)
-          </p>
-          <p>
-            2. Get your unique reward code
-          </p>
-          <p>
-            3. Show your code on your next visit to claim rewards!
-          </p>
-          <p className="text-primary font-medium mt-4">
-            ✨ AI Survey Call participants are automatically entered into our monthly prize pool! ✨
-          </p>
+        <div className="relative">
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/50 to-white pointer-events-none" />
+          <div className="text-center space-y-6 relative z-10 py-12">
+            <h2 className="text-2xl font-semibold text-secondary">How it works:</h2>
+            <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+              <div className="glass-card p-6 rounded-2xl space-y-3">
+                <div className="text-3xl font-bold text-primary">1</div>
+                <p className="text-secondary/80">
+                  Share your experience (written or AI call)
+                </p>
+              </div>
+              <div className="glass-card p-6 rounded-2xl space-y-3">
+                <div className="text-3xl font-bold text-primary">2</div>
+                <p className="text-secondary/80">
+                  Get your unique reward code
+                </p>
+              </div>
+              <div className="glass-card p-6 rounded-2xl space-y-3">
+                <div className="text-3xl font-bold text-primary">3</div>
+                <p className="text-secondary/80">
+                  Show your code on your next visit to claim rewards!
+                </p>
+              </div>
+            </div>
+            <p className="text-primary font-medium text-lg mt-8 animate-pulse">
+              ✨ AI Survey Call participants are automatically entered into our monthly prize pool! ✨
+            </p>
+          </div>
         </div>
 
-        <ExampleReviews />
+        <div className="relative pt-12">
+          <div className="absolute top-0 left-1/2 -translate-x-1/2">
+            <ChevronDown className="h-8 w-8 text-primary/50 animate-bounce" />
+          </div>
+          <ExampleReviews />
+        </div>
       </div>
     </div>
   );
