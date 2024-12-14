@@ -135,7 +135,7 @@ const Index = () => {
         <div className="fixed bottom-0 right-0 z-[9999] min-w-[320px]">
           <div className="relative">
             <elevenlabs-convai agent-id="CI0HSZaVDE1uT881ruiq"></elevenlabs-convai>
-            <div className="absolute bottom-0 left-0 right-0 h-8 bg-[#E94E87] text-white text-xs font-medium flex items-center justify-center">
+            <div className="absolute bottom-0 left-0 right-0 h-8 bg-black text-white text-xs font-medium flex items-center justify-center">
               AI Voice Demo
             </div>
           </div>
