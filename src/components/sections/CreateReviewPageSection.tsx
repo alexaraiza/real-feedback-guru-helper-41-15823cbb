@@ -1,8 +1,48 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { FileText, Plus } from "lucide-react";
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { useNavigate } from "react-router-dom";
+import { useToast } from "@/components/ui/use-toast";
 
 export const CreateReviewPageSection = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+  const navigate = useNavigate();
+  const { toast } = useToast();
+
+  useEffect(() => {
+    supabase.auth.onAuthStateChange((event, session) => {
+      setIsAuthenticated(!!session);
+    });
+  }, []);
+
+  const handleCreateReviewPage = async () => {
+    if (!isAuthenticated) {
+      toast({
+        title: "Authentication Required",
+        description: "Please sign in to create a review page",
+        variant: "destructive",
+      });
+      navigate("/login");
+      return;
+    }
+
+    // Check if user has completed onboarding
+    const { data: restaurants } = await supabase
+      .from("restaurants")
+      .select("id")
+      .limit(1);
+
+    if (!restaurants?.length) {
+      // No restaurants found, redirect to onboarding
+      navigate("/restaurants/onboard");
+    } else {
+      // User has restaurants, go to create review page
+      navigate("/restaurants/create-review-page");
+    }
+  };
+
   return (
     <section className="py-20 bg-gradient-to-b from-white to-[#FFE5ED]/20">
       <div className="max-w-7xl mx-auto px-4">
@@ -31,15 +71,14 @@ export const CreateReviewPageSection = () => {
                 <p className="text-muted-foreground mb-4">
                   Create a dedicated page for collecting customer reviews, complete with your branding and special offers
                 </p>
-                <Link to="/restaurants/create-review-page">
-                  <Button 
-                    size="lg"
-                    className="w-full bg-gradient-to-r from-[#E94E87] to-[#F17BA3] hover:from-[#D13D73] hover:to-[#E94E87]"
-                  >
-                    <Plus className="mr-2 h-5 w-5" />
-                    Create Your Review Page
-                  </Button>
-                </Link>
+                <Button 
+                  onClick={handleCreateReviewPage}
+                  size="lg"
+                  className="w-full bg-gradient-to-r from-[#E94E87] to-[#F17BA3] hover:from-[#D13D73] hover:to-[#E94E87]"
+                >
+                  <Plus className="mr-2 h-5 w-5" />
+                  Create Your Review Page
+                </Button>
               </div>
             </div>
           </div>
