@@ -10,17 +10,17 @@ import { RestaurantHero } from "@/components/restaurant/RestaurantHero";
 import { RestaurantOffers } from "@/components/restaurant/RestaurantOffers";
 
 const RestaurantDetail = () => {
-  const { slug } = useParams();
+  const { id } = useParams();
   
   const { data: restaurant, isLoading, error } = useQuery({
-    queryKey: ["restaurant", slug],
+    queryKey: ["restaurant", id],
     queryFn: async () => {
-      if (!slug) {
-        console.error("No slug provided");
-        throw new Error("No slug provided");
+      if (!id) {
+        console.error("No restaurant ID provided");
+        throw new Error("No restaurant ID provided");
       }
       
-      console.log("Fetching restaurant with slug:", slug);
+      console.log("Fetching restaurant with ID:", id);
 
       const { data, error } = await supabase
         .from("restaurants")
@@ -34,7 +34,7 @@ const RestaurantDetail = () => {
             valid_until
           )
         `)
-        .eq("slug", slug)
+        .eq("id", id)
         .single();
 
       if (error) {
@@ -50,7 +50,7 @@ const RestaurantDetail = () => {
       
       return data;
     },
-    enabled: !!slug,
+    enabled: !!id,
     retry: 1,
   });
 
