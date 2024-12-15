@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { useNavigate } from "react-router-dom";
 import { Palette, Type, MessageSquare } from "lucide-react";
+import { useUser } from "@supabase/auth-helpers-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -35,6 +36,7 @@ const formSchema = z.object({
 export function CreateReviewPageForm() {
   const { toast } = useToast();
   const navigate = useNavigate();
+  const user = useUser();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -44,6 +46,15 @@ export function CreateReviewPageForm() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    if (!user) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "You must be logged in to create a review page.",
+      });
+      return;
+    }
+
     try {
       // First create the restaurant
       const { data: restaurantData, error: restaurantError } = await supabase
@@ -51,19 +62,24 @@ export function CreateReviewPageForm() {
         .insert({
           name: values.page_title,
           status: "pending",
-          address: "TBD", // Adding required address field
+          address: "TBD", // Required field
+          owner_id: user.id, // Set the owner_id to the current user's ID
         })
         .select()
         .single();
 
       if (restaurantError) throw restaurantError;
 
+      if (!restaurantData?.id) {
+        throw new Error("No restaurant ID returned");
+      }
+
       // Then create the review page
       const { error: reviewPageError } = await supabase
         .from("review_pages")
         .insert({
           restaurant_id: restaurantData.id,
-          page_title: values.page_title, // Ensure required field is set
+          page_title: values.page_title,
           welcome_message: values.welcome_message,
           thank_you_message: values.thank_you_message,
           theme_color: values.theme_color,
@@ -78,7 +94,7 @@ export function CreateReviewPageForm() {
         description: "Your review page has been created.",
       });
 
-      navigate(`/review/${restaurantData.id}`);
+      navigate(`/restaurants/${restaurantData.id}`);
     } catch (error) {
       console.error("Error creating review page:", error);
       toast({
@@ -87,6 +103,14 @@ export function CreateReviewPageForm() {
         description: "There was a problem creating your review page.",
       });
     }
+  }
+
+  if (!user) {
+    return (
+      <div className="max-w-2xl mx-auto p-6">
+        <h2 className="text-xl font-semibold text-center">Please log in to create a review page</h2>
+      </div>
+    );
   }
 
   return (
