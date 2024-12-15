@@ -11,8 +11,7 @@ import { RestaurantOffers } from "@/components/restaurant/RestaurantOffers";
 import { RestaurantNav } from "@/components/navigation/RestaurantNav";
 
 const RestaurantDetail = () => {
-  const params = useParams();
-  const restaurantId = params.id;
+  const { id: restaurantId } = useParams<{ id: string }>();
   
   const { data: restaurant, isLoading, error } = useQuery({
     queryKey: ["restaurant", restaurantId],
@@ -23,17 +22,8 @@ const RestaurantDetail = () => {
 
       const { data, error } = await supabase
         .from("restaurants")
-        .select(`
-          *,
-          restaurant_offers (
-            id,
-            title,
-            description,
-            discount_value,
-            valid_until
-          )
-        `)
-        .eq('id', restaurantId)
+        .select("*, restaurant_offers(id, title, description, discount_value, valid_until)")
+        .eq("id", restaurantId)
         .single();
 
       if (error) {
