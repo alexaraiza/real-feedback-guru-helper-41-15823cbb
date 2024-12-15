@@ -154,6 +154,47 @@ export type Database = {
         }
         Relationships: []
       }
+      receipt_analysis: {
+        Row: {
+          analysis_result: Json
+          created_at: string | null
+          id: string
+          items: string[] | null
+          receipt_image_url: string
+          restaurant_id: string | null
+          status: string | null
+          total_amount: number | null
+        }
+        Insert: {
+          analysis_result: Json
+          created_at?: string | null
+          id?: string
+          items?: string[] | null
+          receipt_image_url: string
+          restaurant_id?: string | null
+          status?: string | null
+          total_amount?: number | null
+        }
+        Update: {
+          analysis_result?: Json
+          created_at?: string | null
+          id?: string
+          items?: string[] | null
+          receipt_image_url?: string
+          restaurant_id?: string | null
+          status?: string | null
+          total_amount?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "receipt_analysis_restaurant_id_fkey"
+            columns: ["restaurant_id"]
+            isOneToOne: false
+            referencedRelation: "restaurants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       restaurant_offers: {
         Row: {
           created_at: string

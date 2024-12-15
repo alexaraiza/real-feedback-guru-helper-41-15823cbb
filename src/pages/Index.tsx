@@ -52,7 +52,7 @@ const Index = () => {
   }, [showWidget, toast]);
 
   const scrollToExperience = () => {
-    experienceSectionRef.current?.scrollIntoView({ behavior: 'smooth' });
+    navigate("/demo");
   };
 
   const handleSurveyCallClick = () => {
@@ -63,9 +63,6 @@ const Index = () => {
     <div className="min-h-screen">
       <HeroSection onTryDemo={scrollToExperience} onShowAuth={() => setShowAuthDialog(true)} />
       <FeaturesSection />
-      <div ref={experienceSectionRef}>
-        <DemoSection onSurveyCall={handleSurveyCallClick} />
-      </div>
       <CreateReviewPageSection onShowAuth={() => setShowAuthDialog(true)} />
       <VdaSection />
       <section className="py-20 bg-white">
