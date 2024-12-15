@@ -32,14 +32,14 @@ serve(async (req) => {
         messages: [
           {
             role: "system",
-            content: "You are a receipt analysis expert. Analyze the receipt image and extract key information like items, prices, and total amount."
+            content: "You are a receipt analysis expert. Extract key information from the receipt image and return it in a specific JSON format with total_amount, items (array of objects with name and price), tax_amount (if present), and discounts (if any)."
           },
           {
             role: "user",
             content: [
               {
                 type: "text",
-                text: "Please analyze this receipt image and provide the following information in a JSON format: items (array of items with their prices), total amount, tax amount if present, and any discounts applied."
+                text: "Please analyze this receipt and extract the following information in JSON format: total amount, list of items with their prices, tax amount if shown, and any discounts applied."
               },
               {
                 type: "image_url",
@@ -47,7 +47,9 @@ serve(async (req) => {
               }
             ]
           }
-        ]
+        ],
+        max_tokens: 1000,
+        temperature: 0.1
       }),
     });
 
@@ -60,7 +62,21 @@ serve(async (req) => {
     const data = await response.json();
     console.log('OpenAI response:', data);
 
-    const analysis = JSON.parse(data.choices[0].message.content);
+    // Ensure the response is properly formatted JSON
+    let analysis;
+    try {
+      analysis = typeof data.choices[0].message.content === 'string' 
+        ? JSON.parse(data.choices[0].message.content)
+        : data.choices[0].message.content;
+    } catch (e) {
+      console.error('Error parsing OpenAI response:', e);
+      throw new Error('Invalid response format from OpenAI');
+    }
+
+    // Validate the analysis object has the required fields
+    if (!analysis.total_amount || !analysis.items) {
+      throw new Error('Incomplete analysis result');
+    }
 
     return new Response(
       JSON.stringify({ analysis }),
