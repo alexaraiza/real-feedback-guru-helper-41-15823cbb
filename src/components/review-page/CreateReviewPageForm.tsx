@@ -12,6 +12,7 @@ import { BasicInfoSection } from "./sections/BasicInfoSection";
 import { MessagesSection } from "./sections/MessagesSection";
 import { ThemeSection } from "./sections/ThemeSection";
 import { ReviewPageFormData } from "./types";
+import { PagePreview } from "../preview/PagePreview";
 
 const formSchema = z.object({
   page_title: z.string().min(2, {
@@ -38,7 +39,9 @@ export function CreateReviewPageForm() {
     },
   });
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  const formValues = form.watch();
+
+  async function onSubmit(values: ReviewPageFormData) {
     if (!user) {
       toast({
         variant: "destructive",
@@ -106,7 +109,7 @@ export function CreateReviewPageForm() {
         description: "Your review page has been created.",
       });
 
-      navigate(`/${slug}`);
+      navigate(`/restaurants/dashboard`);
     } catch (error) {
       console.error("Error creating review page:", error);
       toast({
@@ -126,7 +129,7 @@ export function CreateReviewPageForm() {
   }
 
   return (
-    <div className="max-w-2xl mx-auto p-6">
+    <div className="max-w-7xl mx-auto p-6">
       <div className="mb-8">
         <h1 className="text-3xl font-bold mb-2">Create Your Review Page</h1>
         <p className="text-muted-foreground">
@@ -134,17 +137,24 @@ export function CreateReviewPageForm() {
         </p>
       </div>
 
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          <BasicInfoSection form={form} />
-          <MessagesSection form={form} />
-          <ThemeSection form={form} />
+      <div className="grid md:grid-cols-2 gap-8">
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <BasicInfoSection form={form} />
+            <MessagesSection form={form} />
+            <ThemeSection form={form} />
 
-          <Button type="submit" className="w-full">
-            Create Review Page
-          </Button>
-        </form>
-      </Form>
+            <Button type="submit" className="w-full">
+              Create Review Page
+            </Button>
+          </form>
+        </Form>
+
+        <div className="sticky top-24">
+          <h2 className="text-xl font-semibold mb-4">Live Preview</h2>
+          <PagePreview formData={formValues} />
+        </div>
+      </div>
     </div>
   );
 }
