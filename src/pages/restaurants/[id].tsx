@@ -33,7 +33,7 @@ const RestaurantDetail = () => {
             valid_until
           )
         `)
-        .eq("id", restaurantId)
+        .eq('id', restaurantId)
         .single();
 
       if (error) {
