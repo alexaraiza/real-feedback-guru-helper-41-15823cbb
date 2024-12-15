@@ -25,7 +25,7 @@ const formSchema = z.object({
   }).default("#E94E87"),
   logo_url: z.string().optional(),
   background_image_url: z.string().optional(),
-}) as z.ZodType<ReviewPageFormData>;
+}) satisfies z.ZodType<ReviewPageFormData>;
 
 export function CreateReviewPageForm() {
   const { toast } = useToast();
@@ -55,13 +55,14 @@ export function CreateReviewPageForm() {
       const slug = generateSlug(values.page_title);
 
       // Check if slug already exists
-      const { data: existingRestaurant } = await supabase
+      const { data: existingRestaurants, error: slugCheckError } = await supabase
         .from("restaurants")
         .select("id")
-        .eq("slug", slug)
-        .single();
+        .eq("slug", slug);
 
-      if (existingRestaurant) {
+      if (slugCheckError) throw slugCheckError;
+
+      if (existingRestaurants && existingRestaurants.length > 0) {
         toast({
           title: "Error",
           description: "A restaurant with this name already exists. Please choose a different name.",
