@@ -11,19 +11,19 @@ import { RestaurantOffers } from "@/components/restaurant/RestaurantOffers";
 import { RestaurantNav } from "@/components/navigation/RestaurantNav";
 
 const RestaurantDetail = () => {
-  const { id: restaurantId } = useParams<{ id: string }>();
+  const { id } = useParams<{ id: string }>();
   
   const { data: restaurant, isLoading, error } = useQuery({
-    queryKey: ["restaurant", restaurantId],
+    queryKey: ["restaurant", id],
     queryFn: async () => {
-      if (!restaurantId) {
+      if (!id) {
         throw new Error("No restaurant ID provided");
       }
 
       const { data, error } = await supabase
         .from("restaurants")
         .select("*, restaurant_offers(id, title, description, discount_value, valid_until)")
-        .eq("id", restaurantId)
+        .eq("id", id)
         .single();
 
       if (error) {
@@ -37,7 +37,7 @@ const RestaurantDetail = () => {
 
       return data;
     },
-    enabled: !!restaurantId,
+    enabled: !!id,
   });
 
   if (error) {
