@@ -9,6 +9,82 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      audit_media: {
+        Row: {
+          audit_id: string
+          caption: string | null
+          created_at: string | null
+          id: string
+          media_type: string
+          media_url: string
+        }
+        Insert: {
+          audit_id: string
+          caption?: string | null
+          created_at?: string | null
+          id?: string
+          media_type: string
+          media_url: string
+        }
+        Update: {
+          audit_id?: string
+          caption?: string | null
+          created_at?: string | null
+          id?: string
+          media_type?: string
+          media_url?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "audit_media_audit_id_fkey"
+            columns: ["audit_id"]
+            isOneToOne: false
+            referencedRelation: "verified_dining_audits"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      audit_responses: {
+        Row: {
+          audit_id: string
+          category: string
+          created_at: string | null
+          id: string
+          notes: string | null
+          question: string
+          rating: number | null
+          response: string | null
+        }
+        Insert: {
+          audit_id: string
+          category: string
+          created_at?: string | null
+          id?: string
+          notes?: string | null
+          question: string
+          rating?: number | null
+          response?: string | null
+        }
+        Update: {
+          audit_id?: string
+          category?: string
+          created_at?: string | null
+          id?: string
+          notes?: string | null
+          question?: string
+          rating?: number | null
+          response?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "audit_responses_audit_id_fkey"
+            columns: ["audit_id"]
+            isOneToOne: false
+            referencedRelation: "verified_dining_audits"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       blog_posts: {
         Row: {
           author_id: string
@@ -263,6 +339,51 @@ export type Database = {
         }
         Relationships: []
       }
+      verified_dining_audits: {
+        Row: {
+          created_at: string | null
+          id: string
+          restaurant_id: string
+          reviewer_id: string | null
+          status: Database["public"]["Enums"]["audit_status"] | null
+          updated_at: string | null
+          visit_date: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          restaurant_id: string
+          reviewer_id?: string | null
+          status?: Database["public"]["Enums"]["audit_status"] | null
+          updated_at?: string | null
+          visit_date?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          restaurant_id?: string
+          reviewer_id?: string | null
+          status?: Database["public"]["Enums"]["audit_status"] | null
+          updated_at?: string | null
+          visit_date?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "verified_dining_audits_restaurant_id_fkey"
+            columns: ["restaurant_id"]
+            isOneToOne: false
+            referencedRelation: "restaurants"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "verified_dining_audits_reviewer_id_fkey"
+            columns: ["reviewer_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -271,7 +392,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      audit_status: "pending" | "in_progress" | "completed" | "cancelled"
     }
     CompositeTypes: {
       [_ in never]: never
