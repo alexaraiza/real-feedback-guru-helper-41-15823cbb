@@ -249,6 +249,56 @@ export type Database = {
         }
         Relationships: []
       }
+      review_pages: {
+        Row: {
+          active: boolean | null
+          background_image_url: string | null
+          created_at: string
+          id: string
+          logo_url: string | null
+          page_title: string
+          restaurant_id: string
+          thank_you_message: string | null
+          theme_color: string | null
+          updated_at: string
+          welcome_message: string | null
+        }
+        Insert: {
+          active?: boolean | null
+          background_image_url?: string | null
+          created_at?: string
+          id?: string
+          logo_url?: string | null
+          page_title: string
+          restaurant_id: string
+          thank_you_message?: string | null
+          theme_color?: string | null
+          updated_at?: string
+          welcome_message?: string | null
+        }
+        Update: {
+          active?: boolean | null
+          background_image_url?: string | null
+          created_at?: string
+          id?: string
+          logo_url?: string | null
+          page_title?: string
+          restaurant_id?: string
+          thank_you_message?: string | null
+          theme_color?: string | null
+          updated_at?: string
+          welcome_message?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "review_pages_restaurant_id_fkey"
+            columns: ["restaurant_id"]
+            isOneToOne: false
+            referencedRelation: "restaurants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       reviews: {
         Row: {
           business_name: string
