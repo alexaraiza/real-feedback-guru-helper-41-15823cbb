@@ -9,11 +9,13 @@ import { Link } from "react-router-dom";
 import { ExampleReviews } from "@/components/ExampleReviews";
 
 const RestaurantDetail = () => {
-  const { slug } = useParams();
+  const { slug } = useParams<{ slug: string }>();
   
   const { data: restaurant, isLoading } = useQuery({
     queryKey: ["restaurant", slug],
     queryFn: async () => {
+      if (!slug) throw new Error("No slug provided");
+
       const { data, error } = await supabase
         .from("restaurants")
         .select(`
@@ -30,9 +32,16 @@ const RestaurantDetail = () => {
         .eq("status", "approved")
         .single();
 
-      if (error) throw error;
+      if (error) {
+        console.error("Error fetching restaurant:", error);
+        throw error;
+      }
+      
+      if (!data) throw new Error("Restaurant not found");
+      
       return data;
     },
+    enabled: !!slug,
   });
 
   if (isLoading) {
@@ -58,6 +67,9 @@ const RestaurantDetail = () => {
           <p className="mt-2 text-gray-600">
             The restaurant you're looking for doesn't exist or has been removed.
           </p>
+          <Link to="/" className="mt-4 inline-block">
+            <Button variant="default">Return Home</Button>
+          </Link>
         </div>
       </div>
     );
