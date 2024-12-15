@@ -1,7 +1,7 @@
 import { useParams, Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { MapPin, Star } from "lucide-react";
+import { MapPin } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -11,17 +11,15 @@ import { RestaurantOffers } from "@/components/restaurant/RestaurantOffers";
 import { RestaurantNav } from "@/components/navigation/RestaurantNav";
 
 const RestaurantDetail = () => {
-  const { id } = useParams();
+  const params = useParams();
+  const restaurantId = params.id;
   
   const { data: restaurant, isLoading, error } = useQuery({
-    queryKey: ["restaurant", id],
+    queryKey: ["restaurant", restaurantId],
     queryFn: async () => {
-      if (!id) {
-        console.error("No restaurant ID provided");
+      if (!restaurantId) {
         throw new Error("No restaurant ID provided");
       }
-      
-      console.log("Fetching restaurant with ID:", id);
 
       const { data, error } = await supabase
         .from("restaurants")
@@ -35,24 +33,21 @@ const RestaurantDetail = () => {
             valid_until
           )
         `)
-        .eq("id", id)
+        .eq("id", restaurantId)
         .single();
 
       if (error) {
         console.error("Error fetching restaurant:", error);
         throw error;
       }
-      
-      console.log("Restaurant data:", data);
-      
+
       if (!data) {
         throw new Error("Restaurant not found");
       }
-      
+
       return data;
     },
-    enabled: !!id,
-    retry: 1,
+    enabled: !!restaurantId,
   });
 
   if (error) {
