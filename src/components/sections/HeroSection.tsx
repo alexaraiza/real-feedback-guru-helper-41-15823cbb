@@ -6,9 +6,10 @@ import { supabase } from "@/integrations/supabase/client";
 
 interface HeroSectionProps {
   onTryDemo: () => void;
+  onShowAuth: () => void;
 }
 
-export const HeroSection = ({ onTryDemo }: HeroSectionProps) => {
+export const HeroSection = ({ onTryDemo, onShowAuth }: HeroSectionProps) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 
   useEffect(() => {
@@ -62,16 +63,15 @@ export const HeroSection = ({ onTryDemo }: HeroSectionProps) => {
               </Button>
             </Link>
           ) : (
-            <Link to="/login">
-              <Button 
-                variant="outline"
-                size="lg"
-                className="border-[#E94E87] text-[#E94E87] hover:bg-[#E94E87] hover:text-white"
-              >
-                <LogIn className="mr-2 h-5 w-5" />
-                Sign In / Register
-              </Button>
-            </Link>
+            <Button 
+              variant="outline"
+              size="lg"
+              onClick={onShowAuth}
+              className="border-[#E94E87] text-[#E94E87] hover:bg-[#E94E87] hover:text-white"
+            >
+              <LogIn className="mr-2 h-5 w-5" />
+              Sign In / Register
+            </Button>
           )}
         </div>
       </div>

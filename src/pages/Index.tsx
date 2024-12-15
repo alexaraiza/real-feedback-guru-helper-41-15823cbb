@@ -6,12 +6,39 @@ import { CreateReviewPageSection } from "@/components/sections/CreateReviewPageS
 import { VdaSection } from "@/components/sections/VdaSection";
 import { CtaSection } from "@/components/sections/CtaSection";
 import { ExampleReviews } from "@/components/ExampleReviews";
+import { Auth } from "@supabase/auth-ui-react";
+import { ThemeSupa } from "@supabase/auth-ui-shared";
+import { supabase } from "@/integrations/supabase/client";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { useNavigate } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
 
 const Index = () => {
   const [showWidget, setShowWidget] = useState(false);
+  const [showAuthDialog, setShowAuthDialog] = useState(false);
   const experienceSectionRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
+  const { toast } = useToast();
 
   useEffect(() => {
+    // Check if user is already logged in
+    supabase.auth.onAuthStateChange((event, session) => {
+      if (session) {
+        setShowAuthDialog(false);
+        if (event === 'SIGNED_IN') {
+          toast({
+            title: "Welcome!",
+            description: "You've successfully signed in.",
+          });
+        }
+      }
+    });
+
     if (showWidget) {
       const script = document.createElement('script');
       script.src = "https://elevenlabs.io/convai-widget/index.js";
@@ -22,7 +49,7 @@ const Index = () => {
         document.body.removeChild(script);
       };
     }
-  }, [showWidget]);
+  }, [showWidget, toast]);
 
   const scrollToExperience = () => {
     experienceSectionRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -32,14 +59,24 @@ const Index = () => {
     setShowWidget(!showWidget);
   };
 
+  const handleAuthError = (error: any) => {
+    if (error?.message?.includes("User already registered")) {
+      toast({
+        title: "Account already exists",
+        description: "Please sign in with your existing account instead.",
+        variant: "destructive",
+      });
+    }
+  };
+
   return (
     <div className="min-h-screen">
-      <HeroSection onTryDemo={scrollToExperience} />
+      <HeroSection onTryDemo={scrollToExperience} onShowAuth={() => setShowAuthDialog(true)} />
       <FeaturesSection />
       <div ref={experienceSectionRef}>
         <DemoSection onSurveyCall={handleSurveyCallClick} />
       </div>
-      <CreateReviewPageSection />
+      <CreateReviewPageSection onShowAuth={() => setShowAuthDialog(true)} />
       <VdaSection />
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4">
@@ -59,6 +96,31 @@ const Index = () => {
           </div>
         </div>
       )}
+
+      <Dialog open={showAuthDialog} onOpenChange={setShowAuthDialog}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="text-center mb-4">Welcome to EatUP!</DialogTitle>
+          </DialogHeader>
+          <Auth
+            supabaseClient={supabase}
+            appearance={{
+              theme: ThemeSupa,
+              variables: {
+                default: {
+                  colors: {
+                    brand: '#E94E87',
+                    brandAccent: '#D13D73',
+                  },
+                },
+              },
+            }}
+            providers={[]}
+            theme="light"
+            onError={handleAuthError}
+          />
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
