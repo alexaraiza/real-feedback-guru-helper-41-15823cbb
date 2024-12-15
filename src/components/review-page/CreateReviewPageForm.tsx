@@ -25,7 +25,7 @@ const formSchema = z.object({
   }).default("#E94E87"),
   logo_url: z.string().optional(),
   background_image_url: z.string().optional(),
-}) satisfies z.ZodType<ReviewPageFormData>;
+}) as z.ZodType<ReviewPageFormData>;
 
 export function CreateReviewPageForm() {
   const { toast } = useToast();
