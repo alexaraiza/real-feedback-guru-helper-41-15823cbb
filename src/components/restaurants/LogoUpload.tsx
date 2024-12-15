@@ -7,7 +7,7 @@ import { UseFormSetValue } from "react-hook-form";
 import { RestaurantFormData } from "./types";
 
 interface LogoUploadProps {
-  setValue: UseFormSetValue<RestaurantFormData>;
+  setValue: UseFormSetValue<any>;
   logoUrl?: string;
 }
 

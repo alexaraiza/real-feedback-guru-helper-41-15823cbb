@@ -45,27 +45,31 @@ export function CreateReviewPageForm() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
+      // First create the restaurant
       const { data: restaurantData, error: restaurantError } = await supabase
         .from("restaurants")
-        .insert([
-          {
-            name: values.page_title,
-            status: "pending",
-          },
-        ])
+        .insert({
+          name: values.page_title,
+          status: "pending",
+          address: "TBD", // Adding required address field
+        })
         .select()
         .single();
 
       if (restaurantError) throw restaurantError;
 
+      // Then create the review page
       const { error: reviewPageError } = await supabase
         .from("review_pages")
-        .insert([
-          {
-            restaurant_id: restaurantData.id,
-            ...values,
-          },
-        ]);
+        .insert({
+          restaurant_id: restaurantData.id,
+          page_title: values.page_title, // Ensure required field is set
+          welcome_message: values.welcome_message,
+          thank_you_message: values.thank_you_message,
+          theme_color: values.theme_color,
+          logo_url: values.logo_url,
+          background_image_url: values.background_image_url,
+        });
 
       if (reviewPageError) throw reviewPageError;
 
@@ -178,8 +182,8 @@ export function CreateReviewPageForm() {
                 <FormLabel>Logo</FormLabel>
                 <FormControl>
                   <LogoUpload
-                    value={field.value}
-                    onChange={field.onChange}
+                    setValue={form.setValue}
+                    logoUrl={field.value}
                   />
                 </FormControl>
                 <FormMessage />
