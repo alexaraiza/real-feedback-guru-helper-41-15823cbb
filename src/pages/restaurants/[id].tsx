@@ -8,11 +8,16 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Link } from "react-router-dom";
 import { ExampleReviews } from "@/components/ExampleReviews";
 
+const DEMO_RESTAURANT_ID = '00000000-0000-0000-0000-000000000000';
+
 const RestaurantDetail = () => {
   const { id } = useParams();
+  
+  // Use the demo ID if 'demo' is passed in the URL
+  const restaurantId = id === 'demo' ? DEMO_RESTAURANT_ID : id;
 
   const { data: restaurant, isLoading } = useQuery({
-    queryKey: ["restaurant", id],
+    queryKey: ["restaurant", restaurantId],
     queryFn: async () => {
       const { data, error } = await supabase
         .from("restaurants")
@@ -26,7 +31,7 @@ const RestaurantDetail = () => {
             valid_until
           )
         `)
-        .eq("id", id)
+        .eq("id", restaurantId)
         .eq("status", "approved")
         .single();
 
