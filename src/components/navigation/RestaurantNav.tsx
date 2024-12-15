@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
 import { Home, Utensils, PlusCircle, LayoutDashboard } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useAuth } from "@supabase/auth-helpers-react";
+import { useSession } from "@supabase/auth-helpers-react";
 
 export const RestaurantNav = () => {
-  const auth = useAuth();
+  const session = useSession();
 
   return (
     <nav className="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-lg border-b z-50">
@@ -24,7 +24,7 @@ export const RestaurantNav = () => {
             </Link>
           </div>
           
-          {auth?.user ? (
+          {session ? (
             <div className="flex items-center space-x-4">
               <Link to="/restaurants/onboard">
                 <Button variant="ghost" className="hover:bg-primary/5">
