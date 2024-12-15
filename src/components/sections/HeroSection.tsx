@@ -1,12 +1,22 @@
 import { Button } from "@/components/ui/button";
-import { MessageSquare, Utensils } from "lucide-react";
+import { MessageSquare, Utensils, LogIn } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
 
 interface HeroSectionProps {
   onTryDemo: () => void;
 }
 
 export const HeroSection = ({ onTryDemo }: HeroSectionProps) => {
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    supabase.auth.onAuthStateChange((event, session) => {
+      setIsAuthenticated(!!session);
+    });
+  }, []);
+
   return (
     <section className="relative bg-gradient-to-b from-white via-[#FFE5ED] to-[#FFD5E2]/20 py-20">
       <div className="absolute inset-0 overflow-hidden">
@@ -40,16 +50,29 @@ export const HeroSection = ({ onTryDemo }: HeroSectionProps) => {
             <MessageSquare className="mr-2 h-5 w-5 group-hover:rotate-12 transition-transform" />
             Try Voice Review Demo
           </Button>
-          <Link to="/restaurants/register-interest">
-            <Button 
-              variant="outline"
-              size="lg"
-              className="border-[#E94E87] text-[#E94E87] hover:bg-[#E94E87] hover:text-white"
-            >
-              <Utensils className="mr-2 h-5 w-5" />
-              Register Restaurant Interest
-            </Button>
-          </Link>
+          {isAuthenticated ? (
+            <Link to="/restaurants/register-interest">
+              <Button 
+                variant="outline"
+                size="lg"
+                className="border-[#E94E87] text-[#E94E87] hover:bg-[#E94E87] hover:text-white"
+              >
+                <Utensils className="mr-2 h-5 w-5" />
+                Register Restaurant Interest
+              </Button>
+            </Link>
+          ) : (
+            <Link to="/login">
+              <Button 
+                variant="outline"
+                size="lg"
+                className="border-[#E94E87] text-[#E94E87] hover:bg-[#E94E87] hover:text-white"
+              >
+                <LogIn className="mr-2 h-5 w-5" />
+                Sign In / Register
+              </Button>
+            </Link>
+          )}
         </div>
       </div>
     </section>
