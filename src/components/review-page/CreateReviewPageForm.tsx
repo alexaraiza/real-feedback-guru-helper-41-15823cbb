@@ -11,6 +11,7 @@ import { generateSlug } from "@/utils/urlUtils";
 import { BasicInfoSection } from "./sections/BasicInfoSection";
 import { MessagesSection } from "./sections/MessagesSection";
 import { ThemeSection } from "./sections/ThemeSection";
+import { ReviewPageFormData } from "./types";
 
 const formSchema = z.object({
   page_title: z.string().min(2, {
@@ -23,14 +24,14 @@ const formSchema = z.object({
   }).default("#E94E87"),
   logo_url: z.string().optional(),
   background_image_url: z.string().optional(),
-});
+}) satisfies z.ZodType<ReviewPageFormData>;
 
 export function CreateReviewPageForm() {
   const { toast } = useToast();
   const navigate = useNavigate();
   const user = useUser();
 
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm<ReviewPageFormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       theme_color: "#E94E87",
