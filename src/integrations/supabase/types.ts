@@ -201,6 +201,56 @@ export type Database = {
           },
         ]
       }
+      restaurant_pages: {
+        Row: {
+          created_at: string
+          custom_css: Json | null
+          custom_url: string | null
+          description: string | null
+          id: string
+          is_published: boolean | null
+          meta_description: string | null
+          page_title: string
+          restaurant_id: string
+          theme_color: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          custom_css?: Json | null
+          custom_url?: string | null
+          description?: string | null
+          id?: string
+          is_published?: boolean | null
+          meta_description?: string | null
+          page_title: string
+          restaurant_id: string
+          theme_color?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          custom_css?: Json | null
+          custom_url?: string | null
+          description?: string | null
+          id?: string
+          is_published?: boolean | null
+          meta_description?: string | null
+          page_title?: string
+          restaurant_id?: string
+          theme_color?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "restaurant_pages_restaurant_id_fkey"
+            columns: ["restaurant_id"]
+            isOneToOne: false
+            referencedRelation: "restaurants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       restaurants: {
         Row: {
           address: string
@@ -442,7 +492,12 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      generate_unique_url: {
+        Args: {
+          title: string
+        }
+        Returns: string
+      }
     }
     Enums: {
       audit_status: "pending" | "in_progress" | "completed" | "cancelled"

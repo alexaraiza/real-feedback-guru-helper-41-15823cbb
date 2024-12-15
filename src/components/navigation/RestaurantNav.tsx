@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Home, Utensils, PlusCircle, LayoutDashboard } from "lucide-react";
+import { Home, Utensils, PlusCircle, LayoutDashboard, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useSession } from "@supabase/auth-helpers-react";
 
@@ -20,6 +20,12 @@ export const RestaurantNav = () => {
               <Button variant="ghost" className="hover:bg-primary/5">
                 <Utensils className="h-5 w-5 mr-2" />
                 Restaurants
+              </Button>
+            </Link>
+            <Link to="/restaurants/register-interest">
+              <Button variant="ghost" className="hover:bg-primary/5">
+                <ShieldCheck className="h-5 w-5 mr-2" />
+                VDA Registration
               </Button>
             </Link>
           </div>
