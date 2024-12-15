@@ -19,6 +19,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { LogoUpload } from "../restaurants/LogoUpload";
+import { generateSlug } from "@/utils/urlUtils";
 
 const formSchema = z.object({
   page_title: z.string().min(2, {
@@ -56,6 +57,24 @@ export function CreateReviewPageForm() {
     }
 
     try {
+      const slug = generateSlug(values.page_title);
+
+      // Check if slug already exists
+      const { data: existingRestaurant } = await supabase
+        .from("restaurants")
+        .select("id")
+        .eq("slug", slug)
+        .single();
+
+      if (existingRestaurant) {
+        toast({
+          title: "Error",
+          description: "A restaurant with this name already exists. Please choose a different name.",
+          variant: "destructive",
+        });
+        return;
+      }
+
       // First create the restaurant
       const { data: restaurantData, error: restaurantError } = await supabase
         .from("restaurants")
@@ -63,7 +82,8 @@ export function CreateReviewPageForm() {
           name: values.page_title,
           status: "pending",
           address: "TBD", // Required field
-          owner_id: user.id, // Set the owner_id to the current user's ID
+          owner_id: user.id,
+          slug: slug, // Add the slug here
         })
         .select()
         .single();
@@ -94,7 +114,7 @@ export function CreateReviewPageForm() {
         description: "Your review page has been created.",
       });
 
-      navigate(`/restaurants/${restaurantData.id}`);
+      navigate(`/${slug}`);
     } catch (error) {
       console.error("Error creating review page:", error);
       toast({
