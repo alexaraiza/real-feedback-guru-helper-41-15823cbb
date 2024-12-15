@@ -32,24 +32,24 @@ serve(async (req) => {
         messages: [
           {
             role: "system",
-            content: "You are a receipt analysis expert. Extract key information from the receipt image and return it in a specific JSON format with total_amount, items (array of objects with name and price), tax_amount (if present), and discounts (if any)."
+            content: "You are a receipt analysis expert. You will receive an image of a receipt. Extract and return ONLY a JSON object with these fields: total_amount (number), items (array of {name: string, price: number}), tax_amount (number, optional), discounts (number, optional). Do not include any other text in your response."
           },
           {
             role: "user",
             content: [
               {
-                type: "text",
-                text: "Please analyze this receipt and extract the following information in JSON format: total amount, list of items with their prices, tax amount if shown, and any discounts applied."
-              },
-              {
                 type: "image_url",
-                image_url: imageUrl
+                image_url: {
+                  url: imageUrl,
+                  detail: "high"
+                }
               }
             ]
           }
         ],
+        response_format: { type: "json_object" },
         max_tokens: 1000,
-        temperature: 0.1
+        temperature: 0
       }),
     });
 
@@ -62,20 +62,13 @@ serve(async (req) => {
     const data = await response.json();
     console.log('OpenAI response:', data);
 
-    // Ensure the response is properly formatted JSON
-    let analysis;
-    try {
-      analysis = typeof data.choices[0].message.content === 'string' 
-        ? JSON.parse(data.choices[0].message.content)
-        : data.choices[0].message.content;
-    } catch (e) {
-      console.error('Error parsing OpenAI response:', e);
-      throw new Error('Invalid response format from OpenAI');
-    }
+    // The response should already be a JSON object due to response_format
+    const analysis = data.choices[0].message.content;
 
-    // Validate the analysis object has the required fields
-    if (!analysis.total_amount || !analysis.items) {
-      throw new Error('Incomplete analysis result');
+    // Validate the required fields
+    if (typeof analysis.total_amount !== 'number' || !Array.isArray(analysis.items)) {
+      console.error('Invalid analysis format:', analysis);
+      throw new Error('Invalid response format from OpenAI');
     }
 
     return new Response(
