@@ -19,19 +19,19 @@ export const RestaurantNav = () => {
             <Link to="/restaurants">
               <Button variant="ghost" className="hover:bg-primary/5">
                 <Utensils className="h-5 w-5 mr-2" />
-                Restaurants
-              </Button>
-            </Link>
-            <Link to="/restaurants/register-interest">
-              <Button variant="ghost" className="hover:bg-primary/5">
-                <ShieldCheck className="h-5 w-5 mr-2" />
-                VDA Registration
+                Browse Restaurants
               </Button>
             </Link>
           </div>
           
           {session ? (
             <div className="flex items-center space-x-4">
+              <Link to="/restaurants/register-interest">
+                <Button variant="ghost" className="hover:bg-primary/5">
+                  <ShieldCheck className="h-5 w-5 mr-2" />
+                  VDA Program
+                </Button>
+              </Link>
               <Link to="/restaurants/onboard">
                 <Button variant="ghost" className="hover:bg-primary/5">
                   <PlusCircle className="h-5 w-5 mr-2" />
@@ -47,7 +47,7 @@ export const RestaurantNav = () => {
             </div>
           ) : (
             <Link to="/login">
-              <Button variant="default">Sign In</Button>
+              <Button variant="default">Restaurant Sign In</Button>
             </Link>
           )}
         </div>

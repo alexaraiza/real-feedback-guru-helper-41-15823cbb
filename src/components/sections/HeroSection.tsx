@@ -43,35 +43,48 @@ export const HeroSection = ({ onTryDemo, onShowAuth }: HeroSectionProps) => {
           Join the EatUP! community where authentic dining experiences create meaningful connections between restaurants and their customers.
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <Button
-            onClick={onTryDemo}
-            className="bg-gradient-to-r from-[#E94E87] to-[#F17BA3] hover:from-[#D13D73] hover:to-[#E94E87] text-white shadow-lg hover:shadow-xl transition-all duration-300 group"
-            size="lg"
-          >
-            <MessageSquare className="mr-2 h-5 w-5 group-hover:rotate-12 transition-transform" />
-            Try Voice Review Demo
-          </Button>
           {isAuthenticated ? (
-            <Link to="/restaurants/register-interest">
+            <>
+              <Link to="/restaurants/dashboard">
+                <Button 
+                  className="bg-gradient-to-r from-[#E94E87] to-[#F17BA3] hover:from-[#D13D73] hover:to-[#E94E87] text-white shadow-lg hover:shadow-xl transition-all duration-300 group w-full sm:w-auto"
+                  size="lg"
+                >
+                  <Utensils className="mr-2 h-5 w-5 group-hover:rotate-12 transition-transform" />
+                  Restaurant Dashboard
+                </Button>
+              </Link>
+              <Link to="/restaurants/register-interest">
+                <Button 
+                  variant="outline"
+                  size="lg"
+                  className="border-[#E94E87] text-[#E94E87] hover:bg-[#E94E87] hover:text-white w-full sm:w-auto"
+                >
+                  <MessageSquare className="mr-2 h-5 w-5" />
+                  Register VDA Interest
+                </Button>
+              </Link>
+            </>
+          ) : (
+            <>
+              <Button
+                onClick={onTryDemo}
+                className="bg-gradient-to-r from-[#E94E87] to-[#F17BA3] hover:from-[#D13D73] hover:to-[#E94E87] text-white shadow-lg hover:shadow-xl transition-all duration-300 group w-full sm:w-auto"
+                size="lg"
+              >
+                <MessageSquare className="mr-2 h-5 w-5 group-hover:rotate-12 transition-transform" />
+                Try Voice Review Demo
+              </Button>
               <Button 
                 variant="outline"
                 size="lg"
-                className="border-[#E94E87] text-[#E94E87] hover:bg-[#E94E87] hover:text-white"
+                onClick={onShowAuth}
+                className="border-[#E94E87] text-[#E94E87] hover:bg-[#E94E87] hover:text-white w-full sm:w-auto"
               >
-                <Utensils className="mr-2 h-5 w-5" />
-                Register Restaurant Interest
+                <LogIn className="mr-2 h-5 w-5" />
+                Restaurant Sign In / Register
               </Button>
-            </Link>
-          ) : (
-            <Button 
-              variant="outline"
-              size="lg"
-              onClick={onShowAuth}
-              className="border-[#E94E87] text-[#E94E87] hover:bg-[#E94E87] hover:text-white"
-            >
-              <LogIn className="mr-2 h-5 w-5" />
-              Sign In / Register
-            </Button>
+            </>
           )}
         </div>
       </div>
