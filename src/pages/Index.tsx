@@ -59,16 +59,6 @@ const Index = () => {
     setShowWidget(!showWidget);
   };
 
-  const handleAuthError = (error: any) => {
-    if (error?.message?.includes("User already registered")) {
-      toast({
-        title: "Account already exists",
-        description: "Please sign in with your existing account instead.",
-        variant: "destructive",
-      });
-    }
-  };
-
   return (
     <div className="min-h-screen">
       <HeroSection onTryDemo={scrollToExperience} onShowAuth={() => setShowAuthDialog(true)} />
@@ -117,7 +107,6 @@ const Index = () => {
             }}
             providers={[]}
             theme="light"
-            onAuthError={handleAuthError}
           />
         </DialogContent>
       </Dialog>
