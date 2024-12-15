@@ -6,6 +6,7 @@ import RestaurantDetails from "@/pages/restaurants/[id]";
 import RestaurantList from "@/pages/restaurants/index";
 import CreateReviewPage from "@/pages/restaurants/create-review-page";
 import RestaurantOnboard from "@/pages/restaurants/onboard";
+import RestaurantDashboard from "@/pages/restaurants/dashboard";
 import LoginPage from "@/pages/auth/LoginPage";
 
 // Protected route wrapper component
@@ -40,6 +41,14 @@ const router = createBrowserRouter([
   {
     path: "/restaurants",
     element: <RestaurantList />,
+  },
+  {
+    path: "/restaurants/dashboard",
+    element: (
+      <ProtectedRoute>
+        <RestaurantDashboard />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "/restaurants/create-review-page",
