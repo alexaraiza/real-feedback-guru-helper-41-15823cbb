@@ -1,22 +1,24 @@
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { Star, MapPin, DollarSign, Home } from "lucide-react";
+import { MapPin } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Link } from "react-router-dom";
 import { ExampleReviews } from "@/components/ExampleReviews";
+import { RestaurantHero } from "@/components/restaurant/RestaurantHero";
+import { RestaurantOffers } from "@/components/restaurant/RestaurantOffers";
 
 const RestaurantDetail = () => {
-  const { slug } = useParams<{ slug: string }>();
+  const params = useParams();
+  const slug = params.slug;
   
   const { data: restaurant, isLoading, error } = useQuery({
     queryKey: ["restaurant", slug],
     queryFn: async () => {
       if (!slug) throw new Error("No slug provided");
       
-      console.log("Fetching restaurant with slug:", slug); // Debug log
+      console.log("Fetching restaurant with slug:", slug);
 
       const { data, error } = await supabase
         .from("restaurants")
@@ -38,17 +40,16 @@ const RestaurantDetail = () => {
         throw error;
       }
       
-      console.log("Restaurant data:", data); // Debug log
+      console.log("Restaurant data:", data);
       
       if (!data) throw new Error("Restaurant not found");
       
       return data;
     },
     enabled: !!slug,
-    retry: 1, // Only retry once to avoid too many failed requests
+    retry: 1,
   });
 
-  // Handle error state
   if (error) {
     console.error("Query error:", error);
     return (
@@ -99,43 +100,7 @@ const RestaurantDetail = () => {
 
   return (
     <div className="container mx-auto px-4 py-8 animate-fade-in">
-      <Link to="/">
-        <Button variant="ghost" size="icon" className="absolute top-4 left-4">
-          <Home className="h-6 w-6" />
-        </Button>
-      </Link>
-
-      {/* Hero Section */}
-      <div className="relative h-[400px] rounded-2xl overflow-hidden mb-8">
-        <img
-          src={restaurant.cover_photo_url || "/placeholder.svg"}
-          alt={restaurant.name}
-          className="w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-        <div className="absolute bottom-0 left-0 right-0 p-8">
-          <div className="flex items-center gap-4">
-            <img
-              src={restaurant.logo_url || "/placeholder.svg"}
-              alt={`${restaurant.name} logo`}
-              className="w-20 h-20 rounded-xl border-4 border-white shadow-lg"
-            />
-            <div>
-              <h1 className="text-3xl font-bold text-white mb-2">{restaurant.name}</h1>
-              <div className="flex items-center gap-4 text-white/90">
-                <div className="flex items-center gap-1">
-                  <Star className="w-5 h-5 text-yellow-400 fill-yellow-400" />
-                  <span>{restaurant.average_rating?.toFixed(1) || "New"}</span>
-                </div>
-                <div className="flex items-center gap-1">
-                  <DollarSign className="w-5 h-5" />
-                  <span>{restaurant.price_range || "Not specified"}</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <RestaurantHero restaurant={restaurant} />
 
       {/* Main Content */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -181,32 +146,7 @@ const RestaurantDetail = () => {
 
         {/* Right Column - Special Offers */}
         <div className="space-y-8">
-          {restaurant.restaurant_offers && restaurant.restaurant_offers.length > 0 && (
-            <section>
-              <h2 className="text-2xl font-semibold mb-4">Special Offers</h2>
-              <div className="space-y-4">
-                {restaurant.restaurant_offers.map((offer) => (
-                  <Card key={offer.id}>
-                    <CardContent className="p-6">
-                      <h3 className="font-semibold text-lg mb-2">{offer.title}</h3>
-                      <p className="text-gray-600 text-sm mb-3">{offer.description}</p>
-                      <div className="flex items-center justify-between">
-                        <span className="text-primary font-semibold">
-                          {offer.discount_value}
-                        </span>
-                        {offer.valid_until && (
-                          <span className="text-sm text-gray-500">
-                            Valid until{" "}
-                            {new Date(offer.valid_until).toLocaleDateString()}
-                          </span>
-                        )}
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </section>
-          )}
+          <RestaurantOffers offers={restaurant.restaurant_offers || []} />
         </div>
       </div>
     </div>
