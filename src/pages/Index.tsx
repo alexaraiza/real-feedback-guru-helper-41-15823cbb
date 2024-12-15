@@ -117,7 +117,7 @@ const Index = () => {
             }}
             providers={[]}
             theme="light"
-            onError={handleAuthError}
+            onAuthError={handleAuthError}
           />
         </DialogContent>
       </Dialog>
