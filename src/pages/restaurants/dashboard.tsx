@@ -15,6 +15,7 @@ import {
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
+import { RestaurantNav } from "@/components/navigation/RestaurantNav";
 
 const RestaurantDashboard = () => {
   const [activeSection, setActiveSection] = useState("share");
@@ -109,91 +110,94 @@ const RestaurantDashboard = () => {
   ];
 
   return (
-    <SidebarProvider>
-      <div className="min-h-screen flex w-full">
-        <Sidebar>
-          <SidebarContent>
-            <SidebarGroup>
-              <SidebarGroupLabel>Dashboard</SidebarGroupLabel>
-              <SidebarGroupContent>
-                <SidebarMenu>
-                  {menuItems.map((item) => (
-                    <SidebarMenuItem key={item.id}>
-                      <SidebarMenuButton
-                        onClick={() => setActiveSection(item.id)}
-                        className={`w-full ${
-                          activeSection === item.id ? "bg-primary/10" : ""
-                        }`}
-                      >
-                        <item.icon className="h-5 w-5 mr-2" />
-                        <span>{item.title}</span>
-                      </SidebarMenuButton>
-                    </SidebarMenuItem>
-                  ))}
-                </SidebarMenu>
-              </SidebarGroupContent>
-            </SidebarGroup>
-          </SidebarContent>
-        </Sidebar>
+    <>
+      <RestaurantNav />
+      <div className="min-h-screen flex w-full mt-16">
+        <SidebarProvider>
+          <Sidebar>
+            <SidebarContent>
+              <SidebarGroup>
+                <SidebarGroupLabel>Dashboard</SidebarGroupLabel>
+                <SidebarGroupContent>
+                  <SidebarMenu>
+                    {menuItems.map((item) => (
+                      <SidebarMenuItem key={item.id}>
+                        <SidebarMenuButton
+                          onClick={() => setActiveSection(item.id)}
+                          className={`w-full ${
+                            activeSection === item.id ? "bg-primary/10" : ""
+                          }`}
+                        >
+                          <item.icon className="h-5 w-5 mr-2" />
+                          <span>{item.title}</span>
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
+                    ))}
+                  </SidebarMenu>
+                </SidebarGroupContent>
+              </SidebarGroup>
+            </SidebarContent>
+          </Sidebar>
 
-        <main className="flex-1 p-8">
-          <div className="max-w-5xl mx-auto">
-            {activeSection === "share" && (
-              <div>
-                <h2 className="text-2xl font-bold mb-6">Share Your EatUP Page</h2>
-                <div className="glass-card p-6 rounded-xl">
-                  <p className="text-lg mb-4">
-                    Your unique EatUP page URL:
-                  </p>
-                  <div className="flex items-center gap-4">
-                    <input
-                      type="text"
-                      value={`https://eatup.com/r/${restaurantData?.id}`}
-                      readOnly
-                      className="flex-1 p-2 border rounded"
-                    />
-                    <button
-                      onClick={() => {
-                        navigator.clipboard.writeText(`https://eatup.com/r/${restaurantData?.id}`);
-                        toast({
-                          title: "Copied!",
-                          description: "Link copied to clipboard",
-                        });
-                      }}
-                      className="px-4 py-2 bg-primary text-white rounded hover:bg-primary/90"
-                    >
-                      Copy Link
-                    </button>
+          <main className="flex-1 p-8">
+            <div className="max-w-5xl mx-auto">
+              {activeSection === "share" && (
+                <div>
+                  <h2 className="text-2xl font-bold mb-6">Share Your EatUP Page</h2>
+                  <div className="glass-card p-6 rounded-xl">
+                    <p className="text-lg mb-4">
+                      Your unique EatUP page URL:
+                    </p>
+                    <div className="flex items-center gap-4">
+                      <input
+                        type="text"
+                        value={`https://eatup.com/r/${restaurantData?.id}`}
+                        readOnly
+                        className="flex-1 p-2 border rounded"
+                      />
+                      <button
+                        onClick={() => {
+                          navigator.clipboard.writeText(`https://eatup.com/r/${restaurantData?.id}`);
+                          toast({
+                            title: "Copied!",
+                            description: "Link copied to clipboard",
+                          });
+                        }}
+                        className="px-4 py-2 bg-primary text-white rounded hover:bg-primary/90"
+                      >
+                        Copy Link
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            )}
+              )}
 
-            {activeSection === "analytics" && (
-              <div>
-                <h2 className="text-2xl font-bold mb-6">Analytics</h2>
-                <div className="glass-card p-6 rounded-xl">
-                  <p className="text-lg text-muted-foreground">
-                    Analytics dashboard coming soon...
-                  </p>
+              {activeSection === "analytics" && (
+                <div>
+                  <h2 className="text-2xl font-bold mb-6">Analytics</h2>
+                  <div className="glass-card p-6 rounded-xl">
+                    <p className="text-lg text-muted-foreground">
+                      Analytics dashboard coming soon...
+                    </p>
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
 
-            {activeSection === "settings" && (
-              <div>
-                <h2 className="text-2xl font-bold mb-6">Settings</h2>
-                <div className="glass-card p-6 rounded-xl">
-                  <p className="text-lg text-muted-foreground">
-                    Settings panel coming soon...
-                  </p>
+              {activeSection === "settings" && (
+                <div>
+                  <h2 className="text-2xl font-bold mb-6">Settings</h2>
+                  <div className="glass-card p-6 rounded-xl">
+                    <p className="text-lg text-muted-foreground">
+                      Settings panel coming soon...
+                    </p>
+                  </div>
                 </div>
-              </div>
-            )}
-          </div>
-        </main>
+              )}
+            </div>
+          </main>
+        </SidebarProvider>
       </div>
-    </SidebarProvider>
+    </>
   );
 };
 
