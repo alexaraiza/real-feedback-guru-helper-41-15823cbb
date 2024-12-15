@@ -2,24 +2,15 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { useNavigate } from "react-router-dom";
-import { Palette, Type, MessageSquare } from "lucide-react";
 import { useUser } from "@supabase/auth-helpers-react";
-
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+import { Form } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { LogoUpload } from "../restaurants/LogoUpload";
 import { generateSlug } from "@/utils/urlUtils";
+import { BasicInfoSection } from "./sections/BasicInfoSection";
+import { MessagesSection } from "./sections/MessagesSection";
+import { ThemeSection } from "./sections/ThemeSection";
 
 const formSchema = z.object({
   page_title: z.string().min(2, {
@@ -75,15 +66,15 @@ export function CreateReviewPageForm() {
         return;
       }
 
-      // First create the restaurant
+      // Create the restaurant
       const { data: restaurantData, error: restaurantError } = await supabase
         .from("restaurants")
         .insert({
           name: values.page_title,
           status: "pending",
-          address: "TBD", // Required field
+          address: "TBD",
           owner_id: user.id,
-          slug: slug, // Add the slug here
+          slug: slug,
         })
         .select()
         .single();
@@ -94,7 +85,7 @@ export function CreateReviewPageForm() {
         throw new Error("No restaurant ID returned");
       }
 
-      // Then create the review page
+      // Create the review page
       const { error: reviewPageError } = await supabase
         .from("review_pages")
         .insert({
@@ -144,96 +135,9 @@ export function CreateReviewPageForm() {
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          <FormField
-            control={form.control}
-            name="page_title"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Page Title</FormLabel>
-                <FormControl>
-                  <div className="flex gap-2">
-                    <Type className="w-4 h-4 mt-3" />
-                    <Input placeholder="Enter your business name" {...field} />
-                  </div>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="welcome_message"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Welcome Message</FormLabel>
-                <FormControl>
-                  <div className="flex gap-2">
-                    <MessageSquare className="w-4 h-4 mt-3" />
-                    <Textarea
-                      placeholder="Welcome message for your customers"
-                      {...field}
-                    />
-                  </div>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="thank_you_message"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Thank You Message</FormLabel>
-                <FormControl>
-                  <div className="flex gap-2">
-                    <MessageSquare className="w-4 h-4 mt-3" />
-                    <Textarea
-                      placeholder="Thank you message after review submission"
-                      {...field}
-                    />
-                  </div>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="theme_color"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Theme Color</FormLabel>
-                <FormControl>
-                  <div className="flex gap-2">
-                    <Palette className="w-4 h-4 mt-3" />
-                    <Input type="color" {...field} />
-                  </div>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="logo_url"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Logo</FormLabel>
-                <FormControl>
-                  <LogoUpload
-                    setValue={form.setValue}
-                    logoUrl={field.value}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <BasicInfoSection form={form} />
+          <MessagesSection form={form} />
+          <ThemeSection form={form} />
 
           <Button type="submit" className="w-full">
             Create Review Page
