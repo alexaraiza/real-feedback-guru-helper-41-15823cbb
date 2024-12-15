@@ -10,13 +10,15 @@ import { RestaurantHero } from "@/components/restaurant/RestaurantHero";
 import { RestaurantOffers } from "@/components/restaurant/RestaurantOffers";
 
 const RestaurantDetail = () => {
-  const params = useParams();
-  const slug = params.slug;
+  const { slug } = useParams();
   
   const { data: restaurant, isLoading, error } = useQuery({
     queryKey: ["restaurant", slug],
     queryFn: async () => {
-      if (!slug) throw new Error("No slug provided");
+      if (!slug) {
+        console.error("No slug provided");
+        throw new Error("No slug provided");
+      }
       
       console.log("Fetching restaurant with slug:", slug);
 
@@ -42,7 +44,9 @@ const RestaurantDetail = () => {
       
       console.log("Restaurant data:", data);
       
-      if (!data) throw new Error("Restaurant not found");
+      if (!data) {
+        throw new Error("Restaurant not found");
+      }
       
       return data;
     },
