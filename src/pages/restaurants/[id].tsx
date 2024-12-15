@@ -11,10 +11,12 @@ import { ExampleReviews } from "@/components/ExampleReviews";
 const RestaurantDetail = () => {
   const { slug } = useParams<{ slug: string }>();
   
-  const { data: restaurant, isLoading } = useQuery({
+  const { data: restaurant, isLoading, error } = useQuery({
     queryKey: ["restaurant", slug],
     queryFn: async () => {
       if (!slug) throw new Error("No slug provided");
+      
+      console.log("Fetching restaurant with slug:", slug); // Debug log
 
       const { data, error } = await supabase
         .from("restaurants")
@@ -29,7 +31,6 @@ const RestaurantDetail = () => {
           )
         `)
         .eq("slug", slug)
-        .eq("status", "approved")
         .single();
 
       if (error) {
@@ -37,12 +38,33 @@ const RestaurantDetail = () => {
         throw error;
       }
       
+      console.log("Restaurant data:", data); // Debug log
+      
       if (!data) throw new Error("Restaurant not found");
       
       return data;
     },
     enabled: !!slug,
+    retry: 1, // Only retry once to avoid too many failed requests
   });
+
+  // Handle error state
+  if (error) {
+    console.error("Query error:", error);
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-gray-900">Error Loading Restaurant</h1>
+          <p className="mt-2 text-gray-600">
+            We couldn't find the restaurant you're looking for.
+          </p>
+          <Link to="/" className="mt-4 inline-block">
+            <Button variant="default">Return Home</Button>
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   if (isLoading) {
     return (
