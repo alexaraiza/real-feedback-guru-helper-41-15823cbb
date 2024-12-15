@@ -55,6 +55,22 @@ export function SimpleRestaurantForm() {
 
       const slug = generateSlug(data.name);
 
+      // Check if slug already exists
+      const { data: existingRestaurant } = await supabase
+        .from("restaurants")
+        .select("id")
+        .eq("slug", slug)
+        .single();
+
+      if (existingRestaurant) {
+        toast({
+          title: "Error",
+          description: "A restaurant with this name already exists. Please choose a different name.",
+          variant: "destructive",
+        });
+        return;
+      }
+
       // Insert restaurant
       const { data: restaurant, error: restaurantError } = await supabase
         .from("restaurants")
@@ -65,6 +81,7 @@ export function SimpleRestaurantForm() {
           logo_url: data.logo_url,
           owner_id: user.id,
           status: "pending",
+          slug: slug,
         })
         .select()
         .single();
@@ -87,7 +104,7 @@ export function SimpleRestaurantForm() {
         description: "Restaurant submitted successfully! We'll review your submission shortly.",
       });
 
-      navigate(`/restaurants/${slug}`);
+      navigate(`/${slug}`);
     } catch (error) {
       console.error("Error creating restaurant:", error);
       toast({

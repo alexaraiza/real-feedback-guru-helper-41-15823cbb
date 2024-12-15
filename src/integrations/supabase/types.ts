@@ -215,6 +215,7 @@ export type Database = {
           name: string
           owner_id: string | null
           price_range: string | null
+          slug: string
           status: string | null
         }
         Insert: {
@@ -230,6 +231,7 @@ export type Database = {
           name: string
           owner_id?: string | null
           price_range?: string | null
+          slug: string
           status?: string | null
         }
         Update: {
@@ -245,6 +247,7 @@ export type Database = {
           name?: string
           owner_id?: string | null
           price_range?: string | null
+          slug?: string
           status?: string | null
         }
         Relationships: []
