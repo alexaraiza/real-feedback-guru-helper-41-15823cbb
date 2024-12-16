@@ -5,9 +5,35 @@ import { supabase } from "@/integrations/supabase/client";
 import { ReviewCard } from "@/components/ReviewCard";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button"; // Added missing import
+import { Button } from "@/components/ui/button";
 import { ReceiptUploadSection } from "@/components/demo/ReceiptUploadSection";
 import { ReceiptAnalysisDisplay } from "@/components/demo/ReceiptAnalysisDisplay";
+
+const generateNaturalReview = (items: Array<{ name: string; price: number }>, totalAmount: number) => {
+  // Convert items array to a natural language list
+  const itemNames = items.map(item => item.name);
+  const naturalItemsList = new Intl.ListFormat('en', { style: 'long', type: 'conjunction' }).format(itemNames);
+  
+  // Generate opening sentences with some variety
+  const openings = [
+    "Had an amazing dining experience here!",
+    "What a delightful meal we had today!",
+    "Really enjoyed our visit to this restaurant!",
+    "Just had a wonderful dining experience!",
+  ];
+  
+  const opening = openings[Math.floor(Math.random() * openings.length)];
+  
+  // Generate the main review
+  const review = `${opening} We tried ${naturalItemsList} and everything was perfectly prepared. The flavors were exceptional and the presentation was beautiful. The service was attentive and friendly throughout our meal. At $${totalAmount}, the value was great for the quality of food and service received.
+
+Our table had:
+${items.map(item => `• ${item.name}`).join('\n')}
+
+Would definitely recommend this place to anyone looking for a great dining experience!`;
+
+  return review;
+};
 
 const DemoPage = () => {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
@@ -27,7 +53,7 @@ const DemoPage = () => {
       const fileName = `${crypto.randomUUID()}.${fileExt}`;
       const filePath = `${fileName}`;
 
-      const { error: uploadError, data } = await supabase.storage
+      const { error: uploadError } = await supabase.storage
         .from('review_photos')
         .upload(filePath, file);
 
@@ -61,16 +87,8 @@ const DemoPage = () => {
 
       setAnalysisResult(data.analysis);
       
-      // Generate review automatically from receipt data
-      const items = data.analysis.items.map((item: any) => item.name).join(", ");
-      const totalAmount = data.analysis.total_amount;
-      
-      // Generate a more natural-sounding review
-      const review = `I had an amazing dining experience! The ${items} were absolutely delicious. ` +
-        `The presentation was beautiful and everything was perfectly prepared. ` +
-        `At $${totalAmount}, the value was great for the quality of food and service received. ` +
-        `I would definitely recommend trying this restaurant!`;
-      
+      // Generate a natural-sounding review using the new format
+      const review = generateNaturalReview(data.analysis.items, data.analysis.total_amount);
       setReviewText(review);
 
       toast({
@@ -118,7 +136,7 @@ const DemoPage = () => {
                   <Textarea
                     value={reviewText}
                     readOnly
-                    className="min-h-[150px] bg-white/50"
+                    className="min-h-[250px] bg-white/50 font-medium"
                   />
                 </div>
 
