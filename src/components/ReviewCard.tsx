@@ -3,11 +3,12 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { nanoid } from 'nanoid';
 import { ReviewInput } from "./review/ReviewInput";
-import { ReviewActions } from "./review/ReviewActions";
 import { ReviewCode } from "./review/ReviewCode";
 import { UnlockedOffers } from "./review/UnlockedOffers";
 import { Button } from "./ui/button";
-import { Phone, Bot, Camera, RefreshCw } from "lucide-react";
+import { Phone, Bot, RefreshCw } from "lucide-react";
+import { ReceiptUploader } from "./review/ReceiptUploader";
+import { ReceiptAnalysis } from "./review/ReceiptAnalysis";
 
 interface ReviewCardProps {
   businessName: string;
@@ -29,48 +30,6 @@ export const ReviewCard = ({ businessName, businessImage, onTakeAiSurvey }: Revi
   const checkForComplaints = (text: string) => {
     const negativeKeywords = ['disappointed', 'bad', 'terrible', 'poor', 'worst', 'awful', 'horrible', 'complaint', 'unhappy', 'slow', 'rude'];
     return negativeKeywords.some(keyword => text.toLowerCase().includes(keyword));
-  };
-
-  const handleReceiptUpload = async (file: File) => {
-    if (!file) return;
-
-    try {
-      const fileExt = file.name.split('.').pop();
-      const fileName = `${Math.random()}.${fileExt}`;
-      const filePath = `${fileName}`;
-
-      const { data: uploadData, error: uploadError } = await supabase.storage
-        .from('review_photos')
-        .upload(filePath, file);
-
-      if (uploadError) throw uploadError;
-
-      const { data: { publicUrl } } = supabase.storage
-        .from('review_photos')
-        .getPublicUrl(filePath);
-
-      setPhotoUrl(publicUrl);
-
-      // Analyze receipt
-      const { data: analysisData, error: analysisError } = await supabase.functions.invoke('analyze-receipt', {
-        body: { imageUrl: publicUrl },
-      });
-
-      if (analysisError) throw analysisError;
-
-      setReceiptData(analysisData);
-      toast({
-        title: "Receipt uploaded!",
-        description: "Your receipt has been uploaded and analyzed successfully.",
-      });
-    } catch (error) {
-      console.error('Error uploading receipt:', error);
-      toast({
-        title: "Upload failed",
-        description: "Failed to upload and analyze receipt. Please try again.",
-        variant: "destructive",
-      });
-    }
   };
 
   const handleCreateReview = async () => {
@@ -201,50 +160,19 @@ export const ReviewCard = ({ businessName, businessImage, onTakeAiSurvey }: Revi
       </div>
 
       <div className="space-y-4">
-        <div className="flex justify-center">
-          <input
-            type="file"
-            accept="image/*"
-            onChange={(e) => {
-              const file = e.target.files?.[0];
-              if (file) handleReceiptUpload(file);
-            }}
-            className="hidden"
-            id="receipt-upload"
-          />
-          <label htmlFor="receipt-upload" className="cursor-pointer">
-            <Button
-              type="button"
-              variant="outline"
-              size="lg"
-              className="bg-primary hover:bg-primary/90 text-white border-primary shadow-lg hover:shadow-xl transition-all duration-300"
-            >
-              <Camera className="w-5 h-5 mr-2" />
-              Add Receipt Photo
-            </Button>
-          </label>
-        </div>
-
-        {receiptData && (
-          <div className="bg-secondary/5 p-4 rounded-lg space-y-2">
-            <h3 className="font-semibold">Receipt Analysis</h3>
-            <p><strong>Total:</strong> ${receiptData.total_amount}</p>
-            <div>
-              <strong>Items:</strong>
-              <ul className="list-disc list-inside">
-                {receiptData.items?.map((item: any, index: number) => (
-                  <li key={index}>{item.name} - ${item.price}</li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        )}
-
         <ReviewInput
           review={review}
           onChange={setReview}
           businessName={businessName}
         />
+
+        <ReceiptUploader
+          onReceiptAnalyzed={(data) => setReceiptData(data)}
+          onPhotoUploaded={(url) => setPhotoUrl(url)}
+          isAnalyzing={isRefining}
+        />
+
+        {receiptData && <ReceiptAnalysis receiptData={receiptData} />}
 
         <div className="flex flex-col sm:flex-row gap-4">
           <Button
@@ -268,6 +196,15 @@ export const ReviewCard = ({ businessName, businessImage, onTakeAiSurvey }: Revi
               className="button-hover flex-1 bg-primary hover:bg-primary/90 text-white shadow-lg"
             >
               Submit Review
+            </Button>
+          )}
+
+          {uniqueCode && (
+            <Button
+              onClick={handleCopyAndRedirect}
+              className="button-hover flex-1 bg-primary hover:bg-primary/90 text-white shadow-lg"
+            >
+              Copy & Share on Google
             </Button>
           )}
         </div>
