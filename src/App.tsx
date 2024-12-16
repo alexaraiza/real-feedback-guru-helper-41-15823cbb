@@ -8,6 +8,7 @@ import CreateReviewPage from "@/pages/restaurants/create-review-page";
 import RestaurantOnboard from "@/pages/restaurants/onboard";
 import RestaurantDashboard from "@/pages/restaurants/dashboard";
 import LoginPage from "@/pages/auth/LoginPage";
+import TermsPage from "@/pages/terms";
 
 // Protected route wrapper component
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
@@ -33,6 +34,10 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <DemoPage />,
+  },
+  {
+    path: "/terms",
+    element: <TermsPage />,
   },
   {
     path: "/login",
