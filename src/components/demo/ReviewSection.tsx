@@ -37,12 +37,22 @@ export const ReviewSection = () => {
         .from('review_photos')
         .getPublicUrl(filePath);
 
-      analyzeReceipt(publicUrl);
+      const { data, error } = await supabase.functions.invoke('analyze-receipt', {
+        body: { imageUrl: publicUrl },
+      });
+
+      if (error) throw error;
+
+      setAnalysisResult(data.analysis);
+      toast({
+        title: "✅ Step 1 Complete!",
+        description: "Receipt uploaded and analyzed successfully. Please proceed to Step 2.",
+      });
     } catch (error) {
       console.error('Error uploading receipt:', error);
       toast({
         title: "Error",
-        description: "Failed to upload receipt",
+        description: "Failed to analyze receipt. Please try again.",
         variant: "destructive",
       });
     } finally {
@@ -50,30 +60,16 @@ export const ReviewSection = () => {
     }
   };
 
-  const analyzeReceipt = async (imageUrl: string) => {
-    try {
-      const { data, error } = await supabase.functions.invoke('analyze-receipt', {
-        body: { imageUrl },
-      });
-
-      if (error) throw error;
-
-      setAnalysisResult(data.analysis);
+  const handleRefineReview = async () => {
+    if (!reviewText.trim()) {
       toast({
-        title: "Success",
-        description: "Receipt analyzed successfully! Please proceed to Step 2.",
-      });
-    } catch (error) {
-      console.error('Error analyzing receipt:', error);
-      toast({
-        title: "Error",
-        description: "Failed to analyze receipt",
+        title: "Review required",
+        description: "Please write your thoughts before refining.",
         variant: "destructive",
       });
+      return;
     }
-  };
 
-  const handleRefineReview = async () => {
     try {
       setIsRefining(true);
       const { data, error } = await supabase.functions.invoke('refine-review', {
@@ -87,14 +83,14 @@ export const ReviewSection = () => {
       
       setReviewText(data.refinedReview);
       toast({
-        title: "Review refined!",
-        description: "Your review has been professionally enhanced.",
+        title: "✅ Step 3 Complete!",
+        description: "Your review has been professionally enhanced. Ready to share!",
       });
     } catch (error) {
       console.error('Error refining review:', error);
       toast({
         title: "Error",
-        description: "Failed to refine review",
+        description: "Failed to refine review. Please try again.",
         variant: "destructive",
       });
     } finally {
@@ -132,23 +128,31 @@ export const ReviewSection = () => {
 
         {/* Step 2: Share thoughts (only shown after receipt upload) */}
         {analysisResult && (
-          <div className="space-y-4">
+          <div className="space-y-4 fade-in">
             <div className="flex items-center gap-2 text-lg font-semibold text-primary">
               <MessageSquare className="h-5 w-5" />
               <h3>Step 2: Share some positive thoughts</h3>
             </div>
             <Textarea
               value={reviewText}
-              onChange={(e) => setReviewText(e.target.value)}
+              onChange={(e) => {
+                setReviewText(e.target.value);
+                if (e.target.value.trim().length > 0) {
+                  toast({
+                    title: "✅ Step 2 Complete!",
+                    description: "Great! Click 'AI Refine Review' to enhance your review.",
+                  });
+                }
+              }}
               placeholder="What did you love about your visit? Tell us about the amazing food, exceptional service, or memorable moments!"
               className="min-h-[150px] bg-white/50 font-medium resize-none"
             />
           </div>
         )}
 
-        {/* Step 3: Refine and share (only shown after entering review) */}
-        {reviewText && (
-          <div className="space-y-4">
+        {/* Step 3: Refine and share (only shown after entering review text) */}
+        {analysisResult && reviewText.trim() && (
+          <div className="space-y-4 fade-in">
             <div className="flex items-center gap-2 text-lg font-semibold text-primary">
               <Bot className="h-5 w-5" />
               <h3>Step 3: Refine your review and share it</h3>
