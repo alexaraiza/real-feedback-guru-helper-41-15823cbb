@@ -9,14 +9,9 @@ interface RewardsSectionProps {
 export const RewardsSection = ({ rewardCode }: RewardsSectionProps) => {
   return (
     <div className="space-y-8">
-      <div className="text-center space-y-4">
-        <h2 className="text-3xl font-bold text-gray-800">
-          Want a reward for your next visit?
-        </h2>
-        <h3 className="text-4xl font-bold text-gray-900">
-          Unlock Rewards for Your Next Visits
-        </h3>
-      </div>
+      <h2 className="text-4xl font-bold text-gray-900 text-center">
+        Unlock Rewards for Your Next Visit
+      </h2>
       
       <GeneratedReward rewardCode={rewardCode} />
 
