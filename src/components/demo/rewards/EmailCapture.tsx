@@ -19,7 +19,7 @@ export const EmailCapture = ({ rewardCode }: EmailCaptureProps) => {
     // Here you would typically send the email with the reward code
     toast({
       title: "Success!",
-      description: "Your rewards have been sent to your email. Check your inbox!",
+      description: "Your reward code and future rewards have been sent to your email. Check your inbox!",
     });
   };
 
@@ -27,12 +27,12 @@ export const EmailCapture = ({ rewardCode }: EmailCaptureProps) => {
     <div className="space-y-6">
       <div className="flex items-center justify-center gap-3 mb-6">
         <Gift className="h-7 w-7 text-primary" />
-        <h3 className="font-bold text-2xl text-secondary">Claim Your Rewards</h3>
+        <h3 className="font-bold text-2xl text-secondary">Get Your Reward Code</h3>
       </div>
 
       <form onSubmit={handleEmailSubmit} className="mb-8">
         <p className="text-center text-muted-foreground mb-4">
-          Enter your email to receive your 20% off reward code for your next visit and unlock these additional rewards:
+          Enter your email to receive your unique reward code for 20% off and unlock these additional rewards:
         </p>
         <div className="flex gap-3">
           <Input
