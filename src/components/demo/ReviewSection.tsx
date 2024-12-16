@@ -131,6 +131,12 @@ export const ReviewSection = () => {
   return (
     <Card>
       <CardContent className="space-y-8 pt-6">
+        <div className="text-center">
+          <p className="text-lg font-medium text-primary">
+            Share your review on Google to unlock the reward of the day! 🎁
+          </p>
+        </div>
+
         <ThoughtsStep 
           reviewText={reviewText}
           onChange={setReviewText}
