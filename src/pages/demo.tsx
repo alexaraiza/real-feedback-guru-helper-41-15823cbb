@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { ReviewCard } from "@/components/ReviewCard";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button"; // Added missing import
 import { ReceiptUploadSection } from "@/components/demo/ReceiptUploadSection";
 import { ReceiptAnalysisDisplay } from "@/components/demo/ReceiptAnalysisDisplay";
 
