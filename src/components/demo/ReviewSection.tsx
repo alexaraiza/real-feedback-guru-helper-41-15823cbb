@@ -134,13 +134,14 @@ export const ReviewSection = () => {
         <div className="text-center">
           <div className="space-y-2">
             <p className="text-lg font-medium text-primary">
-              Join EatUP! Receipt Rewards 🎟️
+              Get Your Reward Today! 🎁
             </p>
             <div className="text-gray-600">
-              <p><span className="font-medium">1️⃣ First Visit – Instant Reward</span></p>
-              <p>Share your experience by posting a review on Google.</p>
-              <p>Show your review to your server to get today's reward on the spot! 🎉</p>
-              <p className="text-primary">Bonus: Upload your receipt here to unlock a reward for your next visit.</p>
+              <p>Share your experience and get rewarded in 3 simple steps:</p>
+              <p>1. Write your review below</p>
+              <p>2. Post it on Google</p>
+              <p>3. Show it to your server</p>
+              <p className="text-primary mt-2">Optional: Upload your receipt to unlock an extra reward!</p>
             </div>
           </div>
         </div>
