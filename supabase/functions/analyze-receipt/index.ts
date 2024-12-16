@@ -75,7 +75,14 @@ serve(async (req) => {
     try {
       // Parse the content as JSON, handling both string and parsed JSON responses
       const content = data.choices[0].message.content;
-      analysis = typeof content === 'string' ? JSON.parse(content) : content;
+      console.log('Raw content from OpenAI:', content);
+      
+      try {
+        analysis = typeof content === 'string' ? JSON.parse(content) : content;
+      } catch (parseError) {
+        console.error('Error parsing content as JSON:', parseError);
+        throw new Error('Failed to parse OpenAI response as JSON');
+      }
 
       // Validate the required fields
       if (typeof analysis.total_amount !== 'number' || !Array.isArray(analysis.items)) {
