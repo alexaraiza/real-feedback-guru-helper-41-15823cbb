@@ -16,7 +16,7 @@ export const RewardsList = () => {
             <h4 className="font-semibold text-xl text-gray-800 mb-2">Exclusive Reward Awaits</h4>
             <p className="text-gray-600">
               <span className="bg-gray-50 p-2 rounded-lg text-gray-500 text-sm mt-3 block">
-                💡 After your first visit, reply to your welcome email with your receipt to unlock this reward for your second visit
+                💡 After your first visit, reply to your welcome email with your receipt to unlock the restaurant's reward of the day for your second visit. Show your EatUP! reward email to your server to redeem.
               </span>
             </p>
           </div>
@@ -30,7 +30,7 @@ export const RewardsList = () => {
             <h4 className="font-semibold text-xl text-gray-800 mb-2">Special Dining Reward</h4>
             <p className="text-gray-600">
               <span className="bg-gray-50 p-2 rounded-lg text-gray-500 text-sm mt-3 block">
-                💡 After your second visit, reply to your EatUP! email with your receipt to unlock this reward for your third visit
+                💡 After your second visit, reply to your EatUP! email with your receipt to unlock the restaurant's reward of the day for your third visit. Show your EatUP! reward email to your server to redeem.
               </span>
             </p>
           </div>
@@ -44,7 +44,7 @@ export const RewardsList = () => {
             <h4 className="font-semibold text-xl text-gray-800 mb-2">Ultimate Dining Experience</h4>
             <p className="text-gray-600">
               <span className="bg-gray-50 p-2 rounded-lg text-gray-500 text-sm mt-3 block">
-                💡 After your third visit, reply to your EatUP! email with your receipt to unlock this final reward
+                💡 After your third visit, reply to your EatUP! email with your receipt to unlock the restaurant's reward of the day for your fourth visit. Show your EatUP! reward email to your server to redeem.
               </span>
             </p>
           </div>
