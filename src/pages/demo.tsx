@@ -8,6 +8,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { ReceiptUploadSection } from "@/components/demo/ReceiptUploadSection";
 import { ReceiptAnalysisDisplay } from "@/components/demo/ReceiptAnalysisDisplay";
+import { ReviewCode } from "@/components/review/ReviewCode";
+import { UnlockedOffers } from "@/components/review/UnlockedOffers";
+import { Copy, ExternalLink } from "lucide-react";
 
 const DemoPage = () => {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
@@ -15,6 +18,8 @@ const DemoPage = () => {
   const [analysisResult, setAnalysisResult] = useState<any>(null);
   const [reviewText, setReviewText] = useState("");
   const [isRefining, setIsRefining] = useState(false);
+  const [isRefined, setIsRefined] = useState(false);
+  const [uniqueCode, setUniqueCode] = useState<string | null>(null);
   const { toast } = useToast();
   const navigate = useNavigate();
 
@@ -75,6 +80,15 @@ const DemoPage = () => {
     }
   };
 
+  const handleCopyAndRedirect = () => {
+    navigator.clipboard.writeText(reviewText);
+    window.open('https://maps.app.goo.gl/Nx23mQHet4TBfctJ6', '_blank');
+    toast({
+      title: "Review copied!",
+      description: "Opening Google Reviews in a new tab. Please paste your review there.",
+    });
+  };
+
   const handleRefineReview = async () => {
     if (!reviewText.trim()) {
       toast({
@@ -97,6 +111,8 @@ const DemoPage = () => {
       if (error) throw error;
       
       setReviewText(data.refinedReview);
+      setIsRefined(true);
+      setUniqueCode('plzrdDDQ'); // For demo purposes
       toast({
         title: "Review refined!",
         description: "Your review has been professionally enhanced.",
@@ -131,6 +147,12 @@ const DemoPage = () => {
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="space-y-4">
+                  <ReviewCard
+                    businessName="Demo Restaurant"
+                    businessImage="/lovable-uploads/23bef056-e873-4e3d-b77b-8ac3c49fa8d8.png"
+                    onTakeAiSurvey={() => {}}
+                  />
+
                   <Textarea
                     value={reviewText}
                     onChange={(e) => setReviewText(e.target.value)}
@@ -147,20 +169,31 @@ const DemoPage = () => {
                     <ReceiptAnalysisDisplay analysisResult={analysisResult} />
                   )}
 
-                  <Button
-                    onClick={handleRefineReview}
-                    disabled={isRefining || !reviewText.trim()}
-                    className="w-full bg-primary hover:bg-primary/90 text-white"
-                  >
-                    {isRefining ? "Refining Review..." : "Refine Review"}
-                  </Button>
+                  {!isRefined ? (
+                    <Button
+                      onClick={handleRefineReview}
+                      disabled={isRefining || !reviewText.trim()}
+                      className="w-full bg-primary hover:bg-primary/90 text-white"
+                    >
+                      {isRefining ? "Refining Review..." : "Refine Review"}
+                    </Button>
+                  ) : (
+                    <>
+                      <Button
+                        onClick={handleCopyAndRedirect}
+                        className="w-full bg-[#E94E87] hover:bg-[#E94E87]/90 text-white shadow-lg space-x-2"
+                      >
+                        <div className="flex items-center">
+                          <Copy className="mr-2 h-5 w-5" />
+                          <span>Copy Review & Open Google Reviews</span>
+                          <ExternalLink className="ml-2 h-5 w-5" />
+                        </div>
+                      </Button>
+                      <ReviewCode uniqueCode={uniqueCode} />
+                      <UnlockedOffers />
+                    </>
+                  )}
                 </div>
-
-                <ReviewCard
-                  businessName="Demo Restaurant"
-                  businessImage="/lovable-uploads/23bef056-e873-4e3d-b77b-8ac3c49fa8d8.png"
-                  onTakeAiSurvey={() => {}}
-                />
               </CardContent>
             </Card>
           </div>
