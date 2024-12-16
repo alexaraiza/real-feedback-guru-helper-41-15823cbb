@@ -12,7 +12,16 @@ import { ReceiptAnalysisDisplay } from "@/components/demo/ReceiptAnalysisDisplay
 const generateNaturalReview = (items: Array<{ name: string; price: number }>, totalAmount: number) => {
   // Convert items array to a natural language list
   const itemNames = items.map(item => item.name);
-  const naturalItemsList = new Intl.ListFormat('en', { style: 'long', type: 'conjunction' }).format(itemNames);
+  // Use a fallback for browsers/environments that don't support Intl.ListFormat
+  let naturalItemsList: string;
+  try {
+    naturalItemsList = new (Intl as any).ListFormat('en', { style: 'long', type: 'conjunction' }).format(itemNames);
+  } catch {
+    // Fallback to simple joining with commas and "and"
+    naturalItemsList = itemNames.length > 1 
+      ? `${itemNames.slice(0, -1).join(', ')} and ${itemNames[itemNames.length - 1]}`
+      : itemNames[0];
+  }
   
   // Generate opening sentences with some variety
   const openings = [
