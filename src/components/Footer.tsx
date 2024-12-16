@@ -1,0 +1,41 @@
+import { Mail } from "lucide-react";
+import { Link } from "react-router-dom";
+
+export const Footer = () => {
+  const handleEmailClick = () => {
+    window.location.href = "mailto:george@multiplier.info?subject=Interest%20in%20EatUP!&body=Hi%2C%0A%0AI'm%20interested%20in%20learning%20more%20about%20EatUP!%0A%0ABest%20regards";
+  };
+
+  return (
+    <footer className="bg-gray-50 py-12 mt-20">
+      <div className="max-w-7xl mx-auto px-4">
+        <div className="flex flex-col items-center space-y-6">
+          <div className="flex items-center space-x-6">
+            <button
+              onClick={handleEmailClick}
+              className="flex items-center text-gray-600 hover:text-primary transition-colors"
+            >
+              <Mail className="w-4 h-4 mr-2" />
+              Contact Us
+            </button>
+            <Link
+              to="/terms"
+              className="text-gray-600 hover:text-primary transition-colors"
+            >
+              Terms & Conditions
+            </Link>
+            <Link
+              to="/privacy"
+              className="text-gray-600 hover:text-primary transition-colors"
+            >
+              Privacy Policy
+            </Link>
+          </div>
+          <p className="text-sm text-gray-500">
+            © {new Date().getFullYear()} Multiplier Ltd trading as EatUP!. All rights reserved.
+          </p>
+        </div>
+      </div>
+    </footer>
+  );
+};
