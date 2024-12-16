@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Gift, Mail } from "lucide-react";
+import { Gift, UserPlus } from "lucide-react";
 import { nanoid } from 'nanoid';
 
 interface EmailCaptureProps {
@@ -16,16 +16,16 @@ export const EmailCapture = ({ rewardCode }: EmailCaptureProps) => {
     const refinedReview = localStorage.getItem('refinedReview');
     const visitTimestamp = new Date().toLocaleString();
     
-    let emailBody = "Hi, I'd like to claim my rewards for my next visits!\n\n";
+    let emailBody = "Welcome to EatUP! Here are your dining rewards.\n\n";
     
     // Add visit timestamp
-    emailBody += `Visit Date: ${visitTimestamp}\n\n`;
+    emailBody += `First Visit Date: ${visitTimestamp}\n\n`;
     
     // Add the review information
     if (refinedReview) {
-      emailBody += `My AI-Enhanced Review:\n${refinedReview}\n\n`;
+      emailBody += `Your AI-Enhanced Review:\n${refinedReview}\n\n`;
     } else if (reviewText) {
-      emailBody += `My Review:\n${reviewText}\n\n`;
+      emailBody += `Your Review:\n${reviewText}\n\n`;
     }
     
     // Add receipt analysis if available
@@ -41,7 +41,7 @@ export const EmailCapture = ({ rewardCode }: EmailCaptureProps) => {
     }
 
     // Add reward details with unique codes
-    emailBody += "My Rewards:\n\n";
+    emailBody += "Your EatUP! Rewards:\n\n";
     
     // First visit reward
     if (rewardCode) {
@@ -64,6 +64,8 @@ export const EmailCapture = ({ rewardCode }: EmailCaptureProps) => {
     emailBody += "Value up to £8.95\n";
     emailBody += "Valid during your third visit\n\n";
 
+    emailBody += "Important: To claim your third visit reward, please reply to this email with your receipt from your second visit.\n\n";
+
     emailBody += "3. THIRD VISIT REWARD\n";
     emailBody += "Complimentary Appetizer\n";
     emailBody += `Reward Code: ${thirdVisitCode}\n`;
@@ -71,13 +73,17 @@ export const EmailCapture = ({ rewardCode }: EmailCaptureProps) => {
     emailBody += "Value up to £12.95\n";
     emailBody += "Valid during your fourth visit\n\n";
 
+    emailBody += "Important: To claim your fourth visit reward, please reply to this email with your receipt from your third visit.\n\n";
+
     emailBody += "4. FOURTH VISIT REWARD\n";
     emailBody += "Special Chef's Surprise\n";
     emailBody += `Reward Code: ${fourthVisitCode}\n`;
     emailBody += "A unique culinary experience prepared just for you\n";
-    emailBody += "Valid during your fourth visit";
+    emailBody += "Valid during your fourth visit\n\n";
 
-    const mailtoLink = `mailto:george@multiplier.info?subject=Claim My Rewards&body=${encodeURIComponent(emailBody)}`;
+    emailBody += "Welcome to the EatUP! community! We're excited to enhance your dining experiences.";
+
+    const mailtoLink = `mailto:offers@eatup.co?subject=Sign Up for EatUP! Rewards&body=${encodeURIComponent(emailBody)}`;
     window.location.href = mailtoLink;
   };
 
@@ -85,21 +91,21 @@ export const EmailCapture = ({ rewardCode }: EmailCaptureProps) => {
     <div className="space-y-8">
       <div className="flex items-center justify-center gap-3">
         <Gift className="h-8 w-8 text-[#E94E87]" />
-        <h3 className="font-bold text-2xl bg-gradient-to-r from-[#8B5CF6] via-[#D946EF] to-[#1EAEDB] text-transparent bg-clip-text">
-          Transform Your Dining Experience
+        <h3 className="font-bold text-2xl bg-gradient-to-r from-[#E94E87] via-[#FF6B9C] to-[#FF9B9B] text-transparent bg-clip-text">
+          Join EatUP! to Transform Your Dining Experience
         </h3>
       </div>
 
       <div>
         <p className="text-center text-gray-600 text-lg mb-6">
-          Send us an email to claim these rewards for your next visit:
+          Sign up now to unlock these exclusive rewards for your dining journey:
         </p>
         <Button 
           onClick={handleEmailClick}
-          className="w-full h-12 px-8 bg-gradient-to-r from-[#8B5CF6] via-[#D946EF] to-[#1EAEDB] hover:opacity-90 text-white rounded-xl text-lg font-semibold flex items-center justify-center gap-2 transform transition-all duration-300 hover:scale-[1.02]"
+          className="w-full h-12 px-8 bg-gradient-to-r from-[#E94E87] via-[#FF6B9C] to-[#FF9B9B] hover:opacity-90 text-white rounded-xl text-lg font-semibold flex items-center justify-center gap-2 transform transition-all duration-300 hover:scale-[1.02]"
         >
-          <Mail className="h-5 w-5" />
-          <span>Send Email to Claim Rewards</span>
+          <UserPlus className="h-5 w-5" />
+          <span>Sign Up to Claim Rewards</span>
         </Button>
       </div>
     </div>
