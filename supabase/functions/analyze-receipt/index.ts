@@ -32,7 +32,7 @@ serve(async (req) => {
       messages: [
         {
           role: "system",
-          content: "You are a receipt analysis expert. Extract the following information from the receipt image: total amount, individual items with their prices, tax amount (if present), and any discounts. Format your response as a JSON object with the following structure: { total_amount: number, items: Array<{ name: string, price: number }>, tax_amount?: number, discounts?: number }. Do not include any additional text or explanation."
+          content: "You are a receipt analysis expert. Your task is to extract information from receipt images and return it in a specific JSON format. Follow these rules strictly:\n\n1. Always return a valid JSON object\n2. The object must have these fields:\n   - total_amount (number)\n   - items (array of objects with 'name' and 'price' fields)\n3. Example format:\n{\n  \"total_amount\": 25.99,\n  \"items\": [\n    {\"name\": \"Burger\", \"price\": 12.99},\n    {\"name\": \"Fries\", \"price\": 4.99}\n  ]\n}\n\nDo not include any explanatory text, only return the JSON object."
         },
         {
           role: "user",
@@ -73,32 +73,39 @@ serve(async (req) => {
 
     let analysis: AnalysisResult;
     try {
-      // Parse the content as JSON, handling both string and parsed JSON responses
       const content = data.choices[0].message.content;
       console.log('Raw content from OpenAI:', content);
       
       try {
-        analysis = typeof content === 'string' ? JSON.parse(content) : content;
+        // First, ensure we have a string to parse
+        const contentString = typeof content === 'string' ? content : JSON.stringify(content);
+        analysis = JSON.parse(contentString);
       } catch (parseError) {
         console.error('Error parsing content as JSON:', parseError);
         throw new Error('Failed to parse OpenAI response as JSON');
       }
 
       // Validate the required fields
-      if (typeof analysis.total_amount !== 'number' || !Array.isArray(analysis.items)) {
-        console.error('Invalid analysis format:', analysis);
-        throw new Error('Response missing required fields');
+      if (typeof analysis.total_amount !== 'number') {
+        console.error('Invalid total_amount:', analysis.total_amount);
+        throw new Error('Response missing valid total_amount field');
+      }
+
+      if (!Array.isArray(analysis.items)) {
+        console.error('Invalid items array:', analysis.items);
+        throw new Error('Response missing valid items array');
       }
 
       // Validate each item in the items array
       analysis.items.forEach((item, index) => {
         if (typeof item.name !== 'string' || typeof item.price !== 'number') {
+          console.error(`Invalid item at index ${index}:`, item);
           throw new Error(`Invalid item format at index ${index}`);
         }
       });
 
     } catch (parseError) {
-      console.error('Error parsing OpenAI response:', parseError);
+      console.error('Error processing OpenAI response:', parseError);
       throw new Error('Invalid response format from OpenAI');
     }
 
