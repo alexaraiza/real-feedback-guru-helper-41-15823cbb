@@ -38,12 +38,11 @@ serve(async (req) => {
           role: "user",
           content: [
             {
-              type: "text",
-              text: "Please analyze this receipt image and extract the required information."
-            },
-            {
               type: "image_url",
-              image_url: imageUrl
+              image_url: {
+                url: imageUrl,
+                detail: "high"
+              }
             }
           ]
         }
