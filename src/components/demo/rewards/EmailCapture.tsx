@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button";
 import { Gift, Mail } from "lucide-react";
-import { nanoid } from 'nanoid';
 
 interface EmailCaptureProps {
   rewardCode: string | null;
