@@ -6,13 +6,6 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-interface AnalysisResult {
-  total_amount: number;
-  items: Array<{ name: string; price: number }>;
-  tax_amount?: number;
-  discounts?: number;
-}
-
 serve(async (req) => {
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
@@ -40,9 +33,7 @@ serve(async (req) => {
       "name": string,
       "price": number
     }
-  ],
-  "tax_amount": number (optional),
-  "discounts": number (optional)
+  ]
 }
 Do not include any additional text or explanation. Only return the JSON object.`
         },
@@ -83,13 +74,13 @@ Do not include any additional text or explanation. Only return the JSON object.`
     const data = await response.json();
     console.log('OpenAI response:', JSON.stringify(data, null, 2));
 
-    let analysis: AnalysisResult;
+    let analysis;
     try {
       const content = data.choices[0].message.content;
       console.log('Raw content from OpenAI:', content);
       
-      // Try to parse the content, handling both string and parsed JSON
-      analysis = typeof content === 'string' ? JSON.parse(content.trim()) : content;
+      // Try to parse the content as JSON
+      analysis = JSON.parse(content.trim());
 
       // Validate the required fields
       if (typeof analysis.total_amount !== 'number' || !Array.isArray(analysis.items)) {
@@ -98,7 +89,7 @@ Do not include any additional text or explanation. Only return the JSON object.`
       }
 
       // Validate each item in the items array
-      analysis.items.forEach((item, index) => {
+      analysis.items.forEach((item: any, index: number) => {
         if (typeof item.name !== 'string' || typeof item.price !== 'number') {
           throw new Error(`Invalid item format at index ${index}`);
         }
@@ -106,7 +97,7 @@ Do not include any additional text or explanation. Only return the JSON object.`
 
     } catch (parseError) {
       console.error('Error parsing OpenAI response:', parseError);
-      throw new Error('Invalid response format from OpenAI');
+      throw new Error(`Failed to parse OpenAI response: ${parseError.message}`);
     }
 
     return new Response(
