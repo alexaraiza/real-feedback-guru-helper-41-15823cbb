@@ -14,35 +14,32 @@ export const RewardsList = () => {
             1️⃣ First Visit Reward – Get it Now!
           </h4>
           <div className="bg-gray-50 p-4 rounded-lg text-gray-600 space-y-2">
-            <p>• Share your review on Google and show it to a staff member</p>
-            <p>• The staff will give you today's special reward right away! 🎁</p>
+            <p>• Share your review on Google and show it to your server</p>
+            <p>• They'll give you today's special reward right away! 🎁</p>
           </div>
         </div>
 
         {/* Future Visits Section */}
         <div>
           <h4 className="font-semibold text-lg text-gray-800 mb-3">
-            Join EatUP! for More Rewards!
+            2️⃣ Next Visit Rewards
           </h4>
-          <div className="bg-gray-50 p-4 rounded-lg text-gray-600">
-            <p className="font-medium mb-2">For your 2nd, 3rd, and 4th visits:</p>
-            <ul className="list-disc ml-5 space-y-2">
-              <li>Take a photo of your receipt after each visit</li>
-              <li>Email it to EatUP!</li>
-              <li>We'll send you the reward of the day for your next visit</li>
-              <li>Show your reward email to redeem it on your next visit</li>
-            </ul>
+          <div className="bg-gray-50 p-4 rounded-lg text-gray-600 space-y-2">
+            <p>• Take a photo of your receipt</p>
+            <p>• Email it along with your review to EatUP!</p>
+            <p>• We'll send you a special reward for your next visit</p>
+            <p>• Show the reward email to redeem it on your next visit</p>
           </div>
         </div>
 
-        {/* Why Join EatUP! Section */}
+        {/* Why Join Section */}
         <div>
           <h4 className="font-semibold text-lg text-gray-800 mb-3">
-            Why Join EatUP!?
+            Why Use EatUP!?
           </h4>
           <div className="bg-gray-50 p-4 rounded-lg text-gray-600 space-y-2">
             <p>• <span className="font-medium">Instant First Reward:</span> Get today's special offer just for sharing your review!</p>
-            <p>• <span className="font-medium">Easy Future Rewards:</span> Simply email your receipt to unlock rewards for your next three visits</p>
+            <p>• <span className="font-medium">Easy Future Rewards:</span> Simply email your receipt and review to unlock rewards for your next visit</p>
           </div>
         </div>
       </div>
