@@ -16,14 +16,14 @@ export const EmailCapture = ({ rewardCode }: EmailCaptureProps) => {
     const refinedReview = localStorage.getItem('refinedReview');
     const visitTimestamp = new Date().toLocaleString();
     
-    let emailBody = "Hello EatUP! Here's my receipt and review for my next reward.\n\n";
+    let emailBody = "Hello EatUP! I'd like to sign up and get my next reward.\n\n";
     
     // Add visit timestamp
     emailBody += `Visit Date: ${visitTimestamp}\n\n`;
     
-    // Add the review information
+    // Add the enhanced review if available, otherwise use original review
     if (refinedReview) {
-      emailBody += `My Review:\n${refinedReview}\n\n`;
+      emailBody += `My Enhanced Review:\n${refinedReview}\n\n`;
     } else if (reviewText) {
       emailBody += `My Review:\n${reviewText}\n\n`;
     }
@@ -40,9 +40,9 @@ export const EmailCapture = ({ rewardCode }: EmailCaptureProps) => {
       emailBody += "\n";
     }
 
-    emailBody += "Please send me my reward for my next visit. Thank you!\n\n";
+    emailBody += "I'm excited to join EatUP! and earn more rewards with each visit!\n\n";
 
-    const mailtoLink = `mailto:rewards@eatup.co?subject=Receipt and Review for Next Reward&body=${encodeURIComponent(emailBody)}`;
+    const mailtoLink = `mailto:rewards@eatup.co?subject=Sign me up for EatUP! Rewards&body=${encodeURIComponent(emailBody)}`;
     window.location.href = mailtoLink;
   };
 
@@ -51,20 +51,20 @@ export const EmailCapture = ({ rewardCode }: EmailCaptureProps) => {
       <div className="flex items-center justify-center gap-3">
         <Gift className="h-8 w-8 text-[#E94E87]" />
         <h3 className="font-bold text-2xl bg-gradient-to-r from-[#E94E87] via-[#FF6B9C] to-[#FF9B9B] text-transparent bg-clip-text">
-          Get Your Next Visit Reward
+          Sign Up for Progressive Rewards
         </h3>
       </div>
 
       <div>
         <p className="text-center text-gray-600 text-lg mb-6">
-          Send us your receipt and review to unlock a special reward for your next visit!
+          Join EatUP! now to unlock better rewards with each visit - up to your 4th visit!
         </p>
         <Button 
           onClick={handleEmailClick}
           className="w-full h-12 px-8 bg-gradient-to-r from-[#E94E87] via-[#FF6B9C] to-[#FF9B9B] hover:opacity-90 text-white rounded-xl text-lg font-semibold flex items-center justify-center gap-2 transform transition-all duration-300 hover:scale-[1.02]"
         >
           <Mail className="h-5 w-5" />
-          <span>Email Receipt & Review</span>
+          <span>Sign Up & Get More Rewards</span>
         </Button>
       </div>
     </div>
