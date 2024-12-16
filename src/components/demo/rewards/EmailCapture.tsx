@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Gift } from "lucide-react";
 import { Mail } from "lucide-react";
+import { format } from "date-fns";
 
 interface EmailCaptureProps {
   rewardCode: string | null;
@@ -12,8 +13,10 @@ export const EmailCapture = ({ rewardCode }: EmailCaptureProps) => {
     const analysisResult = localStorage.getItem('receiptAnalysis');
     const reviewText = localStorage.getItem('reviewText');
     const refinedReview = localStorage.getItem('refinedReview');
+    const visitDate = format(new Date(), 'MMMM dd, yyyy HH:mm');
     
     let emailBody = "Hi, I'd like to claim my rewards for my next visits!\n\n";
+    emailBody += `Visit Date: ${visitDate}\n\n`;
     
     // Add the review information
     if (refinedReview) {
@@ -34,7 +37,7 @@ export const EmailCapture = ({ rewardCode }: EmailCaptureProps) => {
       emailBody += "\n";
     }
 
-    // Add reward details
+    // Add reward details with unique codes
     emailBody += "My Rewards:\n\n";
     
     // First visit reward
@@ -45,18 +48,27 @@ export const EmailCapture = ({ rewardCode }: EmailCaptureProps) => {
       emailBody += "Valid for 30 days from today\n\n";
     }
 
-    // Future visit rewards
+    // Future visit rewards with generated codes
     emailBody += "2. SECOND VISIT REWARD\n";
     emailBody += "Free Dessert\n";
     emailBody += "Choose from our selection of house-made desserts\n";
     emailBody += "Value up to £8.95\n";
+    emailBody += `Reward Code: DESSERT${Math.random().toString(36).substring(2, 8).toUpperCase()}\n`;
     emailBody += "Valid for 30 days after your second visit\n\n";
 
     emailBody += "3. THIRD VISIT REWARD\n";
     emailBody += "Complimentary Appetizer\n";
     emailBody += "Choose any appetizer from our menu\n";
     emailBody += "Value up to £12.95\n";
-    emailBody += "Valid for 45 days after your third visit\n";
+    emailBody += `Reward Code: APPETIZER${Math.random().toString(36).substring(2, 8).toUpperCase()}\n`;
+    emailBody += "Valid for 45 days after your third visit\n\n";
+
+    emailBody += "4. FOURTH VISIT REWARD\n";
+    emailBody += "Free Bottle of House Wine\n";
+    emailBody += "Choose any bottle from our house wine selection\n";
+    emailBody += "Value up to £24.95\n";
+    emailBody += `Reward Code: WINE${Math.random().toString(36).substring(2, 8).toUpperCase()}\n`;
+    emailBody += "Valid for 60 days after your fourth visit\n";
 
     const mailtoLink = `mailto:george@multiplier.info?subject=Claim My Rewards&body=${encodeURIComponent(emailBody)}`;
     window.location.href = mailtoLink;
