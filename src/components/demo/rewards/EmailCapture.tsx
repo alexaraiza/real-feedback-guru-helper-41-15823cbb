@@ -1,54 +1,60 @@
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Gift } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { Mail } from "lucide-react";
 
 interface EmailCaptureProps {
   rewardCode: string | null;
 }
 
 export const EmailCapture = ({ rewardCode }: EmailCaptureProps) => {
-  const [email, setEmail] = useState("");
-  const { toast } = useToast();
-
-  const handleEmailSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!email) return;
+  const handleEmailClick = () => {
+    // Get receipt analysis from localStorage if available
+    const analysisResult = localStorage.getItem('receiptAnalysis');
+    const reviewText = localStorage.getItem('reviewText');
     
-    toast({
-      title: "Success!",
-      description: "Your reward code and future rewards have been sent to your email. Check your inbox!",
-    });
+    let emailBody = "Hi, I'd like to get the 1st reward for my next visit!\n\n";
+    
+    if (reviewText) {
+      emailBody += `My review:\n${reviewText}\n\n`;
+    }
+    
+    if (analysisResult) {
+      const analysis = JSON.parse(analysisResult);
+      emailBody += "Receipt Details:\n";
+      emailBody += `Total Amount: $${analysis.total_amount}\n`;
+      emailBody += "Items:\n";
+      analysis.items.forEach((item: { name: string; price: number }) => {
+        emailBody += `- ${item.name}: $${item.price}\n`;
+      });
+    }
+
+    if (rewardCode) {
+      emailBody += `\nReward Code: ${rewardCode}`;
+    }
+
+    const mailtoLink = `mailto:george@multiplier.info?subject=Claim My Reward&body=${encodeURIComponent(emailBody)}`;
+    window.location.href = mailtoLink;
   };
 
   return (
     <div className="space-y-8">
       <div className="flex items-center justify-center gap-3">
         <Gift className="h-8 w-8 text-[#E94E87]" />
-        <h3 className="font-bold text-2xl">Get Your Reward Code</h3>
+        <h3 className="font-bold text-2xl">Get Your Reward</h3>
       </div>
 
-      <form onSubmit={handleEmailSubmit}>
+      <div>
         <p className="text-center text-gray-600 text-lg mb-6">
-          Enter your email to receive your unique reward code for 20% off and unlock these additional rewards:
+          Send us an email to claim these rewards for your next visit:
         </p>
-        <div className="flex gap-3">
-          <Input
-            type="email"
-            placeholder="Enter your email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="flex-1 h-12 text-lg border-gray-200 focus:border-[#E94E87]/30 rounded-xl"
-          />
-          <Button 
-            type="submit" 
-            className="h-12 px-8 bg-[#E94E87] hover:bg-[#E94E87]/90 text-white rounded-xl text-lg font-semibold"
-          >
-            Send Rewards
-          </Button>
-        </div>
-      </form>
+        <Button 
+          onClick={handleEmailClick}
+          className="w-full h-12 px-8 bg-[#E94E87] hover:bg-[#E94E87]/90 text-white rounded-xl text-lg font-semibold flex items-center justify-center gap-2"
+        >
+          <Mail className="h-5 w-5" />
+          <span>Send Email to Claim Rewards</span>
+        </Button>
+      </div>
     </div>
   );
 };
