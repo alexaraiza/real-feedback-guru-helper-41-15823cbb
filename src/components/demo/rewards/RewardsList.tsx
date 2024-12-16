@@ -7,45 +7,22 @@ export const RewardsList = () => {
         Your EatUP! Rewards Journey:
       </h4>
       
-      <div className="space-y-6">
-        <div className="relative bg-white/80 backdrop-blur-sm p-6 rounded-2xl border border-gray-100/50 shadow-md hover:shadow-lg transition-all duration-300">
-          <div className="absolute -top-3 -right-3 bg-[#E94E87] text-white px-3 py-1 rounded-full text-sm font-medium">
-            Second Visit
-          </div>
-          <div>
-            <h4 className="font-semibold text-xl text-gray-800 mb-2">Reward of the Day</h4>
+      <div className="bg-white/80 backdrop-blur-sm p-6 rounded-2xl border border-gray-100/50 shadow-md hover:shadow-lg transition-all duration-300">
+        <div>
+          <h4 className="font-semibold text-xl text-gray-800 mb-4">How It Works:</h4>
+          <div className="space-y-4">
             <p className="text-gray-600">
-              <span className="bg-gray-50 p-2 rounded-lg text-gray-500 text-sm mt-3 block">
-                💡 After your first visit, reply to your welcome email with your receipt to unlock the restaurant's reward of the day for your second visit. Show your EatUP! reward email to your server to redeem.
+              <span className="bg-gray-50 p-3 rounded-lg text-gray-600 block">
+                💌 For each of your first 4 visits to the restaurant:
+                <ol className="list-decimal ml-6 mt-2 space-y-2">
+                  <li>Send your receipt to EatUP! via email</li>
+                  <li>We'll send you back that day's special reward</li>
+                  <li>Show the reward email to your server to redeem</li>
+                </ol>
               </span>
             </p>
-          </div>
-        </div>
-
-        <div className="relative bg-white/80 backdrop-blur-sm p-6 rounded-2xl border border-gray-100/50 shadow-md hover:shadow-lg transition-all duration-300">
-          <div className="absolute -top-3 -right-3 bg-[#E94E87] text-white px-3 py-1 rounded-full text-sm font-medium">
-            Third Visit
-          </div>
-          <div>
-            <h4 className="font-semibold text-xl text-gray-800 mb-2">Reward of the Day</h4>
-            <p className="text-gray-600">
-              <span className="bg-gray-50 p-2 rounded-lg text-gray-500 text-sm mt-3 block">
-                💡 After your second visit, reply to your EatUP! email with your receipt to unlock the restaurant's reward of the day for your third visit. Show your EatUP! reward email to your server to redeem.
-              </span>
-            </p>
-          </div>
-        </div>
-
-        <div className="relative bg-white/80 backdrop-blur-sm p-6 rounded-2xl border border-gray-100/50 shadow-md hover:shadow-lg transition-all duration-300">
-          <div className="absolute -top-3 -right-3 bg-[#E94E87] text-white px-3 py-1 rounded-full text-sm font-medium">
-            Fourth Visit
-          </div>
-          <div>
-            <h4 className="font-semibold text-xl text-gray-800 mb-2">Reward of the Day</h4>
-            <p className="text-gray-600">
-              <span className="bg-gray-50 p-2 rounded-lg text-gray-500 text-sm mt-3 block">
-                💡 After your third visit, reply to your EatUP! email with your receipt to unlock the restaurant's reward of the day for your fourth visit. Show your EatUP! reward email to your server to redeem.
-              </span>
+            <p className="text-sm text-gray-500 italic">
+              Each reward is based on the restaurant's special offer of the day for your visit!
             </p>
           </div>
         </div>
