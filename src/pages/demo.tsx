@@ -1,13 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { ReviewCard } from "@/components/ReviewCard";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Camera, Upload, Image, Receipt } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
+import { ReceiptUploadSection } from "@/components/demo/ReceiptUploadSection";
+import { ReceiptAnalysisDisplay } from "@/components/demo/ReceiptAnalysisDisplay";
 
 const DemoPage = () => {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
@@ -61,14 +60,21 @@ const DemoPage = () => {
 
       setAnalysisResult(data.analysis);
       
-      // Generate initial review from receipt data
+      // Generate review automatically from receipt data
       const items = data.analysis.items.map((item: any) => item.name).join(", ");
-      const initialReview = `I had a wonderful dining experience and enjoyed ${items}. The total came to $${data.analysis.total_amount}.`;
-      setReviewText(initialReview);
+      const totalAmount = data.analysis.total_amount;
+      
+      // Generate a more natural-sounding review
+      const review = `I had an amazing dining experience! The ${items} were absolutely delicious. ` +
+        `The presentation was beautiful and everything was perfectly prepared. ` +
+        `At $${totalAmount}, the value was great for the quality of food and service received. ` +
+        `I would definitely recommend trying this restaurant!`;
+      
+      setReviewText(review);
 
       toast({
         title: "Success",
-        description: "Receipt analyzed successfully",
+        description: "Receipt analyzed and review generated",
       });
     } catch (error) {
       console.error('Error analyzing receipt:', error);
@@ -77,13 +83,6 @@ const DemoPage = () => {
         description: "Failed to analyze receipt",
         variant: "destructive",
       });
-    }
-  };
-
-  const triggerFileInput = () => {
-    const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
-    if (fileInput) {
-      fileInput.click();
     }
   };
 
@@ -104,66 +103,21 @@ const DemoPage = () => {
                 <CardTitle>Review & Rewards</CardTitle>
               </CardHeader>
               <CardContent className="space-y-6">
-                <div className="grid gap-4">
-                  <label className="relative flex flex-col items-center justify-center h-32 rounded-lg border-2 border-dashed border-primary/20 bg-white/50 hover:bg-white/80 transition-colors cursor-pointer">
-                    <Input
-                      type="file"
-                      accept="image/*"
-                      onChange={handleReceiptUpload}
-                      className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                    />
-                    <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                      <Upload className="h-10 w-10 text-primary mb-2" />
-                      <p className="text-sm text-muted-foreground">
-                        Click to upload or drag and drop your receipt
-                      </p>
-                    </div>
-                  </label>
-
-                  <div className="grid grid-cols-2 gap-4">
-                    <Button
-                      variant="outline"
-                      className="w-full flex items-center justify-center gap-2"
-                      onClick={triggerFileInput}
-                    >
-                      <Image className="h-4 w-4" />
-                      Choose from Library
-                    </Button>
-                    <Button
-                      variant="outline"
-                      className="w-full flex items-center justify-center gap-2"
-                      onClick={triggerFileInput}
-                    >
-                      <Camera className="h-4 w-4" />
-                      Take a Photo
-                    </Button>
-                  </div>
-                </div>
+                <ReceiptUploadSection 
+                  onFileSelect={handleReceiptUpload}
+                  isAnalyzing={isAnalyzing}
+                />
 
                 {analysisResult && (
-                  <div className="bg-secondary/5 p-4 rounded-lg space-y-4">
-                    <h3 className="font-semibold">Receipt Analysis</h3>
-                    <div className="space-y-2">
-                      <p><strong>Total Amount:</strong> ${analysisResult.total_amount}</p>
-                      <div>
-                        <strong>Items:</strong>
-                        <ul className="list-disc list-inside">
-                          {analysisResult.items?.map((item: any, index: number) => (
-                            <li key={index}>{item.name} - ${item.price}</li>
-                          ))}
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
+                  <ReceiptAnalysisDisplay analysisResult={analysisResult} />
                 )}
 
                 <div className="space-y-2">
-                  <label className="text-sm font-medium">Your Review</label>
+                  <label className="text-sm font-medium">Generated Review</label>
                   <Textarea
                     value={reviewText}
-                    onChange={(e) => setReviewText(e.target.value)}
-                    placeholder="Share your dining experience..."
-                    className="min-h-[150px]"
+                    readOnly
+                    className="min-h-[150px] bg-white/50"
                   />
                 </div>
 
