@@ -1,14 +1,13 @@
 import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import Index from "@/pages/Index";
+import DemoPage from "@/pages/demo";
 import RestaurantDetails from "@/pages/restaurants/[id]";
 import RestaurantList from "@/pages/restaurants/index";
 import CreateReviewPage from "@/pages/restaurants/create-review-page";
 import RestaurantOnboard from "@/pages/restaurants/onboard";
 import RestaurantDashboard from "@/pages/restaurants/dashboard";
 import LoginPage from "@/pages/auth/LoginPage";
-import DemoPage from "@/pages/demo";
 
 // Protected route wrapper component
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
@@ -33,15 +32,11 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Index />,
+    element: <DemoPage />,
   },
   {
     path: "/login",
     element: <LoginPage />,
-  },
-  {
-    path: "/demo",
-    element: <DemoPage />,
   },
   {
     path: "/restaurants",
