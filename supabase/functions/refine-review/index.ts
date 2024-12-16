@@ -1,6 +1,5 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.39.0';
 import OpenAI from "https://deno.land/x/openai@v4.24.0/mod.ts";
 
 const corsHeaders = {
@@ -15,54 +14,40 @@ serve(async (req) => {
   }
 
   try {
-    const { review, receiptId } = await req.json();
-    console.log('Processing review:', review, 'with receipt:', receiptId);
-
-    // Initialize Supabase client
-    const supabase = createClient(
-      Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
-    );
-
-    // Get receipt analysis
-    const { data: receiptData, error: receiptError } = await supabase
-      .from('receipt_analysis')
-      .select('*')
-      .eq('id', receiptId)
-      .single();
-
-    if (receiptError) {
-      console.error('Error fetching receipt data:', receiptError);
-      // Continue without receipt data
-    }
+    const { review, receiptData } = await req.json();
+    console.log('Processing review:', review, 'with receipt data:', receiptData);
 
     const openai = new OpenAI({
       apiKey: Deno.env.get('OPENAI_API_KEY'),
     });
+
+    const systemPrompt = `You are EatUP!, an AI assistant that helps refine restaurant reviews. Your task is to create an engaging and detailed review that incorporates both the customer's personal experience and the specific items from their receipt.
+
+Instructions:
+1. Analyze both the initial review and the receipt details
+2. Create a natural-sounding review that mentions specific dishes and their qualities
+3. Maintain a positive, authentic tone while being detailed and helpful
+4. Include the total amount spent if available
+5. Keep the personal touches from the original review
+6. Ensure the review flows naturally and doesn't sound automated`;
 
     const response = await openai.chat.completions.create({
       model: "gpt-4o",
       messages: [
         {
           role: "system",
-          content: [
-            {
-              type: "text",
-              text: "Create a restaurant review using information from an uploaded receipt and an initial review. The AI bot, EatUP!, should refine the initial review into a more comprehensive and engaging narrative, ensuring that the review specifically mentions and details the dishes listed in the receipt.\n\n# Steps\n\n1. **Analyze the Initial Review**: Assess the tone, key points, and structure of the initial review to understand its strengths and weaknesses.\n2. **Examine the Receipt**: Identify all dishes, beverages, and any additional items listed on the receipt to be included in the review.\n3. **Integrate Receipt Details**: Seamlessly incorporate the specific dishes and any related experiences or remarks from the receipt into the improved review.\n4. **Refine and Enhance**: Craft a more engaging narrative by improving language, style, and coherence, focusing on creating vivid imagery and clear indicators of the dining experience.\n5. **Maintain Balance**: Ensure that the review is unbiased, providing both positive and negative aspects where applicable, based on the initial review and receipt information."
-            }
-          ]
+          content: systemPrompt
         },
         {
           role: "user",
-          content: `Initial Review: "${review}"\n\nReceipt Details: ${receiptData ? JSON.stringify(receiptData.analysis_result) : 'No receipt data available'}`
+          content: `Initial Review: "${review}"\n\nReceipt Details: ${receiptData ? JSON.stringify(receiptData) : 'No receipt data available'}`
         }
       ],
-      response_format: { type: "text" },
-      temperature: 1,
+      temperature: 0.7,
       max_tokens: 2048,
       top_p: 1,
-      frequency_penalty: 0,
-      presence_penalty: 0
+      frequency_penalty: 0.5,
+      presence_penalty: 0.3
     });
 
     if (!response.choices || !response.choices[0] || !response.choices[0].message) {
