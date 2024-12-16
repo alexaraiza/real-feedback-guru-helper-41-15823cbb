@@ -2,12 +2,12 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { ReviewCard } from "@/components/ReviewCard";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { ReceiptUploadSection } from "@/components/demo/ReceiptUploadSection";
 import { ReceiptAnalysisDisplay } from "@/components/demo/ReceiptAnalysisDisplay";
+import { Copy, ExternalLink } from "lucide-react";
 
 const DemoPage = () => {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
@@ -113,23 +113,36 @@ const DemoPage = () => {
     }
   };
 
+  const handleCopyAndRedirect = () => {
+    navigator.clipboard.writeText(reviewText);
+    window.open('https://maps.app.goo.gl/Nx23mQHet4TBfctJ6', '_blank');
+    toast({
+      title: "Review copied!",
+      description: "Opening Google Reviews in a new tab. Please paste your review there.",
+    });
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-pink-50/20">
       <div className="max-w-7xl mx-auto px-4 py-12">
-        <h1 className="text-4xl font-bold text-center mb-4 bg-gradient-to-r from-primary via-pink-500 to-secondary bg-clip-text text-transparent">
-          Experience EatUP! Demo
-        </h1>
-        <p className="text-center text-muted-foreground mb-12 max-w-2xl mx-auto">
-          Share your dining experience, upload your receipt, and let our AI enhance your review!
-        </p>
+        <div className="flex items-center space-x-6 mb-12">
+          <img
+            src="/lovable-uploads/23bef056-e873-4e3d-b77b-8ac3c49fa8d8.png"
+            alt="Demo Restaurant"
+            className="w-20 h-20 rounded-2xl object-cover border-2 border-primary/10 shadow-lg"
+          />
+          <div>
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-primary via-pink-500 to-secondary bg-clip-text text-transparent">
+              Demo Restaurant
+            </h1>
+            <p className="text-muted-foreground">Share your positive dining experience!</p>
+          </div>
+        </div>
 
         <div className="grid md:grid-cols-2 gap-8">
           <div className="space-y-6">
             <Card>
-              <CardHeader>
-                <CardTitle>Share Your Experience</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-6">
+              <CardContent className="space-y-6 pt-6">
                 <div className="space-y-4">
                   <Textarea
                     value={reviewText}
@@ -144,23 +157,26 @@ const DemoPage = () => {
                   />
 
                   {analysisResult && (
-                    <ReceiptAnalysisDisplay analysisResult={analysisResult} />
+                    <>
+                      <ReceiptAnalysisDisplay analysisResult={analysisResult} />
+                      <Button
+                        onClick={handleRefineReview}
+                        disabled={isRefining || !reviewText.trim()}
+                        className="w-full bg-primary hover:bg-primary/90 text-white"
+                      >
+                        {isRefining ? "Refining Review..." : "Refine Review"}
+                      </Button>
+                      <Button
+                        onClick={handleCopyAndRedirect}
+                        className="w-full bg-[#E94E87] hover:bg-[#E94E87]/90 text-white shadow-lg space-x-2"
+                      >
+                        <Copy className="h-5 w-5" />
+                        <span>Copy Review & Open Google Reviews</span>
+                        <ExternalLink className="h-5 w-5" />
+                      </Button>
+                    </>
                   )}
-
-                  <Button
-                    onClick={handleRefineReview}
-                    disabled={isRefining || !reviewText.trim()}
-                    className="w-full bg-primary hover:bg-primary/90 text-white"
-                  >
-                    {isRefining ? "Refining Review..." : "Refine Review"}
-                  </Button>
                 </div>
-
-                <ReviewCard
-                  businessName="Demo Restaurant"
-                  businessImage="/lovable-uploads/23bef056-e873-4e3d-b77b-8ac3c49fa8d8.png"
-                  onTakeAiSurvey={() => {}}
-                />
               </CardContent>
             </Card>
           </div>
