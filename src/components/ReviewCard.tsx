@@ -6,6 +6,7 @@ import { ReviewHeader } from "./review/ReviewHeader";
 import { ReviewForm } from "./review/ReviewForm";
 import { ReviewCode } from "./review/ReviewCode";
 import { UnlockedOffers } from "./review/UnlockedOffers";
+import { Button } from "@/components/ui/button";
 
 interface ReviewCardProps {
   businessName: string;
@@ -16,9 +17,10 @@ interface ReviewCardProps {
 export const ReviewCard = ({ businessName, businessImage, onTakeAiSurvey }: ReviewCardProps) => {
   const [uniqueCode, setUniqueCode] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [review, setReview] = useState("");
   const { toast } = useToast();
 
-  const handleSubmitReview = async (review: string) => {
+  const handleSubmitReview = async () => {
     if (!review.trim()) return;
 
     setIsSubmitting(true);
@@ -65,7 +67,11 @@ export const ReviewCard = ({ businessName, businessImage, onTakeAiSurvey }: Revi
     <div className="glass-card rounded-xl p-6 max-w-xl w-full mx-auto space-y-6 fade-in">
       <ReviewHeader businessName={businessName} businessImage={businessImage} />
       
-      <ReviewForm onSubmit={handleSubmitReview} />
+      <ReviewForm 
+        onSubmit={handleSubmitReview} 
+        review={review}
+        setReview={setReview}
+      />
 
       {uniqueCode && (
         <div className="space-y-6">

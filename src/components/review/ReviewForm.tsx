@@ -4,13 +4,15 @@ import { ReceiptUploader } from "./ReceiptUploader";
 import { ReceiptAnalysis } from "./ReceiptAnalysis";
 import { ReviewActions } from "./ReviewActions";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 interface ReviewFormProps {
-  onSubmit: (review: string, uniqueCode: string) => void;
+  onSubmit: () => void;
+  review: string;
+  setReview: (review: string) => void;
 }
 
-export const ReviewForm = ({ onSubmit }: ReviewFormProps) => {
-  const [review, setReview] = useState("");
+export const ReviewForm = ({ onSubmit, review, setReview }: ReviewFormProps) => {
   const [isRefining, setIsRefining] = useState(false);
   const [receiptData, setReceiptData] = useState<any>(null);
   const [isRefined, setIsRefined] = useState(false);
@@ -83,8 +85,12 @@ export const ReviewForm = ({ onSubmit }: ReviewFormProps) => {
       <ReviewActions
         review={review}
         isRefining={isRefining}
+        isSubmitting={false}
+        uniqueCode={null}
         isRefined={isRefined}
         onRefine={handleCreateReview}
+        onSubmit={onSubmit}
+        onCopyAndRedirect={() => {}}
       />
     </div>
   );
