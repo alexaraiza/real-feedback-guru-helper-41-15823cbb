@@ -22,13 +22,12 @@ export const ReviewActions = ({
   onSubmit,
   onCopyAndRedirect,
 }: ReviewActionsProps) => {
-  return (
-    <div className="flex flex-col sm:flex-row gap-4">
+  if (!isRefined) {
+    return (
       <Button
         onClick={onRefine}
-        disabled={isRefining} // Remove the !review check
-        className="button-hover flex-1 bg-secondary hover:bg-secondary/90 text-white shadow-lg"
-        variant="outline"
+        disabled={isRefining}
+        className="w-full bg-primary hover:bg-primary/90 text-white shadow-lg"
       >
         {isRefining ? (
           <RefreshCw className="mr-2 h-5 w-5 animate-spin" />
@@ -37,29 +36,19 @@ export const ReviewActions = ({
         )}
         Refine Review
       </Button>
+    );
+  }
 
-      {!uniqueCode && isRefined && (
-        <Button
-          onClick={onSubmit}
-          disabled={!review || isSubmitting}
-          className="button-hover flex-1 bg-primary hover:bg-primary/90 text-white shadow-lg"
-        >
-          Submit Review
-        </Button>
-      )}
-
-      {uniqueCode && (
-        <Button
-          onClick={onCopyAndRedirect}
-          className="button-hover flex-1 bg-primary hover:bg-primary/90 text-white shadow-lg space-x-2"
-        >
-          <div className="flex items-center">
-            <Copy className="mr-2 h-5 w-5" />
-            <span>Copy Review & Open Google Reviews</span>
-            <ExternalLink className="ml-2 h-5 w-5" />
-          </div>
-        </Button>
-      )}
-    </div>
+  return (
+    <Button
+      onClick={onCopyAndRedirect}
+      className="w-full bg-[#E94E87] hover:bg-[#E94E87]/90 text-white shadow-lg space-x-2"
+    >
+      <div className="flex items-center">
+        <Copy className="mr-2 h-5 w-5" />
+        <span>Copy Review & Open Google Reviews</span>
+        <ExternalLink className="ml-2 h-5 w-5" />
+      </div>
+    </Button>
   );
 };

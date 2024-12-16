@@ -3,6 +3,8 @@ import { ReviewContent } from "./ReviewContent";
 import { ReceiptUploader } from "./ReceiptUploader";
 import { ReceiptAnalysis } from "./ReceiptAnalysis";
 import { ReviewActions } from "./ReviewActions";
+import { ReviewCode } from "./ReviewCode";
+import { UnlockedOffers } from "./UnlockedOffers";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -16,6 +18,7 @@ export const ReviewForm = ({ onSubmit, review, setReview }: ReviewFormProps) => 
   const [isRefining, setIsRefining] = useState(false);
   const [receiptData, setReceiptData] = useState<any>(null);
   const [isRefined, setIsRefined] = useState(false);
+  const [uniqueCode, setUniqueCode] = useState<string | null>(null);
   const { toast } = useToast();
 
   const handleReceiptAnalyzed = (data: any) => {
@@ -49,6 +52,7 @@ export const ReviewForm = ({ onSubmit, review, setReview }: ReviewFormProps) => 
       
       setReview(data.refinedReview);
       setIsRefined(true);
+      setUniqueCode('plzrdDDQ'); // For demo purposes, we're using a static code
       
       toast({
         title: "Review created!",
@@ -64,6 +68,11 @@ export const ReviewForm = ({ onSubmit, review, setReview }: ReviewFormProps) => 
     } finally {
       setIsRefining(false);
     }
+  };
+
+  const handleCopyAndRedirect = () => {
+    navigator.clipboard.writeText(review);
+    window.open('https://www.google.com/maps', '_blank');
   };
 
   return (
@@ -86,12 +95,19 @@ export const ReviewForm = ({ onSubmit, review, setReview }: ReviewFormProps) => 
         review={review}
         isRefining={isRefining}
         isSubmitting={false}
-        uniqueCode={null}
+        uniqueCode={uniqueCode}
         isRefined={isRefined}
         onRefine={handleCreateReview}
         onSubmit={onSubmit}
-        onCopyAndRedirect={() => {}}
+        onCopyAndRedirect={handleCopyAndRedirect}
       />
+
+      {uniqueCode && (
+        <>
+          <ReviewCode uniqueCode={uniqueCode} />
+          <UnlockedOffers />
+        </>
+      )}
     </div>
   );
 };
