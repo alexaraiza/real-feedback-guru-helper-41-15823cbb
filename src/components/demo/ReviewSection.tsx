@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { Copy, ExternalLink, MessageSquare, Upload, Robot } from "lucide-react";
+import { Copy, ExternalLink, MessageSquare, Upload, Bot } from "lucide-react";
 import { ReceiptUploadSection } from "@/components/demo/ReceiptUploadSection";
 import { ReceiptAnalysisDisplay } from "@/components/demo/ReceiptAnalysisDisplay";
 import { useToast } from "@/hooks/use-toast";
@@ -11,9 +11,8 @@ import { RewardsSection } from "./RewardsSection";
 
 export const ReviewSection = () => {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [receiptUrl, setReceiptUrl] = useState("");
-  const [analysisResult, setAnalysisResult] = useState<any>(null);
   const [reviewText, setReviewText] = useState("");
+  const [analysisResult, setAnalysisResult] = useState<any>(null);
   const [isRefining, setIsRefining] = useState(false);
   const [rewardCode, setRewardCode] = useState<string | null>(null);
   const { toast } = useToast();
@@ -149,7 +148,7 @@ export const ReviewSection = () => {
         {/* Step 3: Refine and share */}
         <div className="space-y-4">
           <div className="flex items-center gap-2 text-lg font-semibold text-primary">
-            <Robot className="h-5 w-5" />
+            <Bot className="h-5 w-5" />
             <h3>Step 3: Refine your review and share it</h3>
           </div>
           <Button
