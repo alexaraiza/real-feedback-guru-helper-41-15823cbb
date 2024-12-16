@@ -51,7 +51,7 @@ export const ExampleReviews = () => {
       >
         <CarouselContent className="-ml-2 md:-ml-4">
           {exampleReviews.map((review, index) => (
-            <CarouselItem key={index} className="pl-2 md:pl-4 md:basis-1/2 lg:basis-1/3">
+            <CarouselItem key={index} className="pl-2 md:pl-4 basis-full md:basis-1/2 lg:basis-1/3">
               <div className="glass-card h-full p-6 rounded-2xl space-y-4">
                 <div className="flex items-center space-x-4">
                   <img
@@ -78,8 +78,10 @@ export const ExampleReviews = () => {
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious className="absolute -left-12 top-1/2 -translate-y-1/2 bg-white/50 hover:bg-white" />
-        <CarouselNext className="absolute -right-12 top-1/2 -translate-y-1/2 bg-white/50 hover:bg-white" />
+        <div className="hidden md:block">
+          <CarouselPrevious className="absolute -left-12 top-1/2 -translate-y-1/2 bg-white/50 hover:bg-white" />
+          <CarouselNext className="absolute -right-12 top-1/2 -translate-y-1/2 bg-white/50 hover:bg-white" />
+        </div>
       </Carousel>
     </div>
   );
