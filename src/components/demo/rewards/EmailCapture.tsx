@@ -62,32 +62,20 @@ export const EmailCapture = ({ rewardCode }: EmailCaptureProps) => {
     emailBody += `Reward Code: ${secondVisitCode}\n`;
     emailBody += "Choose from our selection of house-made desserts\n";
     emailBody += "Value up to £8.95\n";
-    emailBody += "Valid during your third visit
-</lov-search>
-<lov-search>
-Valid for 45 days after your third visit
-</lov-search>
-<lov-replace>
-Valid during your fourth visit
-</lov-search>
-<lov-search>
-Valid for 60 days after your fourth visit
-</lov-search>
-<lov-replace>
-Valid during your fourth visit\n\n";
+    emailBody += "Valid during your third visit\n\n";
 
     emailBody += "3. THIRD VISIT REWARD\n";
     emailBody += "Complimentary Appetizer\n";
     emailBody += `Reward Code: ${thirdVisitCode}\n`;
     emailBody += "Choose any appetizer from our menu\n";
     emailBody += "Value up to £12.95\n";
-    emailBody += "Valid for 45 days after your third visit\n\n";
+    emailBody += "Valid during your fourth visit\n\n";
 
     emailBody += "4. FOURTH VISIT REWARD\n";
     emailBody += "Special Chef's Surprise\n";
     emailBody += `Reward Code: ${fourthVisitCode}\n`;
     emailBody += "A unique culinary experience prepared just for you\n";
-    emailBody += "Valid for 60 days after your fourth visit";
+    emailBody += "Valid during your fourth visit";
 
     const mailtoLink = `mailto:george@multiplier.info?subject=Claim My Rewards&body=${encodeURIComponent(emailBody)}`;
     window.location.href = mailtoLink;
