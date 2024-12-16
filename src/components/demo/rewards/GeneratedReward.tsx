@@ -11,15 +11,20 @@ export const GeneratedReward = ({ rewardCode }: GeneratedRewardProps) => {
         🎉 Congratulations!
       </div>
       <p className="text-gray-600">
-        Show this screen to your server to receive today's special reward!
+        Show your Google review and this screen to your server to receive today's special reward!
       </p>
       <div className="bg-pink-50 p-4 rounded-xl">
-        <p className="text-sm text-gray-500 mb-2">Your Unique Code:</p>
+        <p className="text-sm text-gray-500 mb-2">Your Next Visit Reward Code:</p>
         <p className="text-xl font-mono font-bold text-primary">{rewardCode}</p>
       </div>
-      <p className="text-sm text-gray-500 italic">
-        Valid only for today's visit
-      </p>
+      <div className="space-y-2">
+        <p className="text-sm text-gray-500">
+          Valid for your next visit only
+        </p>
+        <p className="text-sm font-medium text-primary">
+          Sign up below to save this code and unlock special rewards for your future visits! 👇
+        </p>
+      </div>
     </div>
   );
 };
