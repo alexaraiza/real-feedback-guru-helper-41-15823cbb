@@ -72,7 +72,11 @@ export const ReviewForm = ({ onSubmit, review, setReview }: ReviewFormProps) => 
 
   const handleCopyAndRedirect = () => {
     navigator.clipboard.writeText(review);
-    window.open('https://www.google.com/maps', '_blank');
+    window.open('https://maps.app.goo.gl/Nx23mQHet4TBfctJ6', '_blank');
+    toast({
+      title: "Review copied!",
+      description: "Opening Google Reviews in a new tab. Please paste your review there.",
+    });
   };
 
   return (
@@ -102,7 +106,7 @@ export const ReviewForm = ({ onSubmit, review, setReview }: ReviewFormProps) => 
         onCopyAndRedirect={handleCopyAndRedirect}
       />
 
-      {uniqueCode && (
+      {isRefined && (
         <>
           <ReviewCode uniqueCode={uniqueCode} />
           <UnlockedOffers />
