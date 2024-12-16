@@ -168,7 +168,10 @@ export const ReviewSection = () => {
         />
 
         <div className="pt-6">
-          <RewardsSection rewardCode={rewardCode} />
+          <RewardsSection 
+            rewardCode={rewardCode} 
+            hasUploadedReceipt={!!analysisResult}
+          />
         </div>
       </CardContent>
     </Card>
