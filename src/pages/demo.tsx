@@ -2,14 +2,20 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { RestaurantHeader } from "@/components/demo/RestaurantHeader";
 import { ReviewSection } from "@/components/demo/ReviewSection";
-import { Building2, ArrowRight, Star, Utensils, MessageSquare, Gift } from "lucide-react";
+import { Building2, ArrowRight, Star, Utensils, MessageSquare, Gift, Bot } from "lucide-react";
 import { motion } from "framer-motion";
+import { useState } from "react";
 
 const DemoPage = () => {
   const navigate = useNavigate();
+  const [showWidget, setShowWidget] = useState(false);
 
   const handleRegistrationClick = () => {
     window.open("https://forms.gle/7Zfrin7spzLWixGj9", "_blank");
+  };
+
+  const handleSurveyDemoClick = () => {
+    setShowWidget(!showWidget);
   };
 
   return (
@@ -36,7 +42,7 @@ const DemoPage = () => {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="text-4xl md:text-5xl font-bold tracking-tight text-secondary mb-6"
           >
-            Experience the Future of Restaurant Reviews
+            Transform Your Restaurant's Review Strategy
           </motion.h1>
           
           <motion.p
@@ -45,7 +51,7 @@ const DemoPage = () => {
             transition={{ duration: 0.5, delay: 0.3 }}
             className="text-lg md:text-xl text-muted-foreground mb-12 max-w-2xl mx-auto"
           >
-            Try our innovative review system below and see how EatUP! is transforming the way customers connect with restaurants.
+            Boost positive reviews, increase customer retention, and gather actionable feedback with our innovative AI-powered platform.
           </motion.p>
 
           <motion.div
@@ -56,27 +62,56 @@ const DemoPage = () => {
           >
             <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg">
               <div className="inline-block p-3 bg-[#E94E87]/10 rounded-full mb-4">
-                <MessageSquare className="h-8 w-8 text-[#E94E87]" />
-              </div>
-              <h3 className="text-xl font-bold mb-3">Voice Reviews</h3>
-              <p className="text-muted-foreground">Share your dining experience naturally through our AI-powered voice feedback system</p>
-            </div>
-            
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg">
-              <div className="inline-block p-3 bg-[#E94E87]/10 rounded-full mb-4">
                 <Star className="h-8 w-8 text-[#E94E87]" />
               </div>
-              <h3 className="text-xl font-bold mb-3">Smart Analysis</h3>
-              <p className="text-muted-foreground">Our AI transforms your feedback into detailed, structured reviews automatically</p>
+              <h3 className="text-xl font-bold mb-3">Positive Review Acceleration</h3>
+              <p className="text-muted-foreground">
+                Turn happy customers into brand advocates with AI-enhanced review generation and instant reward incentives
+              </p>
             </div>
             
             <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg">
               <div className="inline-block p-3 bg-[#E94E87]/10 rounded-full mb-4">
                 <Gift className="h-8 w-8 text-[#E94E87]" />
               </div>
-              <h3 className="text-xl font-bold mb-3">Instant Rewards</h3>
-              <p className="text-muted-foreground">Get exclusive offers and rewards for sharing your valuable feedback</p>
+              <h3 className="text-xl font-bold mb-3">Revisit Rewards</h3>
+              <p className="text-muted-foreground">
+                Drive customer loyalty with our 4-visit reward program, turning first-time diners into regular patrons
+              </p>
             </div>
+            
+            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg">
+              <div className="inline-block p-3 bg-[#E94E87]/10 rounded-full mb-4">
+                <MessageSquare className="h-8 w-8 text-[#E94E87]" />
+              </div>
+              <h3 className="text-xl font-bold mb-3">AI Customer Survey</h3>
+              <p className="text-muted-foreground">
+                Free up staff time with our AI-powered voice feedback system that captures detailed customer insights
+              </p>
+            </div>
+          </motion.div>
+
+          {/* AI Survey Preview */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.5 }}
+            className="bg-white/90 backdrop-blur-sm rounded-2xl p-8 shadow-lg max-w-2xl mx-auto mb-12"
+          >
+            <div className="flex items-center justify-center gap-3 mb-6">
+              <Bot className="h-8 w-8 text-[#E94E87]" />
+              <h2 className="text-2xl font-bold">EatUP! AI Customer Survey</h2>
+            </div>
+            <p className="text-muted-foreground mb-6">
+              Experience our conversational AI that engages customers in natural dialogue, gathering comprehensive feedback about their dining experience while your staff focuses on service.
+            </p>
+            <Button
+              onClick={handleSurveyDemoClick}
+              className="bg-[#E94E87] hover:bg-[#E94E87]/90 text-white font-semibold"
+            >
+              Try AI Survey Demo
+              <Bot className="ml-2 h-5 w-5" />
+            </Button>
           </motion.div>
         </div>
       </section>
@@ -138,6 +173,15 @@ const DemoPage = () => {
           </div>
         </div>
       </div>
+
+      {showWidget && (
+        <div className="fixed bottom-0 right-0 z-[9999] min-w-[320px]">
+          <div className="relative">
+            <elevenlabs-convai agent-id="CI0HSZaVDE1uT881ruiq"></elevenlabs-convai>
+            <div className="absolute bottom-0 left-0 right-0 h-8 bg-black rounded-full" />
+          </div>
+        </div>
+      )}
     </div>
   );
 };
