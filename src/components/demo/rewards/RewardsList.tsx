@@ -32,14 +32,25 @@ export const RewardsList = ({ hasUploadedReceipt }: RewardsListProps) => {
         {/* Progressive Rewards Section */}
         <div>
           <h4 className="font-semibold text-lg text-gray-800 mb-3">
-            🎯 Progressive Rewards (Visits 2-4)
+            🎯 Progressive Rewards Journey
           </h4>
-          <div className="bg-gray-50 p-4 rounded-lg text-gray-600 space-y-2">
-            <p className="font-medium text-primary">How it works:</p>
-            <p>1. Sign up to EatUP! using the form above</p>
-            <p>2. Send your receipt in the signup email</p>
-            <p>3. Get personalized rewards for visits 2-4!</p>
-            <p className="italic mt-2">Each visit's reward is tailored to your dining preferences! 🎉</p>
+          <div className="bg-gray-50 p-4 rounded-lg text-gray-600 space-y-4">
+            <div>
+              <p className="font-medium text-primary">Second Visit:</p>
+              <p>1. Sign up now to save your reward code</p>
+              <p>2. Use the code on your next visit</p>
+              <p>3. Get your second reward! 🎁</p>
+            </div>
+            <div>
+              <p className="font-medium text-primary">Third Visit:</p>
+              <p>1. Send your second visit receipt by email</p>
+              <p>2. Receive a special reward for visit #3</p>
+            </div>
+            <div>
+              <p className="font-medium text-primary">Fourth Visit:</p>
+              <p>1. Send your third visit receipt</p>
+              <p>2. Get your grand finale reward! 🎉</p>
+            </div>
           </div>
         </div>
 
@@ -50,16 +61,16 @@ export const RewardsList = ({ hasUploadedReceipt }: RewardsListProps) => {
           </h4>
           <div className="bg-gray-50 p-4 rounded-lg text-gray-600 space-y-3">
             <div>
-              <p className="font-medium text-primary">Today's Reward + Next Visit Reward</p>
-              <p>Get rewarded today and on your next visit!</p>
+              <p className="font-medium text-primary">Instant Reward + Next Visit Reward</p>
+              <p>Get rewarded today AND secure your next visit reward!</p>
+            </div>
+            <div>
+              <p className="font-medium text-primary">Progressive Rewards</p>
+              <p>Each visit unlocks a reward for your next one</p>
             </div>
             <div>
               <p className="font-medium text-primary">Personalized Experience</p>
-              <p>Each reward is based on your dining preferences</p>
-            </div>
-            <div>
-              <p className="font-medium text-primary">Better with Each Visit</p>
-              <p>Rewards improve up to your 4th visit</p>
+              <p>Rewards are tailored based on your dining preferences</p>
             </div>
           </div>
         </div>
