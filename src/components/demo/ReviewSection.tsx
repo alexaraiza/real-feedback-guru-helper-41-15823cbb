@@ -37,7 +37,6 @@ export const ReviewSection = () => {
         .from('review_photos')
         .getPublicUrl(filePath);
 
-      setReceiptUrl(publicUrl);
       analyzeReceipt(publicUrl);
     } catch (error) {
       console.error('Error uploading receipt:', error);
