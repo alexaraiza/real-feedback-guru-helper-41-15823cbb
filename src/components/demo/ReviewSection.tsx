@@ -18,6 +18,7 @@ export const ReviewSection = () => {
 
   const handleReceiptUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
+    console.log('File selected:', file);
     if (!file) return;
 
     try {
@@ -26,21 +27,33 @@ export const ReviewSection = () => {
       const fileName = `${crypto.randomUUID()}.${fileExt}`;
       const filePath = `${fileName}`;
 
-      const { error: uploadError } = await supabase.storage
+      console.log('Uploading file to Supabase storage...');
+      const { error: uploadError, data: uploadData } = await supabase.storage
         .from('review_photos')
         .upload(filePath, file);
 
-      if (uploadError) throw uploadError;
+      if (uploadError) {
+        console.error('Upload error:', uploadError);
+        throw uploadError;
+      }
+      console.log('Upload successful:', uploadData);
 
       const { data: { publicUrl } } = supabase.storage
         .from('review_photos')
         .getPublicUrl(filePath);
 
+      console.log('Public URL generated:', publicUrl);
+
+      console.log('Calling analyze-receipt function...');
       const { data, error } = await supabase.functions.invoke('analyze-receipt', {
         body: { imageUrl: publicUrl },
       });
 
-      if (error) throw error;
+      if (error) {
+        console.error('Analysis error:', error);
+        throw error;
+      }
+      console.log('Analysis result:', data);
 
       setAnalysisResult(data.analysis);
       toast({
