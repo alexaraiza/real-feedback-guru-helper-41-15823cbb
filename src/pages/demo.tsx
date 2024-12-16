@@ -148,6 +148,29 @@ const DemoPage = () => {
                   <p className="text-sm md:text-base text-gray-600">
                     Join restaurants that are revolutionizing their customer feedback experience.
                   </p>
+                  <div className="space-y-4 text-left border-t border-gray-100 pt-4 mt-4">
+                    <h3 className="font-semibold text-gray-800">How It Works:</h3>
+                    <ol className="space-y-3 text-sm text-gray-600">
+                      <li className="flex gap-2">
+                        <span className="font-semibold text-primary">1.</span>
+                        Submit your registration and our team will review your application
+                      </li>
+                      <li className="flex gap-2">
+                        <span className="font-semibold text-primary">2.</span>
+                        We'll contact you to schedule a personalized onboarding session
+                      </li>
+                      <li className="flex gap-2">
+                        <span className="font-semibold text-primary">3.</span>
+                        Receive complimentary staff training on implementing EatUP! effectively
+                      </li>
+                    </ol>
+                    <div className="bg-primary/5 p-4 rounded-lg mt-4">
+                      <h4 className="font-semibold text-primary mb-2">Staff Training Includes:</h4>
+                      <p className="text-sm text-gray-600">
+                        Learn how to naturally introduce EatUP! during service, encouraging customers who enjoy their experience to share feedback in exchange for special treats. We'll show you proven techniques that increase positive reviews while maintaining authentic customer interactions.
+                      </p>
+                    </div>
+                  </div>
                 </div>
 
                 <div className="space-y-3 md:space-y-4 py-4 md:py-6">
