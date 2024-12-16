@@ -18,6 +18,7 @@ export const UploadStep = ({ isAnalyzing, analysisResult, onFileSelect }: Upload
       <ReceiptUploadSection 
         onFileSelect={onFileSelect}
         isAnalyzing={isAnalyzing}
+        analysisResult={analysisResult}
       />
       {analysisResult && (
         <ReceiptAnalysisDisplay analysisResult={analysisResult} />
