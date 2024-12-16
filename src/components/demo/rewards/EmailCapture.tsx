@@ -11,13 +11,18 @@ export const EmailCapture = ({ rewardCode }: EmailCaptureProps) => {
     // Get receipt analysis from localStorage if available
     const analysisResult = localStorage.getItem('receiptAnalysis');
     const reviewText = localStorage.getItem('reviewText');
+    const refinedReview = localStorage.getItem('refinedReview');
     
-    let emailBody = "Hi, I'd like to get the 1st reward for my next visit!\n\n";
+    let emailBody = "Hi, I'd like to claim my rewards for my next visits!\n\n";
     
-    if (reviewText) {
-      emailBody += `My review:\n${reviewText}\n\n`;
+    // Add the review information
+    if (refinedReview) {
+      emailBody += `My AI-Enhanced Review:\n${refinedReview}\n\n`;
+    } else if (reviewText) {
+      emailBody += `My Review:\n${reviewText}\n\n`;
     }
     
+    // Add receipt analysis if available
     if (analysisResult) {
       const analysis = JSON.parse(analysisResult);
       emailBody += "Receipt Details:\n";
@@ -26,13 +31,34 @@ export const EmailCapture = ({ rewardCode }: EmailCaptureProps) => {
       analysis.items.forEach((item: { name: string; price: number }) => {
         emailBody += `- ${item.name}: $${item.price}\n`;
       });
+      emailBody += "\n";
     }
 
+    // Add reward details
+    emailBody += "My Rewards:\n\n";
+    
+    // First visit reward
     if (rewardCode) {
-      emailBody += `\nReward Code: ${rewardCode}`;
+      emailBody += "1. FIRST VISIT REWARD\n";
+      emailBody += "20% Off Your Next Visit\n";
+      emailBody += `Reward Code: ${rewardCode}\n`;
+      emailBody += "Valid for 30 days from today\n\n";
     }
 
-    const mailtoLink = `mailto:george@multiplier.info?subject=Claim My Reward&body=${encodeURIComponent(emailBody)}`;
+    // Future visit rewards
+    emailBody += "2. SECOND VISIT REWARD\n";
+    emailBody += "Free Dessert\n";
+    emailBody += "Choose from our selection of house-made desserts\n";
+    emailBody += "Value up to £8.95\n";
+    emailBody += "Valid for 30 days after your second visit\n\n";
+
+    emailBody += "3. THIRD VISIT REWARD\n";
+    emailBody += "Complimentary Appetizer\n";
+    emailBody += "Choose any appetizer from our menu\n";
+    emailBody += "Value up to £12.95\n";
+    emailBody += "Valid for 45 days after your third visit\n";
+
+    const mailtoLink = `mailto:george@multiplier.info?subject=Claim My Rewards&body=${encodeURIComponent(emailBody)}`;
     window.location.href = mailtoLink;
   };
 
