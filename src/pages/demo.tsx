@@ -7,11 +7,13 @@ import { ReviewCard } from "@/components/ReviewCard";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Camera, Upload, Image, Receipt } from "lucide-react";
+import { Textarea } from "@/components/ui/textarea";
 
 const DemoPage = () => {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [receiptUrl, setReceiptUrl] = useState("");
   const [analysisResult, setAnalysisResult] = useState<any>(null);
+  const [reviewText, setReviewText] = useState("");
   const { toast } = useToast();
   const navigate = useNavigate();
 
@@ -58,6 +60,12 @@ const DemoPage = () => {
       if (error) throw error;
 
       setAnalysisResult(data.analysis);
+      
+      // Generate initial review from receipt data
+      const items = data.analysis.items.map((item: any) => item.name).join(", ");
+      const initialReview = `I had a wonderful dining experience and enjoyed ${items}. The total came to $${data.analysis.total_amount}.`;
+      setReviewText(initialReview);
+
       toast({
         title: "Success",
         description: "Receipt analyzed successfully",
@@ -93,10 +101,7 @@ const DemoPage = () => {
           <div className="space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Receipt className="h-5 w-5" />
-                  Upload Your Receipt
-                </CardTitle>
+                <CardTitle>Review & Rewards</CardTitle>
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="grid gap-4">
@@ -110,7 +115,7 @@ const DemoPage = () => {
                     <div className="flex flex-col items-center justify-center pt-5 pb-6">
                       <Upload className="h-10 w-10 text-primary mb-2" />
                       <p className="text-sm text-muted-foreground">
-                        Click to upload or drag and drop
+                        Click to upload or drag and drop your receipt
                       </p>
                     </div>
                   </label>
@@ -151,14 +156,17 @@ const DemoPage = () => {
                     </div>
                   </div>
                 )}
-              </CardContent>
-            </Card>
 
-            <Card>
-              <CardHeader>
-                <CardTitle>Review & Rewards</CardTitle>
-              </CardHeader>
-              <CardContent>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Your Review</label>
+                  <Textarea
+                    value={reviewText}
+                    onChange={(e) => setReviewText(e.target.value)}
+                    placeholder="Share your dining experience..."
+                    className="min-h-[150px]"
+                  />
+                </div>
+
                 <ReviewCard
                   businessName="Demo Restaurant"
                   businessImage="/lovable-uploads/23bef056-e873-4e3d-b77b-8ac3c49fa8d8.png"
