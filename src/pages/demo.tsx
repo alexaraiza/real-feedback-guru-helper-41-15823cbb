@@ -72,6 +72,13 @@ const DemoPage = () => {
     }
   };
 
+  const triggerFileInput = () => {
+    const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
+    if (fileInput) {
+      fileInput.click();
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-pink-50/20">
       <div className="max-w-7xl mx-auto px-4 py-12">
@@ -112,7 +119,7 @@ const DemoPage = () => {
                     <Button
                       variant="outline"
                       className="w-full flex items-center justify-center gap-2"
-                      onClick={() => document.querySelector('input[type="file"]')?.click()}
+                      onClick={triggerFileInput}
                     >
                       <Image className="h-4 w-4" />
                       Choose from Library
@@ -120,7 +127,7 @@ const DemoPage = () => {
                     <Button
                       variant="outline"
                       className="w-full flex items-center justify-center gap-2"
-                      onClick={() => document.querySelector('input[type="file"]')?.click()}
+                      onClick={triggerFileInput}
                     >
                       <Camera className="h-4 w-4" />
                       Take a Photo
