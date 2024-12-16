@@ -8,7 +8,6 @@ const corsHeaders = {
 };
 
 serve(async (req) => {
-  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
@@ -21,7 +20,9 @@ serve(async (req) => {
       apiKey: Deno.env.get('OPENAI_API_KEY'),
     });
 
-    const systemPrompt = `You are EatUP!, an AI assistant that helps refine restaurant reviews. Your task is to create an engaging and detailed review that incorporates both the customer's personal experience and the specific items from their receipt.
+    // Different system prompts based on whether receipt data is available
+    const systemPrompt = receiptData 
+      ? `You are EatUP!, an AI assistant that helps refine restaurant reviews. Your task is to create an engaging and detailed review that incorporates both the customer's personal experience and the specific items from their receipt.
 
 Instructions:
 1. Analyze both the initial review and the receipt details
@@ -29,7 +30,16 @@ Instructions:
 3. Maintain a positive, authentic tone while being detailed and helpful
 4. Include the total amount spent if available
 5. Keep the personal touches from the original review
-6. Ensure the review flows naturally and doesn't sound automated`;
+6. Ensure the review flows naturally and doesn't sound automated`
+      : `You are EatUP!, an AI assistant that helps refine restaurant reviews. Your task is to create a simple, genuine-sounding review based on the customer's feedback.
+
+Instructions:
+1. Keep the review concise and authentic
+2. Focus on the overall experience and atmosphere
+3. Maintain a positive tone while being genuine
+4. Don't make up specific details about food or prices
+5. Keep the personal touches from the original review
+6. Ensure the review sounds natural and not overly elaborate`;
 
     const response = await openai.chat.completions.create({
       model: "gpt-4o",
@@ -43,8 +53,8 @@ Instructions:
           content: `Initial Review: "${review}"\n\nReceipt Details: ${receiptData ? JSON.stringify(receiptData) : 'No receipt data available'}`
         }
       ],
-      temperature: 0.7,
-      max_tokens: 2048,
+      temperature: receiptData ? 0.7 : 0.5,
+      max_tokens: receiptData ? 2048 : 1024,
       top_p: 1,
       frequency_penalty: 0.5,
       presence_penalty: 0.3
@@ -74,7 +84,7 @@ Instructions:
         refinedReview: "We apologize, but we couldn't refine your review at this moment. Your original review has been preserved. Please try again later."
       }),
       {
-        status: 200, // Return 200 even on error to handle it gracefully on the client
+        status: 200,
         headers: {
           ...corsHeaders,
           'Content-Type': 'application/json',
