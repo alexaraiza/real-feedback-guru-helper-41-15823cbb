@@ -13,14 +13,10 @@ export const RewardsList = () => {
             Second Visit
           </div>
           <div>
-            <h4 className="font-semibold text-xl text-gray-800 mb-2">Free Dessert</h4>
+            <h4 className="font-semibold text-xl text-gray-800 mb-2">Exclusive Reward Awaits</h4>
             <p className="text-gray-600">
-              Indulge in a complimentary dessert of your choice! Choose from our selection of house-made desserts, including our famous chocolate lava cake, creamy cheesecake, or seasonal fruit tart.
-              <span className="text-[#E94E87] block mt-2 font-medium">
-                Value up to £8.95
-              </span>
               <span className="bg-gray-50 p-2 rounded-lg text-gray-500 text-sm mt-3 block">
-                💡 After your second visit, reply to your EatUP! welcome email with your receipt to unlock this reward
+                💡 After your first visit, reply to your welcome email with your receipt to unlock this reward for your second visit
               </span>
             </p>
           </div>
@@ -31,14 +27,10 @@ export const RewardsList = () => {
             Third Visit
           </div>
           <div>
-            <h4 className="font-semibold text-xl text-gray-800 mb-2">Complimentary Appetizer</h4>
+            <h4 className="font-semibold text-xl text-gray-800 mb-2">Special Dining Reward</h4>
             <p className="text-gray-600">
-              Start your dining experience with us in style! Choose any appetizer from our menu - from our crispy calamari to our fresh bruschetta or signature spring rolls.
-              <span className="text-[#E94E87] block mt-2 font-medium">
-                Value up to £12.95
-              </span>
               <span className="bg-gray-50 p-2 rounded-lg text-gray-500 text-sm mt-3 block">
-                💡 After your third visit, reply to your EatUP! email with your receipt to unlock this reward
+                💡 After your second visit, reply to your EatUP! email with your receipt to unlock this reward for your third visit
               </span>
             </p>
           </div>
@@ -49,14 +41,10 @@ export const RewardsList = () => {
             Fourth Visit
           </div>
           <div>
-            <h4 className="font-semibold text-xl text-gray-800 mb-2">Chef's Special Surprise</h4>
+            <h4 className="font-semibold text-xl text-gray-800 mb-2">Ultimate Dining Experience</h4>
             <p className="text-gray-600">
-              Experience an exclusive culinary creation prepared specially for our most loyal customers. Our chef will prepare a unique dish just for you!
-              <span className="text-[#E94E87] block mt-2 font-medium">
-                Special VIP Experience
-              </span>
               <span className="bg-gray-50 p-2 rounded-lg text-gray-500 text-sm mt-3 block">
-                💡 This reward will be automatically unlocked after confirming your third visit
+                💡 After your third visit, reply to your EatUP! email with your receipt to unlock this final reward
               </span>
             </p>
           </div>
