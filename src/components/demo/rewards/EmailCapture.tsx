@@ -1,19 +1,25 @@
 import { Button } from "@/components/ui/button";
-import { Gift } from "lucide-react";
-import { Mail } from "lucide-react";
+import { Gift, Mail } from "lucide-react";
+import { nanoid } from 'nanoid';
 
 interface EmailCaptureProps {
   rewardCode: string | null;
 }
 
 export const EmailCapture = ({ rewardCode }: EmailCaptureProps) => {
+  const generateRewardCode = () => nanoid(8).toUpperCase();
+  
   const handleEmailClick = () => {
     // Get receipt analysis from localStorage if available
     const analysisResult = localStorage.getItem('receiptAnalysis');
     const reviewText = localStorage.getItem('reviewText');
     const refinedReview = localStorage.getItem('refinedReview');
+    const visitTimestamp = new Date().toLocaleString();
     
     let emailBody = "Hi, I'd like to claim my rewards for my next visits!\n\n";
+    
+    // Add visit timestamp
+    emailBody += `Visit Date: ${visitTimestamp}\n\n`;
     
     // Add the review information
     if (refinedReview) {
@@ -34,7 +40,7 @@ export const EmailCapture = ({ rewardCode }: EmailCaptureProps) => {
       emailBody += "\n";
     }
 
-    // Add reward details
+    // Add reward details with unique codes
     emailBody += "My Rewards:\n\n";
     
     // First visit reward
@@ -45,18 +51,31 @@ export const EmailCapture = ({ rewardCode }: EmailCaptureProps) => {
       emailBody += "Valid for 30 days from today\n\n";
     }
 
-    // Future visit rewards
+    // Generate unique codes for future visits
+    const secondVisitCode = generateRewardCode();
+    const thirdVisitCode = generateRewardCode();
+    const fourthVisitCode = generateRewardCode();
+
+    // Future visit rewards with unique codes
     emailBody += "2. SECOND VISIT REWARD\n";
     emailBody += "Free Dessert\n";
+    emailBody += `Reward Code: ${secondVisitCode}\n`;
     emailBody += "Choose from our selection of house-made desserts\n";
     emailBody += "Value up to £8.95\n";
     emailBody += "Valid for 30 days after your second visit\n\n";
 
     emailBody += "3. THIRD VISIT REWARD\n";
     emailBody += "Complimentary Appetizer\n";
+    emailBody += `Reward Code: ${thirdVisitCode}\n`;
     emailBody += "Choose any appetizer from our menu\n";
     emailBody += "Value up to £12.95\n";
-    emailBody += "Valid for 45 days after your third visit\n";
+    emailBody += "Valid for 45 days after your third visit\n\n";
+
+    emailBody += "4. FOURTH VISIT REWARD\n";
+    emailBody += "Special Chef's Surprise\n";
+    emailBody += `Reward Code: ${fourthVisitCode}\n`;
+    emailBody += "A unique culinary experience prepared just for you\n";
+    emailBody += "Valid for 60 days after your fourth visit";
 
     const mailtoLink = `mailto:george@multiplier.info?subject=Claim My Rewards&body=${encodeURIComponent(emailBody)}`;
     window.location.href = mailtoLink;
@@ -66,7 +85,9 @@ export const EmailCapture = ({ rewardCode }: EmailCaptureProps) => {
     <div className="space-y-8">
       <div className="flex items-center justify-center gap-3">
         <Gift className="h-8 w-8 text-[#E94E87]" />
-        <h3 className="font-bold text-2xl">Get Your Reward</h3>
+        <h3 className="font-bold text-2xl bg-gradient-to-r from-[#8B5CF6] via-[#D946EF] to-[#1EAEDB] text-transparent bg-clip-text">
+          Transform Your Dining Experience
+        </h3>
       </div>
 
       <div>
@@ -75,7 +96,7 @@ export const EmailCapture = ({ rewardCode }: EmailCaptureProps) => {
         </p>
         <Button 
           onClick={handleEmailClick}
-          className="w-full h-12 px-8 bg-[#E94E87] hover:bg-[#E94E87]/90 text-white rounded-xl text-lg font-semibold flex items-center justify-center gap-2"
+          className="w-full h-12 px-8 bg-gradient-to-r from-[#8B5CF6] via-[#D946EF] to-[#1EAEDB] hover:opacity-90 text-white rounded-xl text-lg font-semibold flex items-center justify-center gap-2 transform transition-all duration-300 hover:scale-[1.02]"
         >
           <Mail className="h-5 w-5" />
           <span>Send Email to Claim Rewards</span>
