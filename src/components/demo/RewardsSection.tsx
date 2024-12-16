@@ -11,7 +11,7 @@ export const RewardsSection = ({ rewardCode, hasUploadedReceipt }: RewardsSectio
   return (
     <div className="space-y-8">
       <h2 className="text-4xl font-bold text-gray-900 text-center">
-        Your Review Journey with EatUP!
+        Get Rewarded for Every Visit!
       </h2>
 
       <GeneratedReward rewardCode={rewardCode} />
