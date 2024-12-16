@@ -8,7 +8,7 @@ export const RewardsList = ({ hasUploadedReceipt }: RewardsListProps) => {
   return (
     <div className="space-y-6">
       <h4 className="text-xl font-bold text-center text-gray-800 mt-12 mb-8">
-        Join EatUP! Receipt Rewards 🎟️
+        How it works
       </h4>
       
       <div className="bg-white/80 backdrop-blur-sm p-6 rounded-2xl border border-gray-100/50 shadow-md hover:shadow-lg transition-all duration-300 space-y-8">

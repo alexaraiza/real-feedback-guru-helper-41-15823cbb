@@ -58,7 +58,7 @@ export const EmailCapture = ({ rewardCode }: EmailCaptureProps) => {
       <div className="flex items-center justify-center gap-3">
         <Gift className="h-8 w-8 text-[#E94E87]" />
         <h3 className="font-bold text-2xl bg-gradient-to-r from-[#E94E87] via-[#FF6B9C] to-[#FF9B9B] text-transparent bg-clip-text">
-          How EatUP! Receipt Rewards works
+          Join EatUP! Receipt Rewards 🎟️
         </h3>
       </div>
 
