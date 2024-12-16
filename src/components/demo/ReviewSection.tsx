@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { Copy, ExternalLink } from "lucide-react";
+import { Copy, ExternalLink, MessageSquare, Upload, Robot } from "lucide-react";
 import { ReceiptUploadSection } from "@/components/demo/ReceiptUploadSection";
 import { ReceiptAnalysisDisplay } from "@/components/demo/ReceiptAnalysisDisplay";
 import { useToast } from "@/hooks/use-toast";
@@ -107,7 +107,6 @@ export const ReviewSection = () => {
   const handleCopyAndRedirect = () => {
     navigator.clipboard.writeText(reviewText);
     window.open('https://maps.app.goo.gl/Nx23mQHet4TBfctJ6', '_blank');
-    // Generate reward code only when user clicks this button
     setRewardCode('plzrdDDQ');
     toast({
       title: "Review copied!",
@@ -117,24 +116,42 @@ export const ReviewSection = () => {
 
   return (
     <Card>
-      <CardContent className="space-y-6 pt-6">
+      <CardContent className="space-y-8 pt-6">
+        {/* Step 1: Share thoughts */}
         <div className="space-y-4">
+          <div className="flex items-center gap-2 text-lg font-semibold text-primary">
+            <MessageSquare className="h-5 w-5" />
+            <h3>Step 1: Share some positive thoughts</h3>
+          </div>
           <Textarea
             value={reviewText}
             onChange={(e) => setReviewText(e.target.value)}
             placeholder="What did you love about your visit? Tell us about the amazing food, exceptional service, or memorable moments!"
             className="min-h-[150px] bg-white/50 font-medium resize-none"
           />
-          
+        </div>
+
+        {/* Step 2: Upload receipt */}
+        <div className="space-y-4">
+          <div className="flex items-center gap-2 text-lg font-semibold text-primary">
+            <Upload className="h-5 w-5" />
+            <h3>Step 2: Upload a photo of your receipt</h3>
+          </div>
           <ReceiptUploadSection 
             onFileSelect={handleReceiptUpload}
             isAnalyzing={isAnalyzing}
           />
-
           {analysisResult && (
             <ReceiptAnalysisDisplay analysisResult={analysisResult} />
           )}
+        </div>
 
+        {/* Step 3: Refine and share */}
+        <div className="space-y-4">
+          <div className="flex items-center gap-2 text-lg font-semibold text-primary">
+            <Robot className="h-5 w-5" />
+            <h3>Step 3: Refine your review and share it</h3>
+          </div>
           <Button
             onClick={handleRefineReview}
             disabled={isRefining}
@@ -151,7 +168,13 @@ export const ReviewSection = () => {
             <span>Copy Review & Open Google Reviews</span>
             <ExternalLink className="h-5 w-5" />
           </Button>
+        </div>
 
+        {/* Rewards Section */}
+        <div className="pt-6">
+          <h3 className="text-xl font-semibold text-center mb-6">
+            Want a reward for your next visit?
+          </h3>
           <RewardsSection rewardCode={rewardCode} />
         </div>
       </CardContent>
