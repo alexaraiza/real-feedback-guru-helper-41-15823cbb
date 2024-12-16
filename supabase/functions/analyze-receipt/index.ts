@@ -32,7 +32,19 @@ serve(async (req) => {
       messages: [
         {
           role: "system",
-          content: "You are a receipt analysis expert. Extract the following information from the receipt image: total amount, individual items with their prices, tax amount (if present), and any discounts. Format your response as a JSON object with the following structure: { total_amount: number, items: Array<{ name: string, price: number }>, tax_amount?: number, discounts?: number }. Do not include any additional text or explanation."
+          content: `You are a receipt analysis expert. Extract the following information from the receipt image and format your response EXACTLY as a JSON object with this structure:
+{
+  "total_amount": number,
+  "items": [
+    {
+      "name": string,
+      "price": number
+    }
+  ],
+  "tax_amount": number (optional),
+  "discounts": number (optional)
+}
+Do not include any additional text or explanation. Only return the JSON object.`
         },
         {
           role: "user",
@@ -73,9 +85,11 @@ serve(async (req) => {
 
     let analysis: AnalysisResult;
     try {
-      // Parse the content as JSON, handling both string and parsed JSON responses
       const content = data.choices[0].message.content;
-      analysis = typeof content === 'string' ? JSON.parse(content) : content;
+      console.log('Raw content from OpenAI:', content);
+      
+      // Try to parse the content, handling both string and parsed JSON
+      analysis = typeof content === 'string' ? JSON.parse(content.trim()) : content;
 
       // Validate the required fields
       if (typeof analysis.total_amount !== 'number' || !Array.isArray(analysis.items)) {
