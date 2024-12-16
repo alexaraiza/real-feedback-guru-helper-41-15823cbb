@@ -27,47 +27,62 @@ serve(async (req) => {
       throw new Error('Image URL is required');
     }
 
+    const requestBody = {
+      model: "gpt-4-vision-preview",
+      messages: [
+        {
+          role: "system",
+          content: "You are a receipt analysis expert. Extract the following information from the receipt image: total amount, individual items with their prices, tax amount (if present), and any discounts. Return ONLY a JSON object."
+        },
+        {
+          role: "user",
+          content: [
+            {
+              type: "image_url",
+              image_url: {
+                url: imageUrl,
+                detail: "high"
+              }
+            }
+          ]
+        }
+      ],
+      max_tokens: 1000,
+      temperature: 0
+    };
+
+    console.log('Sending request to OpenAI:', JSON.stringify(requestBody, null, 2));
+
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${Deno.env.get('OPENAI_API_KEY')}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        model: "gpt-4o-mini",
-        messages: [
-          {
-            role: "system",
-            content: "You are a receipt analysis expert. Extract the following information from the receipt image: total amount, individual items with their prices, tax amount (if present), and any discounts. Return ONLY a JSON object."
-          },
-          {
-            role: "user",
-            content: [
-              {
-                type: "image_url",
-                image_url: {
-                  url: imageUrl,
-                  detail: "high"
-                }
-              }
-            ]
-          }
-        ],
-        response_format: { type: "json_object" },
-        temperature: 0
-      }),
+      body: JSON.stringify(requestBody),
     });
 
     if (!response.ok) {
       const errorText = await response.text();
-      console.error('OpenAI API error:', errorText);
-      throw new Error(`OpenAI API error: ${response.status}`);
+      console.error('OpenAI API error response:', errorText);
+      throw new Error(`OpenAI API error: ${response.status}\nResponse: ${errorText}`);
     }
 
     const data = await response.json();
-    console.log('OpenAI response:', data);
+    console.log('OpenAI response:', JSON.stringify(data, null, 2));
 
-    const analysis = JSON.parse(data.choices[0].message.content) as AnalysisResult;
+    let analysis: AnalysisResult;
+    try {
+      // Handle both string and parsed JSON responses
+      const content = typeof data.choices[0].message.content === 'string' 
+        ? JSON.parse(data.choices[0].message.content)
+        : data.choices[0].message.content;
+      
+      analysis = content as AnalysisResult;
+    } catch (parseError) {
+      console.error('Error parsing OpenAI response:', parseError);
+      throw new Error('Invalid response format from OpenAI');
+    }
 
     // Validate required fields
     if (typeof analysis.total_amount !== 'number' || !Array.isArray(analysis.items)) {
