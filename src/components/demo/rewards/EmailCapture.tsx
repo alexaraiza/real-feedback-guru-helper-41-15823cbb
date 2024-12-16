@@ -62,7 +62,19 @@ export const EmailCapture = ({ rewardCode }: EmailCaptureProps) => {
     emailBody += `Reward Code: ${secondVisitCode}\n`;
     emailBody += "Choose from our selection of house-made desserts\n";
     emailBody += "Value up to £8.95\n";
-    emailBody += "Valid for 30 days after your second visit\n\n";
+    emailBody += "Valid during your third visit
+</lov-search>
+<lov-search>
+Valid for 45 days after your third visit
+</lov-search>
+<lov-replace>
+Valid during your fourth visit
+</lov-search>
+<lov-search>
+Valid for 60 days after your fourth visit
+</lov-search>
+<lov-replace>
+Valid during your fourth visit\n\n";
 
     emailBody += "3. THIRD VISIT REWARD\n";
     emailBody += "Complimentary Appetizer\n";

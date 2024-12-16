@@ -14,7 +14,7 @@ export const RewardsList = () => {
             <p className="text-gray-600">
               Indulge in a complimentary dessert of your choice on your third visit! Choose from our selection of house-made desserts, including our famous chocolate lava cake, creamy cheesecake, or seasonal fruit tart. 
               <span className="text-primary/90 block mt-2">
-                Value up to £8.95 - Valid for 30 days after your second visit
+                Value up to £8.95 - Valid during your third visit
               </span>
             </p>
           </div>
@@ -26,7 +26,7 @@ export const RewardsList = () => {
             <p className="text-gray-600">
               Start your fourth dining experience with us in style! Choose any appetizer from our menu - from our crispy calamari to our fresh bruschetta or signature spring rolls. Perfect for sharing or enjoying solo.
               <span className="text-primary/90 block mt-2">
-                Value up to £12.95 - Valid for 45 days after your third visit
+                Value up to £12.95 - Valid during your fourth visit
               </span>
             </p>
           </div>
