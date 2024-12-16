@@ -6,11 +6,10 @@ import { supabase } from "@/integrations/supabase/client";
 
 interface ReceiptUploaderProps {
   onReceiptAnalyzed: (data: any) => void;
-  onPhotoUploaded: (url: string) => void;
   isAnalyzing: boolean;
 }
 
-export const ReceiptUploader = ({ onReceiptAnalyzed, onPhotoUploaded, isAnalyzing }: ReceiptUploaderProps) => {
+export const ReceiptUploader = ({ onReceiptAnalyzed, isAnalyzing }: ReceiptUploaderProps) => {
   const { toast } = useToast();
 
   const handleReceiptUpload = async (file: File) => {
@@ -31,8 +30,6 @@ export const ReceiptUploader = ({ onReceiptAnalyzed, onPhotoUploaded, isAnalyzin
         .from('review_photos')
         .getPublicUrl(filePath);
 
-      onPhotoUploaded(publicUrl);
-
       // Analyze receipt
       const { data: analysisData, error: analysisError } = await supabase.functions.invoke('analyze-receipt', {
         body: { imageUrl: publicUrl },
@@ -42,14 +39,14 @@ export const ReceiptUploader = ({ onReceiptAnalyzed, onPhotoUploaded, isAnalyzin
 
       onReceiptAnalyzed(analysisData);
       toast({
-        title: "Receipt uploaded!",
-        description: "Your receipt has been uploaded and analyzed successfully.",
+        title: "Receipt analyzed!",
+        description: "Your receipt has been analyzed and added to your review.",
       });
     } catch (error) {
       console.error('Error uploading receipt:', error);
       toast({
         title: "Upload failed",
-        description: "Failed to upload and analyze receipt. Please try again.",
+        description: "Failed to analyze receipt. Please try again.",
         variant: "destructive",
       });
     }
@@ -60,6 +57,7 @@ export const ReceiptUploader = ({ onReceiptAnalyzed, onPhotoUploaded, isAnalyzin
       <input
         type="file"
         accept="image/*"
+        capture="environment"
         onChange={(e) => {
           const file = e.target.files?.[0];
           if (file) handleReceiptUpload(file);
