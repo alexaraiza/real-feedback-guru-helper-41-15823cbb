@@ -1,13 +1,11 @@
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
-import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
-import { Copy, ExternalLink, MessageSquare, Upload, Bot } from "lucide-react";
-import { ReceiptUploadSection } from "@/components/demo/ReceiptUploadSection";
-import { ReceiptAnalysisDisplay } from "@/components/demo/ReceiptAnalysisDisplay";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { RewardsSection } from "./RewardsSection";
+import { UploadStep } from "./steps/UploadStep";
+import { ThoughtsStep } from "./steps/ThoughtsStep";
+import { RefineStep } from "./steps/RefineStep";
 
 export const ReviewSection = () => {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
@@ -100,7 +98,6 @@ export const ReviewSection = () => {
   };
 
   const handleCopyAndRedirect = () => {
-    // Use the refined review if available, otherwise use the original review
     const finalReview = refinedReview || reviewText;
     navigator.clipboard.writeText(finalReview);
     window.open('https://maps.app.goo.gl/Nx23mQHet4TBfctJ6', '_blank');
@@ -111,88 +108,37 @@ export const ReviewSection = () => {
     });
   };
 
+  const handleStep2Complete = () => {
+    toast({
+      title: "✅ Step 2 Complete!",
+      description: "Great! Click 'AI Refine Review' to enhance your review.",
+    });
+  };
+
   return (
     <Card>
       <CardContent className="space-y-8 pt-6">
-        {/* Step 1: Upload receipt */}
-        <div className="space-y-4">
-          <div className="flex items-center gap-2 text-lg font-semibold text-primary">
-            <Upload className="h-5 w-5" />
-            <h3>Step 1: Upload a photo of your receipt</h3>
-          </div>
-          <ReceiptUploadSection 
-            onFileSelect={handleReceiptUpload}
-            isAnalyzing={isAnalyzing}
-          />
-          {analysisResult && (
-            <ReceiptAnalysisDisplay analysisResult={analysisResult} />
-          )}
-        </div>
+        <UploadStep 
+          isAnalyzing={isAnalyzing}
+          analysisResult={analysisResult}
+          onFileSelect={handleReceiptUpload}
+        />
 
-        {/* Step 2: Share thoughts (only shown after receipt upload) */}
-        {analysisResult && (
-          <div className="space-y-4 animate-fade-in">
-            <div className="flex items-center gap-2 text-lg font-semibold text-primary">
-              <MessageSquare className="h-5 w-5" />
-              <h3>Step 2: Share some positive thoughts</h3>
-            </div>
-            <Textarea
-              value={reviewText}
-              onChange={(e) => {
-                setReviewText(e.target.value);
-                if (e.target.value.trim().length > 0) {
-                  toast({
-                    title: "✅ Step 2 Complete!",
-                    description: "Great! Click 'AI Refine Review' to enhance your review.",
-                  });
-                }
-              }}
-              placeholder="What did you love about your visit? Tell us about the amazing food, exceptional service, or memorable moments!"
-              className="min-h-[150px] bg-white/50 font-medium resize-none"
-            />
-          </div>
-        )}
+        <ThoughtsStep 
+          reviewText={reviewText}
+          onChange={setReviewText}
+          onComplete={handleStep2Complete}
+        />
 
-        {/* Step 3: Refine and share (only shown after entering review text) */}
-        {analysisResult && reviewText.trim() && (
-          <div className="space-y-4 animate-fade-in">
-            <div className="flex items-center gap-2 text-lg font-semibold text-primary">
-              <Bot className="h-5 w-5" />
-              <h3>Step 3: Refine your review and share it</h3>
-            </div>
-            <Button
-              onClick={handleRefineReview}
-              disabled={isRefining}
-              className="w-full bg-primary hover:bg-primary/90 text-white"
-            >
-              {isRefining ? "Refining Review..." : "AI Refine Review"}
-            </Button>
+        <RefineStep 
+          reviewText={reviewText}
+          refinedReview={refinedReview}
+          isRefining={isRefining}
+          onRefine={handleRefineReview}
+          onRefinedReviewChange={setRefinedReview}
+          onCopyAndRedirect={handleCopyAndRedirect}
+        />
 
-            {refinedReview && (
-              <div className="space-y-2 animate-fade-in">
-                <label className="text-sm font-medium text-gray-700">
-                  Enhanced Review (feel free to edit):
-                </label>
-                <Textarea
-                  value={refinedReview}
-                  onChange={(e) => setRefinedReview(e.target.value)}
-                  className="min-h-[150px] bg-white/50 font-medium resize-none"
-                />
-              </div>
-            )}
-
-            <Button
-              onClick={handleCopyAndRedirect}
-              className="w-full bg-[#E94E87] hover:bg-[#E94E87]/90 text-white shadow-lg space-x-2"
-            >
-              <Copy className="h-5 w-5" />
-              <span>Copy Review & Open Google Reviews</span>
-              <ExternalLink className="h-5 w-5" />
-            </Button>
-          </div>
-        )}
-
-        {/* Rewards Section */}
         <div className="pt-6">
           <RewardsSection rewardCode={rewardCode} />
         </div>
