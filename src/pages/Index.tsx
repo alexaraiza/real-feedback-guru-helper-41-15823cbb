@@ -61,20 +61,22 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen">
-      <HeroSection onTryDemo={scrollToExperience} onShowAuth={() => setShowAuthDialog(true)} />
-      <FeaturesSection />
-      <CreateReviewPageSection onShowAuth={() => setShowAuthDialog(true)} />
-      <VdaSection />
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-12 bg-gradient-to-r from-[#E94E87] via-[#F17BA3] to-[#FF9B9B] text-transparent bg-clip-text">
-            Restaurant Success Stories
-          </h2>
-          <ExampleReviews />
-        </div>
-      </section>
-      <CtaSection onTryDemo={scrollToExperience} />
+    <div className="min-h-screen flex flex-col">
+      <div className="flex-grow">
+        <HeroSection onTryDemo={scrollToExperience} onShowAuth={() => setShowAuthDialog(true)} />
+        <FeaturesSection />
+        <CreateReviewPageSection onShowAuth={() => setShowAuthDialog(true)} />
+        <VdaSection />
+        <section className="py-20 bg-white">
+          <div className="max-w-7xl mx-auto px-4">
+            <h2 className="text-3xl font-bold text-center mb-12 bg-gradient-to-r from-[#E94E87] via-[#F17BA3] to-[#FF9B9B] text-transparent bg-clip-text">
+              Restaurant Success Stories
+            </h2>
+            <ExampleReviews />
+          </div>
+        </section>
+        <CtaSection onTryDemo={scrollToExperience} />
+      </div>
       <Footer />
 
       {showWidget && (
