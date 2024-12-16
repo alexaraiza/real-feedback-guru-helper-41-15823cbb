@@ -61,7 +61,7 @@ export const ReviewSection = () => {
       setAnalysisResult(data.analysis);
       toast({
         title: "Success",
-        description: "Receipt analyzed successfully",
+        description: "Receipt analyzed successfully! Please proceed to Step 2.",
       });
     } catch (error) {
       console.error('Error analyzing receipt:', error);
@@ -115,25 +115,11 @@ export const ReviewSection = () => {
   return (
     <Card>
       <CardContent className="space-y-8 pt-6">
-        {/* Step 1: Share thoughts */}
-        <div className="space-y-4">
-          <div className="flex items-center gap-2 text-lg font-semibold text-primary">
-            <MessageSquare className="h-5 w-5" />
-            <h3>Step 1: Share some positive thoughts</h3>
-          </div>
-          <Textarea
-            value={reviewText}
-            onChange={(e) => setReviewText(e.target.value)}
-            placeholder="What did you love about your visit? Tell us about the amazing food, exceptional service, or memorable moments!"
-            className="min-h-[150px] bg-white/50 font-medium resize-none"
-          />
-        </div>
-
-        {/* Step 2: Upload receipt */}
+        {/* Step 1: Upload receipt */}
         <div className="space-y-4">
           <div className="flex items-center gap-2 text-lg font-semibold text-primary">
             <Upload className="h-5 w-5" />
-            <h3>Step 2: Upload a photo of your receipt</h3>
+            <h3>Step 1: Upload a photo of your receipt</h3>
           </div>
           <ReceiptUploadSection 
             onFileSelect={handleReceiptUpload}
@@ -144,29 +130,47 @@ export const ReviewSection = () => {
           )}
         </div>
 
-        {/* Step 3: Refine and share */}
-        <div className="space-y-4">
-          <div className="flex items-center gap-2 text-lg font-semibold text-primary">
-            <Bot className="h-5 w-5" />
-            <h3>Step 3: Refine your review and share it</h3>
+        {/* Step 2: Share thoughts (only shown after receipt upload) */}
+        {analysisResult && (
+          <div className="space-y-4">
+            <div className="flex items-center gap-2 text-lg font-semibold text-primary">
+              <MessageSquare className="h-5 w-5" />
+              <h3>Step 2: Share some positive thoughts</h3>
+            </div>
+            <Textarea
+              value={reviewText}
+              onChange={(e) => setReviewText(e.target.value)}
+              placeholder="What did you love about your visit? Tell us about the amazing food, exceptional service, or memorable moments!"
+              className="min-h-[150px] bg-white/50 font-medium resize-none"
+            />
           </div>
-          <Button
-            onClick={handleRefineReview}
-            disabled={isRefining}
-            className="w-full bg-primary hover:bg-primary/90 text-white"
-          >
-            {isRefining ? "Refining Review..." : "AI Refine Review"}
-          </Button>
+        )}
 
-          <Button
-            onClick={handleCopyAndRedirect}
-            className="w-full bg-[#E94E87] hover:bg-[#E94E87]/90 text-white shadow-lg space-x-2"
-          >
-            <Copy className="h-5 w-5" />
-            <span>Copy Review & Open Google Reviews</span>
-            <ExternalLink className="h-5 w-5" />
-          </Button>
-        </div>
+        {/* Step 3: Refine and share (only shown after entering review) */}
+        {reviewText && (
+          <div className="space-y-4">
+            <div className="flex items-center gap-2 text-lg font-semibold text-primary">
+              <Bot className="h-5 w-5" />
+              <h3>Step 3: Refine your review and share it</h3>
+            </div>
+            <Button
+              onClick={handleRefineReview}
+              disabled={isRefining}
+              className="w-full bg-primary hover:bg-primary/90 text-white"
+            >
+              {isRefining ? "Refining Review..." : "AI Refine Review"}
+            </Button>
+
+            <Button
+              onClick={handleCopyAndRedirect}
+              className="w-full bg-[#E94E87] hover:bg-[#E94E87]/90 text-white shadow-lg space-x-2"
+            >
+              <Copy className="h-5 w-5" />
+              <span>Copy Review & Open Google Reviews</span>
+              <ExternalLink className="h-5 w-5" />
+            </Button>
+          </div>
+        )}
 
         {/* Rewards Section */}
         <div className="pt-6">
