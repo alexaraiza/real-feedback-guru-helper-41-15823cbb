@@ -35,7 +35,7 @@ serve(async (req) => {
     }
   ]
 }
-Do not include any additional text or explanation. Only return the JSON object.`
+Do not include any additional text, explanation, or markdown formatting. Only return the raw JSON object.`
         },
         {
           role: "user",
@@ -79,8 +79,12 @@ Do not include any additional text or explanation. Only return the JSON object.`
       const content = data.choices[0].message.content;
       console.log('Raw content from OpenAI:', content);
       
-      // Try to parse the content as JSON
-      analysis = JSON.parse(content.trim());
+      // Clean the content by removing any markdown formatting
+      const cleanContent = content.replace(/```json\n?|\n?```/g, '').trim();
+      console.log('Cleaned content:', cleanContent);
+      
+      // Try to parse the cleaned content as JSON
+      analysis = JSON.parse(cleanContent);
 
       // Validate the required fields
       if (typeof analysis.total_amount !== 'number' || !Array.isArray(analysis.items)) {
