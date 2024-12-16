@@ -11,40 +11,38 @@ export const RewardsList = () => {
         {/* First Visit Section */}
         <div>
           <h4 className="font-semibold text-lg text-gray-800 mb-3">
-            1️⃣ First Visit Reward – Get it Instantly!
+            1️⃣ First Visit Reward – Get it Now!
           </h4>
           <div className="bg-gray-50 p-4 rounded-lg text-gray-600 space-y-2">
-            <p>• Share your review on Google and show it to a staff member.</p>
-            <p>• The staff will confirm your review and unlock today's special reward for you on the spot! 🎁</p>
+            <p>• Share your review on Google and show it to a staff member</p>
+            <p>• The staff will give you today's special reward right away! 🎁</p>
           </div>
         </div>
 
-        {/* Subsequent Visits Section */}
+        {/* Future Visits Section */}
         <div>
           <h4 className="font-semibold text-lg text-gray-800 mb-3">
-            2️⃣, 3️⃣, and 4️⃣ Visit Rewards – Simple Steps with EatUP!
+            Join EatUP! for More Rewards!
           </h4>
           <div className="bg-gray-50 p-4 rounded-lg text-gray-600">
-            <p className="font-medium mb-2">After each visit:</p>
+            <p className="font-medium mb-2">For your 2nd, 3rd, and 4th visits:</p>
             <ul className="list-disc ml-5 space-y-2">
-              <li>Take a photo of your receipt and send it to EatUP! via email.</li>
-              <li>EatUP! will reply with the reward for your next visit.</li>
-              <li>Show your reward email to your server during your next visit to redeem it.</li>
+              <li>Take a photo of your receipt after each visit</li>
+              <li>Email it to EatUP!</li>
+              <li>We'll send you the reward of the day for your next visit</li>
+              <li>Show your reward email to redeem it on your next visit</li>
             </ul>
-            <p className="mt-3 text-gray-500 italic">
-              🔄 Repeat this process for your 2nd, 3rd, and 4th visits to continue unlocking the daily rewards!
-            </p>
           </div>
         </div>
 
-        {/* Why We Made It This Way Section */}
+        {/* Why Join EatUP! Section */}
         <div>
           <h4 className="font-semibold text-lg text-gray-800 mb-3">
-            Why We Made It This Way:
+            Why Join EatUP!?
           </h4>
           <div className="bg-gray-50 p-4 rounded-lg text-gray-600 space-y-2">
-            <p>• <span className="font-medium">Instant Gratification for the First Visit:</span> We celebrate your review immediately with a special reward!</p>
-            <p>• <span className="font-medium">Seamless Rewards for Future Visits:</span> EatUP! makes it easy to keep earning rewards – just send your receipt, and we'll take care of the rest.</p>
+            <p>• <span className="font-medium">Instant First Reward:</span> Get today's special offer just for sharing your review!</p>
+            <p>• <span className="font-medium">Easy Future Rewards:</span> Simply email your receipt to unlock rewards for your next three visits</p>
           </div>
         </div>
       </div>
