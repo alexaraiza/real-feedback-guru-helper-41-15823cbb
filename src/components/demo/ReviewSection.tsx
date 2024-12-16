@@ -141,7 +141,7 @@ export const ReviewSection = () => {
               <p>1. Write your review below</p>
               <p>2. Add your receipt to better personalise your review</p>
               <p>3. Post it on Google and show it to your server</p>
-              <p className="text-primary mt-2">Send your receipt to EatUP! for a reward for your next visit (more information below)</p>
+              <p className="text-primary mt-2">Sign up to EatUP! for another reward for your second visit (more information below)</p>
             </div>
           </div>
         </div>
