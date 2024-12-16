@@ -7,8 +7,6 @@ interface EmailCaptureProps {
 }
 
 export const EmailCapture = ({ rewardCode }: EmailCaptureProps) => {
-  const generateRewardCode = () => nanoid(8).toUpperCase();
-  
   const handleEmailClick = () => {
     // Get receipt analysis from localStorage if available
     const analysisResult = localStorage.getItem('receiptAnalysis');
@@ -17,6 +15,12 @@ export const EmailCapture = ({ rewardCode }: EmailCaptureProps) => {
     const visitTimestamp = new Date().toLocaleString();
     
     let emailBody = "Hello EatUP! I'd like to sign up and get my next reward.\n\n";
+    
+    // Add today's reward code if available
+    if (rewardCode) {
+      emailBody += `Today's Reward Code: ${rewardCode}\n`;
+      emailBody += "Show this code to your server on your next visit to redeem your personalized reward!\n\n";
+    }
     
     // Add visit timestamp
     emailBody += `Visit Date: ${visitTimestamp}\n\n`;
@@ -40,6 +44,10 @@ export const EmailCapture = ({ rewardCode }: EmailCaptureProps) => {
       emailBody += "\n";
     }
 
+    emailBody += "By signing up to EatUP!, I'll receive:\n";
+    emailBody += "1. A personalized reward for my next visit based on today's dining preferences\n";
+    emailBody += "2. The ability to earn more rewards up to my 4th visit\n";
+    emailBody += "3. Special offers tailored to my taste\n\n";
     emailBody += "I'm excited to join EatUP! and earn more rewards with each visit!\n\n";
 
     const mailtoLink = `mailto:rewards@eatup.co?subject=Sign me up for EatUP! Rewards&body=${encodeURIComponent(emailBody)}`;
@@ -57,7 +65,9 @@ export const EmailCapture = ({ rewardCode }: EmailCaptureProps) => {
 
       <div>
         <p className="text-center text-gray-600 text-lg mb-6">
-          Join EatUP! now to unlock better rewards with each visit - up to your 4th visit!
+          {rewardCode 
+            ? "Sign up now to save your reward code and unlock a special reward for your next visit!" 
+            : "Join EatUP! now to unlock better rewards with each visit - up to your 4th visit!"}
         </p>
         <Button 
           onClick={handleEmailClick}
