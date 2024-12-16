@@ -32,7 +32,7 @@ export const EmailCapture = ({ rewardCode }: EmailCaptureProps) => {
 
       <form onSubmit={handleEmailSubmit} className="mb-8">
         <p className="text-center text-muted-foreground mb-4">
-          Enter your email to receive your review reward and unlock additional rewards for future visits:
+          Enter your email to receive your 20% off reward code for your next visit and unlock these additional rewards:
         </p>
         <div className="flex gap-3">
           <Input
