@@ -194,9 +194,6 @@ export const ReviewSection = () => {
 
         {/* Rewards Section */}
         <div className="pt-6">
-          <h3 className="text-xl font-semibold text-center mb-6">
-            Want a reward for your next visit?
-          </h3>
           <RewardsSection rewardCode={rewardCode} />
         </div>
       </CardContent>
