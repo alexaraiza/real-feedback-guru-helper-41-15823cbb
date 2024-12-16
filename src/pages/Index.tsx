@@ -15,7 +15,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 
 const Index = () => {
@@ -74,6 +74,13 @@ const Index = () => {
         </div>
       </section>
       <CtaSection onTryDemo={scrollToExperience} />
+      
+      {/* Terms Link */}
+      <div className="text-center pb-8">
+        <Link to="/terms" className="text-gray-600 hover:text-primary transition-colors">
+          Terms & Conditions
+        </Link>
+      </div>
 
       {showWidget && (
         <div className="fixed bottom-0 right-0 z-[9999] min-w-[320px]">

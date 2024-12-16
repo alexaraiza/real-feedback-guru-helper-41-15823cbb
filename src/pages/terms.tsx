@@ -76,7 +76,7 @@ const TermsPage = () => {
         <section className="mb-8">
           <h2 className="font-bold text-lg mb-4">4. Links to this Web Site</h2>
           <p className="text-gray-700">
-            Those wishing to place a link to this Web Site on other sites may do so only to the home page of the site https://www.eatup.co/ without prior permission. Deep linking (i.e. links to specific pages within the site) requires the express permission of Multiplier Ltd. To find out more please contact us by email at contact@multiplier.info or by post to 71-75 Shelton Street, London, England, WC2H 9JQ.
+            Those wishing to place a link to this Web Site on other sites may do so only to the home page of the site https://www.eatup.co/ without prior permission. Deep linking (i.e. links to specific pages within the site) requires the express permission of Multiplier Ltd. To find out more please contact us by email at george@multiplier.info or by post to 71-75 Shelton Street, London, England, WC2H 9JQ.
           </p>
         </section>
 
