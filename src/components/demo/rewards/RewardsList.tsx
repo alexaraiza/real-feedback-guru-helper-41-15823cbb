@@ -23,12 +23,13 @@ export const RewardsList = () => {
         {/* Future Visits Section */}
         <div>
           <h4 className="font-semibold text-lg text-gray-800 mb-3">
-            2️⃣ Your Next Visit Reward
+            2️⃣ Keep Coming Back for More Rewards!
           </h4>
           <div className="bg-gray-50 p-4 rounded-lg text-gray-600 space-y-2">
-            <p>• Take a photo of your receipt</p>
-            <p>• Send both your receipt photo and a copy of your review to EatUP!</p>
+            <p>• Take a photo of your receipt after each visit (2nd, 3rd, and 4th)</p>
+            <p>• Send your receipt photo and a copy of your review to EatUP!</p>
             <p>• We'll email you a special reward for your next visit</p>
+            <p>• Each visit unlocks a new, exclusive reward until your 4th visit!</p>
           </div>
         </div>
 
@@ -39,8 +40,9 @@ export const RewardsList = () => {
           </h4>
           <div className="bg-gray-50 p-4 rounded-lg text-gray-600 space-y-2">
             <p>• <span className="font-medium">Instant First Reward:</span> Get today's special offer just by sharing your review</p>
-            <p>• <span className="font-medium">More Rewards:</span> Unlock exclusive offers for your 2nd, 3rd, and 4th visits</p>
-            <p>• <span className="font-medium">Simple Process:</span> Just email your receipt and review to get your next reward</p>
+            <p>• <span className="font-medium">Progressive Rewards:</span> Each visit (up to your 4th) unlocks better rewards</p>
+            <p>• <span className="font-medium">Simple Process:</span> Just email your receipt and review after each visit</p>
+            <p>• <span className="font-medium">Build Your Benefits:</span> The more you visit, the better the rewards get!</p>
           </div>
         </div>
       </div>
