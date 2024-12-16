@@ -16,7 +16,6 @@ export const EmailCapture = ({ rewardCode }: EmailCaptureProps) => {
     e.preventDefault();
     if (!email) return;
     
-    // Here you would typically send the email with the reward code
     toast({
       title: "Success!",
       description: "Your reward code and future rewards have been sent to your email. Check your inbox!",
@@ -24,14 +23,14 @@ export const EmailCapture = ({ rewardCode }: EmailCaptureProps) => {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-center gap-3 mb-6">
-        <Gift className="h-7 w-7 text-primary" />
-        <h3 className="font-bold text-2xl text-secondary">Get Your Reward Code</h3>
+    <div className="space-y-8">
+      <div className="flex items-center justify-center gap-3">
+        <Gift className="h-8 w-8 text-[#E94E87]" />
+        <h3 className="font-bold text-2xl">Get Your Reward Code</h3>
       </div>
 
-      <form onSubmit={handleEmailSubmit} className="mb-8">
-        <p className="text-center text-muted-foreground mb-4">
+      <form onSubmit={handleEmailSubmit}>
+        <p className="text-center text-gray-600 text-lg mb-6">
           Enter your email to receive your unique reward code for 20% off and unlock these additional rewards:
         </p>
         <div className="flex gap-3">
@@ -40,9 +39,12 @@ export const EmailCapture = ({ rewardCode }: EmailCaptureProps) => {
             placeholder="Enter your email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="flex-1 border-primary/20 focus:border-primary/40"
+            className="flex-1 h-12 text-lg border-gray-200 focus:border-[#E94E87]/30 rounded-xl"
           />
-          <Button type="submit" className="bg-primary hover:bg-primary/90 text-white">
+          <Button 
+            type="submit" 
+            className="h-12 px-8 bg-[#E94E87] hover:bg-[#E94E87]/90 text-white rounded-xl text-lg font-semibold"
+          >
             Send Rewards
           </Button>
         </div>
