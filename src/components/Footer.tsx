@@ -24,12 +24,14 @@ export const Footer = () => {
             >
               Terms & Conditions
             </Link>
-            <Link
-              to="/privacy"
+            <a
+              href="https://app.termly.io/policy-viewer/policy.html?policyUUID=d38fd480-a81a-4a8d-b881-6074818604f0"
+              target="_blank"
+              rel="noopener noreferrer"
               className="text-gray-600 hover:text-primary transition-colors"
             >
               Privacy Policy
-            </Link>
+            </a>
           </div>
           <p className="text-sm text-gray-500">
             © {new Date().getFullYear()} Multiplier Ltd trading as EatUP!. All rights reserved.
