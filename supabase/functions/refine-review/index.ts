@@ -31,7 +31,10 @@ serve(async (req) => {
       .eq('id', receiptId)
       .single();
 
-    if (receiptError) throw receiptError;
+    if (receiptError) {
+      console.error('Error fetching receipt data:', receiptError);
+      // Continue without receipt data
+    }
 
     const openai = new OpenAI({
       apiKey: Deno.env.get('OPENAI_API_KEY'),
@@ -51,7 +54,7 @@ serve(async (req) => {
         },
         {
           role: "user",
-          content: `Initial Review: "${review}"\n\nReceipt Details: ${JSON.stringify(receiptData.analysis_result)}`
+          content: `Initial Review: "${review}"\n\nReceipt Details: ${receiptData ? JSON.stringify(receiptData.analysis_result) : 'No receipt data available'}`
         }
       ],
       response_format: { type: "text" },
@@ -81,9 +84,12 @@ serve(async (req) => {
   } catch (error) {
     console.error('Error in refine-review function:', error);
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ 
+        error: error.message,
+        refinedReview: "We apologize, but we couldn't refine your review at this moment. Your original review has been preserved. Please try again later."
+      }),
       {
-        status: 500,
+        status: 200, // Return 200 even on error to handle it gracefully on the client
         headers: {
           ...corsHeaders,
           'Content-Type': 'application/json',

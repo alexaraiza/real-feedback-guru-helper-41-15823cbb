@@ -31,7 +31,15 @@ export const ReviewCard = ({ businessName, businessImage, onTakeAiSurvey }: Revi
   };
 
   const handleRefineReview = async () => {
-    // Remove the trim check to allow any review length
+    if (!review.trim()) {
+      toast({
+        title: "Review required",
+        description: "Please write your initial thoughts before refining.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsRefining(true);
     try {
       const { data, error } = await supabase.functions.invoke('refine-review', {
@@ -40,6 +48,16 @@ export const ReviewCard = ({ businessName, businessImage, onTakeAiSurvey }: Revi
 
       if (error) throw error;
       
+      if (data.error) {
+        // Handle the error gracefully
+        toast({
+          title: "Review refinement",
+          description: "We couldn't refine your review at this moment. Please try again later.",
+          variant: "destructive",
+        });
+        return;
+      }
+
       if (data.refinedReview === review || !data.refinedReview) {
         toast({
           title: "Review refinement",
