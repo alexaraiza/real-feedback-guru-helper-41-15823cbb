@@ -6,6 +6,7 @@ import { Building2, ArrowRight, Star, Utensils, MessageSquare, Gift, Bot } from 
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { AiSurveyWidget } from "@/components/demo/AiSurveyWidget";
+import { Footer } from "@/components/Footer";
 
 const DemoPage = () => {
   const navigate = useNavigate();
@@ -20,8 +21,9 @@ const DemoPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-pink-50/20">
-      {/* Hero Section */}
+    <div className="min-h-screen flex flex-col">
+      <div className="flex-grow">
+        {/* Hero Section */}
       <section className="relative bg-gradient-to-b from-white via-[#FFE5ED] to-[#FFD5E2]/20 py-20">
         <div className="max-w-7xl mx-auto px-4 text-center relative">
           <motion.div
@@ -117,8 +119,8 @@ const DemoPage = () => {
         </div>
       </section>
 
-      {/* Demo Content */}
-      <div className="max-w-7xl mx-auto px-4 py-12">
+        {/* Demo Content */}
+        <div className="max-w-7xl mx-auto px-4 py-12">
         <RestaurantHeader 
           logoUrl="/lovable-uploads/23bef056-e873-4e3d-b77b-8ac3c49fa8d8.png"
           name="Demo Restaurant"
@@ -174,8 +176,11 @@ const DemoPage = () => {
           </div>
         </div>
       </div>
+        </div>
 
-      <AiSurveyWidget show={showWidget} />
+        <AiSurveyWidget show={showWidget} />
+      </div>
+      <Footer />
     </div>
   );
 };
