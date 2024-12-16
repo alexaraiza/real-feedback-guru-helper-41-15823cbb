@@ -6,6 +6,13 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
+interface AnalysisResult {
+  total_amount: number;
+  items: Array<{ name: string; price: number }>;
+  tax_amount?: number;
+  discounts?: number;
+}
+
 serve(async (req) => {
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
@@ -14,12 +21,11 @@ serve(async (req) => {
 
   try {
     const { imageUrl } = await req.json();
+    console.log('Processing receipt image:', imageUrl);
 
     if (!imageUrl) {
       throw new Error('Image URL is required');
     }
-
-    console.log('Analyzing receipt image:', imageUrl);
 
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
@@ -32,7 +38,7 @@ serve(async (req) => {
         messages: [
           {
             role: "system",
-            content: "You are a receipt analysis expert. You will receive an image of a receipt. Extract and return ONLY a JSON object with these fields: total_amount (number), items (array of {name: string, price: number}), tax_amount (number, optional), discounts (number, optional). Do not include any other text in your response."
+            content: "You are a receipt analysis expert. Extract the following information from the receipt image: total amount, individual items with their prices, tax amount (if present), and any discounts. Return ONLY a JSON object."
           },
           {
             role: "user",
@@ -48,24 +54,22 @@ serve(async (req) => {
           }
         ],
         response_format: { type: "json_object" },
-        max_tokens: 1000,
         temperature: 0
       }),
     });
 
     if (!response.ok) {
-      const error = await response.text();
-      console.error('OpenAI API error:', error);
-      throw new Error('Failed to analyze receipt with OpenAI');
+      const errorText = await response.text();
+      console.error('OpenAI API error:', errorText);
+      throw new Error(`OpenAI API error: ${response.status}`);
     }
 
     const data = await response.json();
     console.log('OpenAI response:', data);
 
-    // The response should already be a JSON object due to response_format
-    const analysis = data.choices[0].message.content;
+    const analysis = JSON.parse(data.choices[0].message.content) as AnalysisResult;
 
-    // Validate the required fields
+    // Validate required fields
     if (typeof analysis.total_amount !== 'number' || !Array.isArray(analysis.items)) {
       console.error('Invalid analysis format:', analysis);
       throw new Error('Invalid response format from OpenAI');
@@ -78,7 +82,10 @@ serve(async (req) => {
   } catch (error) {
     console.error('Error in analyze-receipt function:', error);
     return new Response(
-      JSON.stringify({ error: error.message || 'Failed to analyze receipt' }),
+      JSON.stringify({ 
+        error: error.message || 'Failed to analyze receipt',
+        details: error.stack
+      }),
       { 
         status: 500,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
