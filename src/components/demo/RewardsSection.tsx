@@ -4,10 +4,13 @@ import { Input } from "@/components/ui/input";
 import { Gift, ExternalLink } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
-export const RewardsSection = () => {
+interface RewardsSectionProps {
+  rewardCode: string | null;
+}
+
+export const RewardsSection = ({ rewardCode }: RewardsSectionProps) => {
   const [email, setEmail] = useState("");
   const { toast } = useToast();
-  const uniqueCode = "plzrdDDQ"; // For demo purposes
 
   const handleEmailSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -20,16 +23,18 @@ export const RewardsSection = () => {
   };
 
   return (
-    <div className="space-y-6 mt-8">
-      <div className="bg-white p-8 rounded-2xl border border-gray-100 shadow-sm">
-        <h3 className="font-bold text-xl text-center mb-4">Your Reward Code</h3>
-        <p className="text-center text-3xl font-mono font-bold text-[#E94E87] mb-4 tracking-wider">
-          {uniqueCode}
-        </p>
-        <p className="text-center text-gray-600">
-          Show this code on your next visit to redeem your rewards!
-        </p>
-      </div>
+    <div className="space-y-6">
+      {rewardCode && (
+        <div className="bg-white p-8 rounded-2xl border border-gray-100 shadow-sm">
+          <h3 className="font-bold text-xl text-center mb-4">Your Reward Code</h3>
+          <p className="text-center text-3xl font-mono font-bold text-[#E94E87] mb-4 tracking-wider">
+            {rewardCode}
+          </p>
+          <p className="text-center text-gray-600">
+            Show this code on your next visit to redeem your rewards!
+          </p>
+        </div>
+      )}
 
       <div className="bg-gradient-to-br from-primary/5 via-accent to-primary/5 rounded-2xl p-8 border border-primary/10 shadow-lg">
         <div className="flex items-center justify-center gap-3 mb-6">

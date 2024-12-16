@@ -15,7 +15,7 @@ export const ReviewSection = () => {
   const [analysisResult, setAnalysisResult] = useState<any>(null);
   const [reviewText, setReviewText] = useState("");
   const [isRefining, setIsRefining] = useState(false);
-  const [showRewards, setShowRewards] = useState(false);
+  const [rewardCode, setRewardCode] = useState<string | null>(null);
   const { toast } = useToast();
 
   const handleReceiptUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -76,15 +76,6 @@ export const ReviewSection = () => {
   };
 
   const handleRefineReview = async () => {
-    if (!reviewText.trim()) {
-      toast({
-        title: "Review required",
-        description: "Please share your experience before refining the review.",
-        variant: "destructive",
-      });
-      return;
-    }
-
     try {
       setIsRefining(true);
       const { data, error } = await supabase.functions.invoke('refine-review', {
@@ -116,7 +107,8 @@ export const ReviewSection = () => {
   const handleCopyAndRedirect = () => {
     navigator.clipboard.writeText(reviewText);
     window.open('https://maps.app.goo.gl/Nx23mQHet4TBfctJ6', '_blank');
-    setShowRewards(true);
+    // Generate reward code only when user clicks this button
+    setRewardCode('plzrdDDQ');
     toast({
       title: "Review copied!",
       description: "Opening Google Reviews in a new tab. Please paste your review there.",
@@ -140,27 +132,27 @@ export const ReviewSection = () => {
           />
 
           {analysisResult && (
-            <>
-              <ReceiptAnalysisDisplay analysisResult={analysisResult} />
-              <Button
-                onClick={handleRefineReview}
-                disabled={isRefining || !reviewText.trim()}
-                className="w-full bg-primary hover:bg-primary/90 text-white"
-              >
-                {isRefining ? "Refining Review..." : "Refine Review"}
-              </Button>
-              <Button
-                onClick={handleCopyAndRedirect}
-                className="w-full bg-[#E94E87] hover:bg-[#E94E87]/90 text-white shadow-lg space-x-2"
-              >
-                <Copy className="h-5 w-5" />
-                <span>Copy Review & Open Google Reviews</span>
-                <ExternalLink className="h-5 w-5" />
-              </Button>
-            </>
+            <ReceiptAnalysisDisplay analysisResult={analysisResult} />
           )}
 
-          {showRewards && <RewardsSection />}
+          <Button
+            onClick={handleRefineReview}
+            disabled={isRefining}
+            className="w-full bg-primary hover:bg-primary/90 text-white"
+          >
+            {isRefining ? "Refining Review..." : "AI Refine Review"}
+          </Button>
+
+          <Button
+            onClick={handleCopyAndRedirect}
+            className="w-full bg-[#E94E87] hover:bg-[#E94E87]/90 text-white shadow-lg space-x-2"
+          >
+            <Copy className="h-5 w-5" />
+            <span>Copy Review & Open Google Reviews</span>
+            <ExternalLink className="h-5 w-5" />
+          </Button>
+
+          <RewardsSection rewardCode={rewardCode} />
         </div>
       </CardContent>
     </Card>
