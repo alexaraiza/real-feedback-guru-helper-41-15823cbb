@@ -9,6 +9,7 @@ import RestaurantOnboard from "@/pages/restaurants/onboard";
 import RestaurantDashboard from "@/pages/restaurants/dashboard";
 import LoginPage from "@/pages/auth/LoginPage";
 import TermsPage from "@/pages/terms";
+import Index from "@/pages/Index";
 
 // Protected route wrapper component
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
@@ -33,8 +34,12 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 const router = createBrowserRouter([
   {
     path: "/",
+    element: <Index />,
+    errorElement: <div>Page not found</div>,
+  },
+  {
+    path: "/demo",
     element: <DemoPage />,
-    errorElement: <div>Page not found</div>, // Add error handling
   },
   {
     path: "/terms",
