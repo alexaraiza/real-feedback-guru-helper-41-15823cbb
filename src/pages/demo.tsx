@@ -2,7 +2,8 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { RestaurantHeader } from "@/components/demo/RestaurantHeader";
 import { ReviewSection } from "@/components/demo/ReviewSection";
-import { Building2, ArrowRight, Star, Utensils } from "lucide-react";
+import { Building2, ArrowRight, Star, Utensils, MessageSquare, Gift } from "lucide-react";
+import { motion } from "framer-motion";
 
 const DemoPage = () => {
   const navigate = useNavigate();
@@ -13,6 +14,74 @@ const DemoPage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-pink-50/20">
+      {/* Hero Section */}
+      <section className="relative bg-gradient-to-b from-white via-[#FFE5ED] to-[#FFD5E2]/20 py-20">
+        <div className="max-w-7xl mx-auto px-4 text-center relative">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="w-full flex justify-center mb-8"
+          >
+            <img 
+              src="/lovable-uploads/50980a14-589f-4bd1-8267-536c582ff4e1.png" 
+              alt="EatUP! Logo" 
+              className="h-20 md:h-28 w-auto hover:scale-105 transition-transform duration-300"
+            />
+          </motion.div>
+          
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="text-4xl md:text-5xl font-bold tracking-tight text-secondary mb-6"
+          >
+            Experience the Future of Restaurant Reviews
+          </motion.h1>
+          
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            className="text-lg md:text-xl text-muted-foreground mb-12 max-w-2xl mx-auto"
+          >
+            Try our innovative review system below and see how EatUP! is transforming the way customers connect with restaurants.
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+            className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto mb-12"
+          >
+            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg">
+              <div className="inline-block p-3 bg-[#E94E87]/10 rounded-full mb-4">
+                <MessageSquare className="h-8 w-8 text-[#E94E87]" />
+              </div>
+              <h3 className="text-xl font-bold mb-3">Voice Reviews</h3>
+              <p className="text-muted-foreground">Share your dining experience naturally through our AI-powered voice feedback system</p>
+            </div>
+            
+            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg">
+              <div className="inline-block p-3 bg-[#E94E87]/10 rounded-full mb-4">
+                <Star className="h-8 w-8 text-[#E94E87]" />
+              </div>
+              <h3 className="text-xl font-bold mb-3">Smart Analysis</h3>
+              <p className="text-muted-foreground">Our AI transforms your feedback into detailed, structured reviews automatically</p>
+            </div>
+            
+            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg">
+              <div className="inline-block p-3 bg-[#E94E87]/10 rounded-full mb-4">
+                <Gift className="h-8 w-8 text-[#E94E87]" />
+              </div>
+              <h3 className="text-xl font-bold mb-3">Instant Rewards</h3>
+              <p className="text-muted-foreground">Get exclusive offers and rewards for sharing your valuable feedback</p>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Demo Content */}
       <div className="max-w-7xl mx-auto px-4 py-12">
         <RestaurantHeader 
           logoUrl="/lovable-uploads/23bef056-e873-4e3d-b77b-8ac3c49fa8d8.png"
