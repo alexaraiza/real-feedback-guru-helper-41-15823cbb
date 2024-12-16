@@ -12,7 +12,7 @@ export const ThoughtsStep = ({ reviewText, onChange, onComplete }: ThoughtsStepP
     <div className="space-y-4">
       <div className="flex items-center gap-2 text-lg font-semibold text-primary">
         <MessageSquare className="h-5 w-5" />
-        <h3>Step 2: Share some positive thoughts</h3>
+        <h3>Step 1: Share some positive thoughts</h3>
       </div>
       <Textarea
         value={reviewText}

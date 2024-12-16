@@ -3,8 +3,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { RewardsSection } from "./RewardsSection";
-import { UploadStep } from "./steps/UploadStep";
 import { ThoughtsStep } from "./steps/ThoughtsStep";
+import { UploadStep } from "./steps/UploadStep";
 import { RefineStep } from "./steps/RefineStep";
 
 export const ReviewSection = () => {
@@ -57,8 +57,8 @@ export const ReviewSection = () => {
 
       setAnalysisResult(data.analysis);
       toast({
-        title: "✅ Step 1 Complete!",
-        description: "Receipt uploaded and analyzed successfully. Please proceed to Step 2.",
+        title: "✅ Receipt Added!",
+        description: "Receipt uploaded and analyzed successfully.",
       });
     } catch (error) {
       console.error('Error uploading receipt:', error);
@@ -95,7 +95,7 @@ export const ReviewSection = () => {
       
       setRefinedReview(data.refinedReview);
       toast({
-        title: "✅ Step 3 Complete!",
+        title: "✅ Review Enhanced!",
         description: "Your review has been professionally enhanced. Feel free to edit it further!",
       });
     } catch (error) {
@@ -121,26 +121,26 @@ export const ReviewSection = () => {
     });
   };
 
-  const handleStep2Complete = () => {
+  const handleStep1Complete = () => {
     toast({
-      title: "✅ Step 2 Complete!",
-      description: "Great! Click 'AI Refine Review' to enhance your review.",
+      title: "✅ Step 1 Complete!",
+      description: "Great! You can now enhance your review or optionally add a receipt photo.",
     });
   };
 
   return (
     <Card>
       <CardContent className="space-y-8 pt-6">
+        <ThoughtsStep 
+          reviewText={reviewText}
+          onChange={setReviewText}
+          onComplete={handleStep1Complete}
+        />
+
         <UploadStep 
           isAnalyzing={isAnalyzing}
           analysisResult={analysisResult}
           onFileSelect={handleReceiptUpload}
-        />
-
-        <ThoughtsStep 
-          reviewText={reviewText}
-          onChange={setReviewText}
-          onComplete={handleStep2Complete}
         />
 
         <RefineStep 

@@ -23,7 +23,7 @@ export const RefineStep = ({
     <div className="space-y-4">
       <div className="flex items-center gap-2 text-lg font-semibold text-primary">
         <Bot className="h-5 w-5" />
-        <h3>Step 3: Refine your review and share it</h3>
+        <h3>Step 3: Enhance and share your review</h3>
       </div>
       
       <Button
@@ -31,7 +31,7 @@ export const RefineStep = ({
         disabled={isRefining || !reviewText.trim()}
         className="w-full bg-primary hover:bg-primary/90 text-white"
       >
-        {isRefining ? "Refining Review..." : "AI Refine Review"}
+        {isRefining ? "Enhancing Review..." : "AI Enhance Review"}
       </Button>
 
       {refinedReview && (
