@@ -12,6 +12,7 @@ import { RewardsSection } from "./RewardsSection";
 export const ReviewSection = () => {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [reviewText, setReviewText] = useState("");
+  const [refinedReview, setRefinedReview] = useState("");
   const [analysisResult, setAnalysisResult] = useState<any>(null);
   const [isRefining, setIsRefining] = useState(false);
   const [rewardCode, setRewardCode] = useState<string | null>(null);
@@ -81,10 +82,10 @@ export const ReviewSection = () => {
 
       if (error) throw error;
       
-      setReviewText(data.refinedReview);
+      setRefinedReview(data.refinedReview);
       toast({
         title: "✅ Step 3 Complete!",
-        description: "Your review has been professionally enhanced. Ready to share!",
+        description: "Your review has been professionally enhanced. Feel free to edit it further!",
       });
     } catch (error) {
       console.error('Error refining review:', error);
@@ -99,7 +100,9 @@ export const ReviewSection = () => {
   };
 
   const handleCopyAndRedirect = () => {
-    navigator.clipboard.writeText(reviewText);
+    // Use the refined review if available, otherwise use the original review
+    const finalReview = refinedReview || reviewText;
+    navigator.clipboard.writeText(finalReview);
     window.open('https://maps.app.goo.gl/Nx23mQHet4TBfctJ6', '_blank');
     setRewardCode('plzrdDDQ');
     toast({
@@ -128,7 +131,7 @@ export const ReviewSection = () => {
 
         {/* Step 2: Share thoughts (only shown after receipt upload) */}
         {analysisResult && (
-          <div className="space-y-4 fade-in">
+          <div className="space-y-4 animate-fade-in">
             <div className="flex items-center gap-2 text-lg font-semibold text-primary">
               <MessageSquare className="h-5 w-5" />
               <h3>Step 2: Share some positive thoughts</h3>
@@ -152,7 +155,7 @@ export const ReviewSection = () => {
 
         {/* Step 3: Refine and share (only shown after entering review text) */}
         {analysisResult && reviewText.trim() && (
-          <div className="space-y-4 fade-in">
+          <div className="space-y-4 animate-fade-in">
             <div className="flex items-center gap-2 text-lg font-semibold text-primary">
               <Bot className="h-5 w-5" />
               <h3>Step 3: Refine your review and share it</h3>
@@ -164,6 +167,19 @@ export const ReviewSection = () => {
             >
               {isRefining ? "Refining Review..." : "AI Refine Review"}
             </Button>
+
+            {refinedReview && (
+              <div className="space-y-2 animate-fade-in">
+                <label className="text-sm font-medium text-gray-700">
+                  Enhanced Review (feel free to edit):
+                </label>
+                <Textarea
+                  value={refinedReview}
+                  onChange={(e) => setRefinedReview(e.target.value)}
+                  className="min-h-[150px] bg-white/50 font-medium resize-none"
+                />
+              </div>
+            )}
 
             <Button
               onClick={handleCopyAndRedirect}
