@@ -1,24 +1,17 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { MapPin, Globe } from "lucide-react";
+import { MapPin } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+import { Form } from "@/components/ui/form";
 import { supabase } from "@/integrations/supabase/client";
 import { generateSlug } from "@/utils/urlUtils";
 import { OfferFormSection } from "./OfferFormSection";
-import { LogoUpload } from "./LogoUpload";
 import { RestaurantFormData } from "./types";
 import { FirecrawlService } from "@/utils/FirecrawlService";
+import { WebsiteInfoSection } from "./sections/WebsiteInfoSection";
+import { BasicInfoSection } from "./sections/BasicInfoSection";
 
 export function SimpleRestaurantForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -171,76 +164,13 @@ export function SimpleRestaurantForm() {
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          <div className="space-y-4">
-            <FormField
-              control={form.control}
-              name="website_url"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Restaurant Website URL</FormLabel>
-                  <div className="flex gap-2">
-                    <FormControl>
-                      <Input placeholder="https://your-restaurant.com" {...field} />
-                    </FormControl>
-                    <Button
-                      type="button"
-                      onClick={handleWebsiteCrawl}
-                      disabled={isCrawling}
-                      variant="outline"
-                    >
-                      {isCrawling ? "Loading..." : "Auto-fill"}
-                      <Globe className="ml-2 h-4 w-4" />
-                    </Button>
-                  </div>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Restaurant Name</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Enter restaurant name" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="address"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Address</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Enter restaurant address" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="google_maps_url"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Google Maps URL</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Paste your Google Maps link" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <LogoUpload setValue={form.setValue} logoUrl={form.watch("logo_url")} />
-          </div>
+          <WebsiteInfoSection 
+            form={form} 
+            onCrawl={handleWebsiteCrawl}
+            isCrawling={isCrawling}
+          />
+          
+          <BasicInfoSection form={form} />
           
           <OfferFormSection form={form} />
 
