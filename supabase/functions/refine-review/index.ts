@@ -13,16 +13,15 @@ serve(async (req) => {
   }
 
   try {
-    const { review, receiptData } = await req.json();
-    console.log('Processing review:', review, 'with receipt data:', receiptData);
+    const { review, receiptData, restaurantName } = await req.json();
+    console.log('Processing review:', review, 'with receipt data:', receiptData, 'for restaurant:', restaurantName);
 
     const openai = new OpenAI({
       apiKey: Deno.env.get('OPENAI_API_KEY'),
     });
 
-    // Different system prompts based on whether receipt data is available
     const systemPrompt = receiptData 
-      ? `You are EatUP!, an AI assistant that helps refine restaurant reviews. Your task is to create an engaging and detailed review that incorporates both the customer's personal experience and the specific items from their receipt.
+      ? `You are EatUP!, an AI assistant that helps refine restaurant reviews for ${restaurantName}. Your task is to create an engaging and detailed review that incorporates both the customer's personal experience and the specific items from their receipt.
 
 Instructions:
 1. Analyze both the initial review and the receipt details
@@ -30,8 +29,10 @@ Instructions:
 3. Maintain a positive, authentic tone while being detailed and helpful
 4. Include the total amount spent if available
 5. Keep the personal touches from the original review
-6. Ensure the review flows naturally and doesn't sound automated`
-      : `You are EatUP!, an AI assistant that helps refine restaurant reviews. Your task is to create a simple, genuine-sounding review based on the customer's feedback.
+6. Format dish names in proper English (e.g., "Chicken Pot Pie" not "CHICKN POT PIE")
+7. Always mention the restaurant name (${restaurantName}) in the review
+8. Ensure the review flows naturally and doesn't sound automated`
+      : `You are EatUP!, an AI assistant that helps refine restaurant reviews for ${restaurantName}. Your task is to create a simple, genuine-sounding review based on the customer's feedback.
 
 Instructions:
 1. Keep the review concise and authentic
@@ -39,7 +40,8 @@ Instructions:
 3. Maintain a positive tone while being genuine
 4. Don't make up specific details about food or prices
 5. Keep the personal touches from the original review
-6. Ensure the review sounds natural and not overly elaborate`;
+6. Always mention the restaurant name (${restaurantName}) in the review
+7. Ensure the review sounds natural and not overly elaborate`;
 
     const response = await openai.chat.completions.create({
       model: "gpt-4o",
