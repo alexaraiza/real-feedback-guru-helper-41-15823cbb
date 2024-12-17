@@ -12,9 +12,15 @@ interface ReviewCardProps {
   businessName: string;
   businessImage?: string;
   onTakeAiSurvey: () => void;
+  googleMapsUrl: string;
 }
 
-export const ReviewCard = ({ businessName, businessImage, onTakeAiSurvey }: ReviewCardProps) => {
+export const ReviewCard = ({ 
+  businessName, 
+  businessImage, 
+  onTakeAiSurvey,
+  googleMapsUrl 
+}: ReviewCardProps) => {
   const [uniqueCode, setUniqueCode] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [review, setReview] = useState("");
@@ -60,7 +66,7 @@ export const ReviewCard = ({ businessName, businessImage, onTakeAiSurvey }: Revi
       title: "Review copied!",
       description: "Opening Google Reviews in a new tab. Please paste your review there.",
     });
-    window.open("https://maps.app.goo.gl/Nx23mQHet4TBfctJ6", "_blank");
+    window.open(googleMapsUrl, "_blank");
   };
 
   return (
