@@ -16,11 +16,13 @@ export const RestaurantHeader = ({ logoUrl, name, description }: RestaurantHeade
       />
       <div className="text-center md:text-left">
         <h1 className="text-2xl md:text-4xl font-bold bg-gradient-to-r from-primary via-pink-500 to-secondary bg-clip-text text-transparent">
-          {name}
+          Try EatUP! For Your Restaurant
         </h1>
-        <p className="text-sm md:text-base text-muted-foreground mb-2">{description}</p>
+        <p className="text-sm md:text-base text-muted-foreground mb-2">
+          See How EatUP! Works for Your Restaurant
+        </p>
         <p className="text-sm text-muted-foreground max-w-lg">
-          Try our interactive demo to see how your customers will experience the review process. Enter your restaurant's name and Google Maps URL below to customize the demo. Watch how customers can enhance their reviews with receipt photos, mention their server's name, and receive instant rewards. They'll get their first reward code to show your staff, plus the option to sign up for EatUP! to earn more rewards on future visits.
+          Customize the demo with your restaurant's name and Google Maps link to experience the process as your customers would. Watch how they write reviews, upload receipts for rewards, and share their feedback. EatUP! boosts positive reviews, encourages loyalty, and drives repeat visits with AI-powered tools.
         </p>
       </div>
     </div>
