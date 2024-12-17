@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { Check } from "lucide-react";
 
@@ -18,25 +17,17 @@ export const DemoPreferences = ({ onPreferencesSaved }: DemoPreferencesProps) =>
   const { toast } = useToast();
 
   useEffect(() => {
-    const fetchDemoPreferences = async () => {
-      const { data, error } = await supabase
-        .from('demo_preferences')
-        .select('*')
-        .order('created_at', { ascending: false })
-        .limit(1)
-        .single();
-
-      if (data && !error) {
-        setRestaurantName(data.restaurant_name);
-        setGoogleMapsUrl(data.google_maps_url);
-        onPreferencesSaved(data.restaurant_name, data.google_maps_url);
-      }
-    };
-
-    fetchDemoPreferences();
+    // Load preferences from local storage on component mount
+    const savedPreferences = localStorage.getItem('demoPreferences');
+    if (savedPreferences) {
+      const { restaurantName: savedName, googleMapsUrl: savedUrl } = JSON.parse(savedPreferences);
+      setRestaurantName(savedName);
+      setGoogleMapsUrl(savedUrl);
+      onPreferencesSaved(savedName, savedUrl);
+    }
   }, [onPreferencesSaved]);
 
-  const handleSavePreferences = async () => {
+  const handleSavePreferences = () => {
     if (!restaurantName.trim() || !googleMapsUrl.trim()) {
       toast({
         title: "Missing information",
@@ -48,14 +39,11 @@ export const DemoPreferences = ({ onPreferencesSaved }: DemoPreferencesProps) =>
 
     setIsSaving(true);
     try {
-      const { error } = await supabase
-        .from('demo_preferences')
-        .insert({
-          restaurant_name: restaurantName,
-          google_maps_url: googleMapsUrl,
-        });
-
-      if (error) throw error;
+      // Save to local storage
+      localStorage.setItem('demoPreferences', JSON.stringify({
+        restaurantName,
+        googleMapsUrl,
+      }));
 
       onPreferencesSaved(restaurantName, googleMapsUrl);
       setShowSuccess(true);
