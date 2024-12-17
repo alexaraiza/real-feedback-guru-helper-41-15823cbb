@@ -27,18 +27,19 @@ export const EmailCapture = ({ rewardCode }: EmailCaptureProps) => {
     const refinedReview = localStorage.getItem('refinedReview');
     const visitTimestamp = new Date().toLocaleString();
     
-    let emailBody = `Hello EatUP! I'd like to sign up and get my next reward at ${restaurantName}.\n\n`;
+    let emailBody = `Dear EatUP! Team,\n\n`;
+    emailBody += `I'm excited to join the EatUP! rewards program at ${restaurantName}! I understand that EatUP! is revolutionizing the dining experience by offering progressive rewards that get better with each visit.\n\n`;
     
     // Add today's reward code if available
     if (rewardCode) {
-      emailBody += `Today's Unique Reward Code: ${rewardCode}\n`;
-      emailBody += "Show this code to your server on your next visit to redeem your personalized reward!\n\n";
+      emailBody += `My Unique Reward Code: ${rewardCode}\n`;
+      emailBody += `(I'll show this code to my server on my next visit to redeem my personalized reward)\n\n`;
     }
     
-    // Add visit timestamp and restaurant details
-    emailBody += `Visit Date: ${visitTimestamp}\n`;
+    emailBody += `Visit Details:\n`;
+    emailBody += `Date: ${visitTimestamp}\n`;
     emailBody += `Restaurant: ${restaurantName}\n`;
-    emailBody += `Google Maps: ${googleMapsUrl}\n\n`;
+    emailBody += `Location: ${googleMapsUrl}\n\n`;
     
     // Add the enhanced review if available, otherwise use original review
     if (refinedReview) {
@@ -59,16 +60,28 @@ export const EmailCapture = ({ rewardCode }: EmailCaptureProps) => {
       emailBody += "\n";
     }
 
-    emailBody += "Next Steps for Your Progressive Rewards:\n";
-    emailBody += "1. Use your unique reward code on your next visit\n";
-    emailBody += "2. After your next visit, reply to this email with your receipt\n";
-    emailBody += "3. We'll send you a special reward voucher for your third visit!\n\n";
+    emailBody += "About EatUP! Progressive Rewards Program:\n";
+    emailBody += "• First Visit (Today): Left a review and joined the program\n";
+    emailBody += "• Second Visit: Use unique reward code for a special welcome-back reward\n";
+    emailBody += "• Third Visit: Send receipt to unlock premium rewards tier\n";
+    emailBody += "• Fourth Visit and Beyond: Access to exclusive VIP offers\n\n";
 
-    emailBody += "By signing up to EatUP!, I'll receive:\n";
-    emailBody += `1. A personalized reward for my next visit to ${restaurantName}\n`;
-    emailBody += "2. A special third-visit reward when I send my next receipt\n";
-    emailBody += "3. Exclusive offers tailored to my dining preferences\n\n";
-    emailBody += "I'm excited to join EatUP! and earn more rewards with each visit!\n\n";
+    emailBody += "My Next Steps:\n";
+    emailBody += "1. Return to " + restaurantName + " with my unique reward code\n";
+    emailBody += "2. After dining, reply to this email with my receipt photo\n";
+    emailBody += "3. Receive my exclusive third-visit reward voucher\n\n";
+
+    emailBody += "What I'll Get with EatUP!:\n";
+    emailBody += `1. Immediate Reward: Special offer for my next visit to ${restaurantName}\n`;
+    emailBody += "2. Progressive Benefits: Increasing rewards with each visit\n";
+    emailBody += "3. VIP Treatment: Priority access to special events and promotions\n";
+    emailBody += "4. Personalized Experience: AI-powered reward recommendations\n";
+    emailBody += "5. Exclusive Access: Members-only dining events and tastings\n\n";
+
+    emailBody += "Thank you for helping me enhance my dining experience with EatUP!'s innovative rewards program.\n\n";
+    emailBody += "Looking forward to my next visit!\n\n";
+    emailBody += "Best regards,\n";
+    emailBody += "[Your Name]";
 
     const mailtoLink = `mailto:rewards@eatup.co?subject=Sign me up for EatUP! Rewards at ${encodeURIComponent(restaurantName)}&body=${encodeURIComponent(emailBody)}`;
     window.location.href = mailtoLink;
@@ -86,8 +99,8 @@ export const EmailCapture = ({ rewardCode }: EmailCaptureProps) => {
       <div>
         <p className="text-center text-gray-600 text-lg mb-6">
           {rewardCode 
-            ? "Sign up now to save your unique reward code and unlock a special reward for your next visit!" 
-            : "Join EatUP! now to unlock better rewards with each visit - up to your 4th visit!"}
+            ? "Sign up now to save your unique reward code and join our progressive rewards program!" 
+            : "Join EatUP! now to unlock our innovative 4-tier rewards program with AI-powered personalization!"}
         </p>
         <Button 
           onClick={handleEmailClick}
