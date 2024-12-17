@@ -1,7 +1,6 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import DemoPage from "./pages/demo";
 import CustomDemoPage from "./pages/custom-demo";
-import Index from "./pages/Index";
 import RestaurantOnboarding from "./pages/restaurants/onboard";
 import RestaurantDashboard from "./pages/restaurants/dashboard";
 import CreateReviewPage from "./pages/restaurants/create-review-page";
@@ -14,8 +13,8 @@ function App() {
     <Router>
       <AuthProvider>
         <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/demo" element={<DemoPage />} />
+          <Route path="/" element={<DemoPage />} />
+          <Route path="/demo" element={<Navigate to="/" replace />} />
           <Route path="/demo/:slug" element={<CustomDemoPage />} />
           <Route path="/restaurants/onboard" element={<RestaurantOnboarding />} />
           <Route path="/restaurants/dashboard" element={<RestaurantDashboard />} />
