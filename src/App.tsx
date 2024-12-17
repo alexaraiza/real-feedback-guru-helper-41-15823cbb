@@ -34,7 +34,7 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <DemoPage />,
-    errorElement: <div>Page not found</div>,
+    errorElement: <div>Page not found</div>, // Add error handling
   },
   {
     path: "/terms",
