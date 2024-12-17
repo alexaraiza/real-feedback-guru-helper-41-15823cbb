@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 
-export default function CreateReviewPage() {
+const CreateReviewPage = () => {
   const [title, setTitle] = useState("");
   const [welcomeMessage, setWelcomeMessage] = useState("");
   const [thankYouMessage, setThankYouMessage] = useState("");
@@ -123,4 +123,6 @@ export default function CreateReviewPage() {
       </form>
     </div>
   );
-}
+};
+
+export default CreateReviewPage;

@@ -1,7 +1,7 @@
 import { SimpleRestaurantForm } from "@/components/restaurants/SimpleRestaurantForm";
 import { RestaurantNav } from "@/components/navigation/RestaurantNav";
 
-export default function RestaurantOnboard() {
+const RestaurantOnboarding = () => {
   return (
     <>
       <RestaurantNav />
@@ -10,4 +10,6 @@ export default function RestaurantOnboard() {
       </div>
     </>
   );
-}
+};
+
+export default RestaurantOnboarding;

@@ -1,12 +1,12 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import DemoPage from "./pages/demo";
 import CustomDemoPage from "./pages/custom-demo";
-import { Index } from "./pages";
-import { RestaurantOnboarding } from "./pages/restaurants/onboard";
-import { RestaurantDashboard } from "./pages/restaurants/dashboard";
-import { CreateReviewPage } from "./pages/restaurants/create-review-page";
-import { ReviewPagePreview } from "./pages/restaurants/review-page-preview";
-import { AuthProvider } from "./providers/AuthProvider";
+import { Index } from "./pages/Index";
+import RestaurantOnboarding from "./pages/restaurants/onboard";
+import RestaurantDashboard from "./pages/restaurants/dashboard";
+import CreateReviewPage from "./pages/restaurants/create-review-page";
+import ReviewPagePreview from "./pages/restaurants/review-page-preview";
+import { AuthProvider } from "./components/auth/AuthProvider";
 import { Toaster } from "./components/ui/toaster";
 
 function App() {
