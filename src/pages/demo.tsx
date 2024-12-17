@@ -2,15 +2,19 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { RestaurantHeader } from "@/components/demo/RestaurantHeader";
 import { ReviewSection } from "@/components/demo/ReviewSection";
-import { Building2, ArrowRight, Star, Utensils, MessageSquare, Gift, Bot } from "lucide-react";
+import { Building2, ArrowRight, Star, Utensils, MessageSquare, Gift, Bot, Link2 } from "lucide-react";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { AiSurveyWidget } from "@/components/demo/AiSurveyWidget";
 import { Footer } from "@/components/Footer";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
+import { generateSlug } from "@/utils/urlUtils";
 
 const DemoPage = () => {
   const navigate = useNavigate();
   const [showWidget, setShowWidget] = useState(false);
+  const { toast } = useToast();
 
   const handleRegistrationClick = () => {
     window.open("https://forms.gle/7Zfrin7spzLWixGj9", "_blank");
@@ -18,6 +22,68 @@ const DemoPage = () => {
 
   const handleSurveyDemoClick = () => {
     setShowWidget(!showWidget);
+  };
+
+  const handleCreateCustomDemo = async () => {
+    try {
+      // Get saved preferences from localStorage
+      const savedName = localStorage.getItem('demoRestaurantName');
+      const savedUrl = localStorage.getItem('demoGoogleMapsUrl');
+
+      if (!savedName || !savedUrl) {
+        toast({
+          title: "Missing preferences",
+          description: "Please set your restaurant preferences first.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      const slug = generateSlug(savedName);
+
+      // Create demo page in database
+      const { data, error } = await supabase
+        .from('demo_pages')
+        .insert([
+          {
+            restaurant_name: savedName,
+            google_maps_url: savedUrl,
+            slug: slug
+          }
+        ])
+        .select()
+        .single();
+
+      if (error) {
+        if (error.code === '23505') { // Unique violation
+          toast({
+            title: "Demo already exists",
+            description: "A demo page already exists for this restaurant.",
+            variant: "destructive",
+          });
+        } else {
+          throw error;
+        }
+        return;
+      }
+
+      // Copy the URL to clipboard
+      const demoUrl = `${window.location.origin}/demo/${slug}`;
+      await navigator.clipboard.writeText(demoUrl);
+
+      toast({
+        title: "Demo page created!",
+        description: "The URL has been copied to your clipboard.",
+      });
+
+    } catch (error) {
+      console.error('Error creating demo:', error);
+      toast({
+        title: "Error",
+        description: "Failed to create demo page. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
@@ -204,6 +270,18 @@ const DemoPage = () => {
               </div>
             </div>
           </div>
+        </div>
+        <div className="mt-8 text-center">
+          <Button
+            onClick={handleCreateCustomDemo}
+            className="bg-primary hover:bg-primary/90 text-white font-semibold"
+          >
+            Create Custom Demo Page
+            <Link2 className="ml-2 h-4 w-4" />
+          </Button>
+          <p className="text-sm text-muted-foreground mt-2">
+            Create a unique demo page with your restaurant's details
+          </p>
         </div>
       </div>
       <AiSurveyWidget show={showWidget} />

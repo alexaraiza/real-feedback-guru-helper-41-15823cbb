@@ -57,6 +57,30 @@ export type Database = {
         }
         Relationships: []
       }
+      demo_pages: {
+        Row: {
+          created_at: string
+          google_maps_url: string
+          id: string
+          restaurant_name: string
+          slug: string
+        }
+        Insert: {
+          created_at?: string
+          google_maps_url: string
+          id?: string
+          restaurant_name: string
+          slug: string
+        }
+        Update: {
+          created_at?: string
+          google_maps_url?: string
+          id?: string
+          restaurant_name?: string
+          slug?: string
+        }
+        Relationships: []
+      }
       demo_preferences: {
         Row: {
           created_at: string
