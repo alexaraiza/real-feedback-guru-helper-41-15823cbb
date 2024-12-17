@@ -18,10 +18,13 @@ import {
 } from "@/components/ui/dialog";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
+import { Button } from "@/components/ui/button";
+import { Building2 } from "lucide-react";
 
 const Index = () => {
   const [showWidget, setShowWidget] = useState(false);
   const [showAuthDialog, setShowAuthDialog] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
   const experienceSectionRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -29,6 +32,7 @@ const Index = () => {
   useEffect(() => {
     // Check if user is already logged in
     supabase.auth.onAuthStateChange((event, session) => {
+      setIsAuthenticated(!!session);
       if (session) {
         setShowAuthDialog(false);
         if (event === 'SIGNED_IN') {
@@ -36,6 +40,7 @@ const Index = () => {
             title: "Welcome!",
             description: "You've successfully signed in.",
           });
+          navigate("/restaurants/dashboard");
         }
       }
     });
@@ -50,7 +55,7 @@ const Index = () => {
         document.body.removeChild(script);
       };
     }
-  }, [showWidget, toast]);
+  }, [showWidget, toast, navigate]);
 
   const scrollToExperience = () => {
     navigate("/demo");
@@ -60,9 +65,27 @@ const Index = () => {
     setShowWidget(!showWidget);
   };
 
+  const handleAuthClick = () => {
+    if (isAuthenticated) {
+      navigate("/restaurants/dashboard");
+    } else {
+      setShowAuthDialog(true);
+    }
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
       <div className="flex-grow">
+        <div className="absolute top-4 right-4 z-10">
+          <Button 
+            onClick={handleAuthClick}
+            variant="outline"
+            className="bg-white/90 backdrop-blur-sm hover:bg-white/70"
+          >
+            <Building2 className="mr-2 h-5 w-5" />
+            {isAuthenticated ? "View Dashboard" : "Restaurant Sign In"}
+          </Button>
+        </div>
         <HeroSection onTryDemo={scrollToExperience} onShowAuth={() => setShowAuthDialog(true)} />
         <FeaturesSection />
         <CreateReviewPageSection onShowAuth={() => setShowAuthDialog(true)} />
