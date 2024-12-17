@@ -29,12 +29,12 @@ export class FirecrawlService {
         .eq('name', 'FIRECRAWL_API_KEY')
         .single();
       
-      if (error || !data) {
+      if (error) {
         console.error('Error fetching Firecrawl API key:', error);
         return null;
       }
 
-      return data.value;
+      return data?.value || null;
     } catch (error) {
       console.error('Error fetching Firecrawl API key:', error);
       return null;
@@ -56,7 +56,7 @@ export class FirecrawlService {
         limit: 10,
         scrapeOptions: {
           formats: ['markdown', 'html'],
-          cssSelectors: [
+          elements: [
             { name: 'name', selector: 'h1, .restaurant-name, [itemprop="name"]' },
             { name: 'description', selector: 'meta[name="description"], .restaurant-description, [itemprop="description"]' },
             { name: 'address', selector: '.address, [itemprop="address"]' },
