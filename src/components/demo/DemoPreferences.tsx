@@ -4,7 +4,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { CheckCircle2 } from "lucide-react";
 
 interface DemoPreferencesProps {
   onPreferencesSaved: (name: string, url: string) => void;
@@ -14,7 +13,6 @@ export const DemoPreferences = ({ onPreferencesSaved }: DemoPreferencesProps) =>
   const [restaurantName, setRestaurantName] = useState("The Local Kitchen & Bar");
   const [googleMapsUrl, setGoogleMapsUrl] = useState("https://maps.app.goo.gl/Nx23mQHet4TBfctJ6");
   const [isSaving, setIsSaving] = useState(false);
-  const [showSuccess, setShowSuccess] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -58,8 +56,6 @@ export const DemoPreferences = ({ onPreferencesSaved }: DemoPreferencesProps) =>
       if (error) throw error;
 
       onPreferencesSaved(restaurantName, googleMapsUrl);
-      setShowSuccess(true);
-      setTimeout(() => setShowSuccess(false), 3000);
       toast({
         title: "Preferences saved!",
         description: "Your demo has been customized successfully.",
@@ -99,16 +95,9 @@ export const DemoPreferences = ({ onPreferencesSaved }: DemoPreferencesProps) =>
       <Button 
         onClick={handleSavePreferences}
         disabled={isSaving}
-        className="w-full bg-primary hover:bg-primary/90 relative"
+        className="w-full bg-primary hover:bg-primary/90"
       >
-        <span className={`transition-opacity ${showSuccess ? 'opacity-0' : 'opacity-100'}`}>
-          {isSaving ? "Saving..." : "Save Demo Preferences"}
-        </span>
-        {showSuccess && (
-          <span className="absolute inset-0 flex items-center justify-center text-white">
-            <CheckCircle2 className="w-5 h-5 mr-2" /> Saved Successfully!
-          </span>
-        )}
+        {isSaving ? "Saving..." : "Save Demo Preferences"}
       </Button>
     </div>
   );
