@@ -4,17 +4,37 @@ import { RestaurantHeader } from "@/components/demo/RestaurantHeader";
 import { ReviewSection } from "@/components/demo/ReviewSection";
 import { Building2, ArrowRight, Star, Utensils, MessageSquare, Gift, Bot, Link2 } from "lucide-react";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { AiSurveyWidget } from "@/components/demo/AiSurveyWidget";
 import { Footer } from "@/components/Footer";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { generateSlug } from "@/utils/urlUtils";
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 
 const DemoPage = () => {
   const navigate = useNavigate();
   const [showWidget, setShowWidget] = useState(false);
   const { toast } = useToast();
+  const [preferences, setPreferences] = useState<{
+    restaurantName: string | null;
+    googleMapsUrl: string | null;
+  }>({
+    restaurantName: null,
+    googleMapsUrl: null,
+  });
+
+  useEffect(() => {
+    // Load preferences from localStorage
+    const savedPreferences = localStorage.getItem('demoPreferences');
+    if (savedPreferences) {
+      const { restaurantName, googleMapsUrl } = JSON.parse(savedPreferences);
+      setPreferences({
+        restaurantName,
+        googleMapsUrl,
+      });
+    }
+  }, []);
 
   const handleRegistrationClick = () => {
     window.open("https://forms.gle/7Zfrin7spzLWixGj9", "_blank");
@@ -27,10 +47,8 @@ const DemoPage = () => {
   const handleCreateCustomDemo = async () => {
     try {
       // Get saved preferences from localStorage
-      const savedName = localStorage.getItem('demoRestaurantName');
-      const savedUrl = localStorage.getItem('demoGoogleMapsUrl');
-
-      if (!savedName || !savedUrl) {
+      const savedPreferences = localStorage.getItem('demoPreferences');
+      if (!savedPreferences) {
         toast({
           title: "Missing preferences",
           description: "Please set your restaurant preferences first.",
@@ -39,15 +57,25 @@ const DemoPage = () => {
         return;
       }
 
-      const slug = generateSlug(savedName);
+      const { restaurantName, googleMapsUrl } = JSON.parse(savedPreferences);
+      if (!restaurantName || !googleMapsUrl) {
+        toast({
+          title: "Missing preferences",
+          description: "Please set your restaurant preferences first.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      const slug = generateSlug(restaurantName);
 
       // Create demo page in database
       const { data, error } = await supabase
         .from('demo_pages')
         .insert([
           {
-            restaurant_name: savedName,
-            google_maps_url: savedUrl,
+            restaurant_name: restaurantName,
+            google_maps_url: googleMapsUrl,
             slug: slug
           }
         ])
@@ -195,9 +223,18 @@ const DemoPage = () => {
         <div className="max-w-7xl mx-auto px-4 py-8 md:py-12">
           <RestaurantHeader 
             logoUrl="/lovable-uploads/23bef056-e873-4e3d-b77b-8ac3c49fa8d8.png"
-            name="Demo Restaurant"
+            name={preferences.restaurantName || "Demo Restaurant"}
             description="Share your positive dining experience!"
           />
+
+          {!preferences.restaurantName && (
+            <Alert variant="destructive" className="mb-6">
+              <AlertTitle>Missing preferences</AlertTitle>
+              <AlertDescription>
+                Please set your restaurant preferences first.
+              </AlertDescription>
+            </Alert>
+          )}
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
             <ReviewSection />
