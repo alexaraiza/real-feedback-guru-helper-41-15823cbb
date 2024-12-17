@@ -10,13 +10,15 @@ interface PreviewSectionProps {
 export const PreviewSection = ({ restaurantName, googleMapsUrl, generatedUrl }: PreviewSectionProps) => {
   if (!generatedUrl) return null;
 
+  const fullUrl = `${window.location.origin}${generatedUrl}`;
+
   return (
     <div className="mt-8 p-6 bg-white/80 backdrop-blur-sm rounded-xl shadow-lg border border-pink-100">
       <h3 className="text-xl font-semibold mb-4">Your Review Page Preview</h3>
       <div className="mb-4">
         <p className="text-sm text-gray-600 mb-2">Your unique review page URL:</p>
         <code className="block p-3 bg-gray-50 rounded-lg text-sm break-all">
-          {generatedUrl}
+          {fullUrl}
         </code>
       </div>
       <ReviewCard

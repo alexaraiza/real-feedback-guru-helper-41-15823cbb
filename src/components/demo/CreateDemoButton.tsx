@@ -50,7 +50,8 @@ export const CreateDemoButton = ({ onPageCreated }: CreateDemoButtonProps) => {
           {
             restaurant_name: restaurantName,
             google_maps_url: googleMapsUrl,
-            slug: uniqueSlug
+            slug: uniqueSlug,
+            full_url: `/demo/${uniqueSlug}` // Store the relative URL
           }
         ])
         .select()
@@ -60,10 +61,10 @@ export const CreateDemoButton = ({ onPageCreated }: CreateDemoButtonProps) => {
         throw error;
       }
 
-      const fullUrl = `https://eatup.co/${uniqueSlug}`;
+      const fullUrl = `/demo/${uniqueSlug}`; // Use relative URL
       
-      // Copy the URL to clipboard
-      await navigator.clipboard.writeText(fullUrl);
+      // Copy the URL to clipboard - use window.location.origin to get the current domain
+      await navigator.clipboard.writeText(`${window.location.origin}${fullUrl}`);
 
       toast({
         title: "Review page created!",
