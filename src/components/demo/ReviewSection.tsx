@@ -6,6 +6,7 @@ import { RewardsSection } from "./RewardsSection";
 import { ThoughtsStep } from "./steps/ThoughtsStep";
 import { UploadStep } from "./steps/UploadStep";
 import { RefineStep } from "./steps/RefineStep";
+import { DemoPreferences } from "./DemoPreferences";
 
 export const ReviewSection = () => {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
@@ -14,7 +15,14 @@ export const ReviewSection = () => {
   const [analysisResult, setAnalysisResult] = useState<any>(null);
   const [isRefining, setIsRefining] = useState(false);
   const [rewardCode, setRewardCode] = useState<string | null>(null);
+  const [googleMapsUrl, setGoogleMapsUrl] = useState("https://maps.app.goo.gl/Nx23mQHet4TBfctJ6");
+  const [restaurantName, setRestaurantName] = useState("The Local Kitchen & Bar");
   const { toast } = useToast();
+
+  const handlePreferencesSaved = (name: string, url: string) => {
+    setRestaurantName(name);
+    setGoogleMapsUrl(url);
+  };
 
   const handleReceiptUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -87,7 +95,8 @@ export const ReviewSection = () => {
       const { data, error } = await supabase.functions.invoke('refine-review', {
         body: { 
           review: reviewText,
-          receiptData: analysisResult || null
+          receiptData: analysisResult || null,
+          restaurantName: restaurantName // Pass the restaurant name to the function
         },
       });
 
@@ -113,7 +122,7 @@ export const ReviewSection = () => {
   const handleCopyAndRedirect = () => {
     const finalReview = refinedReview || reviewText;
     navigator.clipboard.writeText(finalReview);
-    window.open('https://maps.app.goo.gl/Nx23mQHet4TBfctJ6', '_blank');
+    window.open(googleMapsUrl, '_blank');
     setRewardCode('plzrdDDQ');
     toast({
       title: "Review copied!",
@@ -131,6 +140,8 @@ export const ReviewSection = () => {
   return (
     <Card>
       <CardContent className="space-y-8 pt-6">
+        <DemoPreferences onPreferencesSaved={handlePreferencesSaved} />
+        
         <div className="text-center">
           <div className="space-y-2">
             <p className="text-lg font-medium text-primary">
