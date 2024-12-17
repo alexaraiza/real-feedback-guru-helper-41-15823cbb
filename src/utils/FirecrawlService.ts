@@ -56,13 +56,13 @@ export class FirecrawlService {
         limit: 10,
         scrapeOptions: {
           formats: ['markdown', 'html'],
-          selectors: [
-            'h1, .restaurant-name, [itemprop="name"]',
-            'meta[name="description"], .restaurant-description, [itemprop="description"]',
-            '.address, [itemprop="address"]',
-            '.phone, [itemprop="telephone"]',
-            '.cuisine-type, [itemprop="servesCuisine"]'
-          ]
+          cssSelectors: {
+            name: 'h1, .restaurant-name, [itemprop="name"]',
+            description: 'meta[name="description"], .restaurant-description, [itemprop="description"]',
+            address: '.address, [itemprop="address"]',
+            phone: '.phone, [itemprop="telephone"]',
+            cuisine: '.cuisine-type, [itemprop="servesCuisine"]'
+          }
         }
       }) as CrawlResponse;
 
