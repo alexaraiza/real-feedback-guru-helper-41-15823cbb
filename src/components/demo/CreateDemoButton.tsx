@@ -61,7 +61,7 @@ export const CreateDemoButton = () => {
       await navigator.clipboard.writeText(demoUrl);
 
       toast({
-        title: "Demo page created!",
+        title: "Review page created!",
         description: "The URL has been copied to your clipboard.",
       });
 
@@ -69,7 +69,7 @@ export const CreateDemoButton = () => {
       console.error('Error creating demo:', error);
       toast({
         title: "Error",
-        description: "Failed to create demo page. Please try again.",
+        description: "Failed to create review page. Please try again.",
         variant: "destructive",
       });
     } finally {
@@ -78,18 +78,13 @@ export const CreateDemoButton = () => {
   };
 
   return (
-    <div className="mt-8 text-center">
-      <Button
-        onClick={handleCreateCustomDemo}
-        disabled={isCreating}
-        className="bg-primary hover:bg-primary/90 text-white font-semibold"
-      >
-        {isCreating ? "Creating..." : "Create Custom Demo Page"}
-        <Link2 className="ml-2 h-4 w-4" />
-      </Button>
-      <p className="text-sm text-muted-foreground mt-2">
-        Create a unique demo page with your restaurant's details
-      </p>
-    </div>
+    <Button
+      onClick={handleCreateCustomDemo}
+      disabled={isCreating}
+      className="w-full bg-primary hover:bg-primary/90 text-white font-semibold py-4 md:py-6"
+    >
+      {isCreating ? "Creating..." : "Create Your Review Page"}
+      <Link2 className="ml-2 h-4 w-4 md:h-5 md:w-5" />
+    </Button>
   );
 };
