@@ -1,4 +1,5 @@
 export interface RestaurantFormData {
+  website_url: string;
   name: string;
   address: string;
   google_maps_url: string;
