@@ -60,6 +60,7 @@ export type Database = {
       demo_pages: {
         Row: {
           created_at: string
+          full_url: string | null
           google_maps_url: string
           id: string
           restaurant_name: string
@@ -67,6 +68,7 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          full_url?: string | null
           google_maps_url: string
           id?: string
           restaurant_name: string
@@ -74,6 +76,7 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          full_url?: string | null
           google_maps_url?: string
           id?: string
           restaurant_name?: string

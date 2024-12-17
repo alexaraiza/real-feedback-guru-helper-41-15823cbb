@@ -10,7 +10,11 @@ const generateUniqueSlug = (baseName: string) => {
   return `${baseName.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-${timestamp}-${randomString}`;
 };
 
-export const CreateDemoButton = () => {
+interface CreateDemoButtonProps {
+  onPageCreated?: (url: string) => void;
+}
+
+export const CreateDemoButton = ({ onPageCreated }: CreateDemoButtonProps) => {
   const [isCreating, setIsCreating] = useState(false);
   const { toast } = useToast();
 
@@ -56,14 +60,20 @@ export const CreateDemoButton = () => {
         throw error;
       }
 
+      const fullUrl = `https://eatup.co/${uniqueSlug}`;
+      
       // Copy the URL to clipboard
-      const demoUrl = `${window.location.origin}/demo/${uniqueSlug}`;
-      await navigator.clipboard.writeText(demoUrl);
+      await navigator.clipboard.writeText(fullUrl);
 
       toast({
         title: "Review page created!",
         description: "The URL has been copied to your clipboard.",
       });
+
+      // Notify parent component about the new page
+      if (onPageCreated) {
+        onPageCreated(fullUrl);
+      }
 
     } catch (error) {
       console.error('Error creating demo:', error);
