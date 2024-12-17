@@ -3,6 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { RestaurantHeader } from "./RestaurantHeader";
 import { ReviewSection } from "./ReviewSection";
 import { supabase } from "@/integrations/supabase/client";
+import { useNavigate } from "react-router-dom";
 
 interface CustomDemoViewProps {
   slug: string;
@@ -14,7 +15,7 @@ export const CustomDemoView = ({ slug }: CustomDemoViewProps) => {
     google_maps_url: string;
   } | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const loadDemoPage = async () => {
@@ -33,17 +34,21 @@ export const CustomDemoView = ({ slug }: CustomDemoViewProps) => {
             restaurantName: data.restaurant_name,
             googleMapsUrl: data.google_maps_url,
           }));
+        } else {
+          // If no data found, redirect to home
+          navigate('/');
         }
       } catch (err) {
         console.error('Error loading demo page:', err);
-        setError('Failed to load demo page');
+        // On error, redirect to home
+        navigate('/');
       } finally {
         setIsLoading(false);
       }
     };
 
     loadDemoPage();
-  }, [slug]);
+  }, [slug, navigate]);
 
   if (isLoading) {
     return (
@@ -53,23 +58,16 @@ export const CustomDemoView = ({ slug }: CustomDemoViewProps) => {
     );
   }
 
-  if (error || !preferences) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-red-500">
-          {error || "Demo page not found"}
-        </div>
-      </div>
-    );
+  if (!preferences) {
+    return null; // This will never render as we redirect on error/no data
   }
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-pink-50/20">
       <div className="max-w-2xl mx-auto px-4 py-8">
         <RestaurantHeader
-          logoUrl="/lovable-uploads/23bef056-e873-4e3d-b77b-8ac3c49fa8d8.png"
           name={preferences.restaurant_name}
-          description="Share your positive dining experience!"
+          isCustomDemo={true}
         />
         
         <Card className="mt-8">
