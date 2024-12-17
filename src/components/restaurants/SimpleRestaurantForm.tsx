@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { MapPin } from "lucide-react";
+import { MapPin, Globe } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
@@ -142,7 +142,7 @@ export function SimpleRestaurantForm() {
         description: "Restaurant submitted successfully! We'll review your submission shortly.",
       });
 
-      navigate(`/${slug}`);
+      navigate(`/restaurants/${slug}`);
     } catch (error) {
       console.error("Error creating restaurant:", error);
       toast({
@@ -159,11 +159,18 @@ export function SimpleRestaurantForm() {
     <div className="container mx-auto max-w-2xl py-8">
       <div className="mb-8 text-center">
         <h1 className="mb-2 text-3xl font-bold">Register Your Restaurant</h1>
-        <p className="text-muted-foreground">Join our platform and reach more customers</p>
+        <p className="text-muted-foreground">Join EatUP! and reach more customers</p>
+      </div>
+
+      <div className="mb-8 p-4 bg-muted rounded-lg">
+        <div className="flex items-center gap-2 text-muted-foreground">
+          <Globe className="h-5 w-5" />
+          <p>Enter your restaurant's website URL and we'll automatically fetch your information!</p>
+        </div>
       </div>
 
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <WebsiteInfoSection 
             form={form} 
             onCrawl={handleWebsiteCrawl}

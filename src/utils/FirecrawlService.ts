@@ -56,7 +56,7 @@ export class FirecrawlService {
         limit: 10,
         scrapeOptions: {
           formats: ['markdown', 'html'],
-          elements: [
+          cssSelectors: [
             { name: 'name', selector: 'h1, .restaurant-name, [itemprop="name"]' },
             { name: 'description', selector: 'meta[name="description"], .restaurant-description, [itemprop="description"]' },
             { name: 'address', selector: '.address, [itemprop="address"]' },
