@@ -2,20 +2,17 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { RestaurantHeader } from "@/components/demo/RestaurantHeader";
 import { ReviewSection } from "@/components/demo/ReviewSection";
-import { Building2, ArrowRight, Star, Utensils, MessageSquare, Gift, Bot, Link2 } from "lucide-react";
+import { Building2, ArrowRight, Star, Utensils, MessageSquare, Gift, Bot } from "lucide-react";
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { AiSurveyWidget } from "@/components/demo/AiSurveyWidget";
 import { Footer } from "@/components/Footer";
-import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/hooks/use-toast";
-import { generateSlug } from "@/utils/urlUtils";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
+import { CreateDemoButton } from "@/components/demo/CreateDemoButton";
 
 const DemoPage = () => {
   const navigate = useNavigate();
   const [showWidget, setShowWidget] = useState(false);
-  const { toast } = useToast();
   const [preferences, setPreferences] = useState<{
     restaurantName: string | null;
     googleMapsUrl: string | null;
@@ -42,76 +39,6 @@ const DemoPage = () => {
 
   const handleSurveyDemoClick = () => {
     setShowWidget(!showWidget);
-  };
-
-  const handleCreateCustomDemo = async () => {
-    try {
-      // Get saved preferences from localStorage
-      const savedPreferences = localStorage.getItem('demoPreferences');
-      if (!savedPreferences) {
-        toast({
-          title: "Missing preferences",
-          description: "Please set your restaurant preferences first.",
-          variant: "destructive",
-        });
-        return;
-      }
-
-      const { restaurantName, googleMapsUrl } = JSON.parse(savedPreferences);
-      if (!restaurantName || !googleMapsUrl) {
-        toast({
-          title: "Missing preferences",
-          description: "Please set your restaurant preferences first.",
-          variant: "destructive",
-        });
-        return;
-      }
-
-      const slug = generateSlug(restaurantName);
-
-      // Create demo page in database
-      const { data, error } = await supabase
-        .from('demo_pages')
-        .insert([
-          {
-            restaurant_name: restaurantName,
-            google_maps_url: googleMapsUrl,
-            slug: slug
-          }
-        ])
-        .select()
-        .single();
-
-      if (error) {
-        if (error.code === '23505') { // Unique violation
-          toast({
-            title: "Demo already exists",
-            description: "A demo page already exists for this restaurant.",
-            variant: "destructive",
-          });
-        } else {
-          throw error;
-        }
-        return;
-      }
-
-      // Copy the URL to clipboard
-      const demoUrl = `${window.location.origin}/demo/${slug}`;
-      await navigator.clipboard.writeText(demoUrl);
-
-      toast({
-        title: "Demo page created!",
-        description: "The URL has been copied to your clipboard.",
-      });
-
-    } catch (error) {
-      console.error('Error creating demo:', error);
-      toast({
-        title: "Error",
-        description: "Failed to create demo page. Please try again.",
-        variant: "destructive",
-      });
-    }
   };
 
   return (
@@ -238,7 +165,6 @@ const DemoPage = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
             <ReviewSection />
-
             <div className="relative">
               <div className="md:sticky md:top-24 space-y-4 md:space-y-6 bg-white/80 backdrop-blur-sm p-6 md:p-8 rounded-xl shadow-lg border border-pink-100">
                 <div className="text-center space-y-3 md:space-y-4">
@@ -308,18 +234,7 @@ const DemoPage = () => {
             </div>
           </div>
         </div>
-        <div className="mt-8 text-center">
-          <Button
-            onClick={handleCreateCustomDemo}
-            className="bg-primary hover:bg-primary/90 text-white font-semibold"
-          >
-            Create Custom Demo Page
-            <Link2 className="ml-2 h-4 w-4" />
-          </Button>
-          <p className="text-sm text-muted-foreground mt-2">
-            Create a unique demo page with your restaurant's details
-          </p>
-        </div>
+        <CreateDemoButton />
       </div>
       <AiSurveyWidget show={showWidget} />
       <Footer />
