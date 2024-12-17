@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { MessageSquare, LogIn } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 
 interface HeroSectionProps {
@@ -10,12 +11,21 @@ interface HeroSectionProps {
 
 export const HeroSection = ({ onTryDemo, onShowAuth }: HeroSectionProps) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     supabase.auth.onAuthStateChange((event, session) => {
       setIsAuthenticated(!!session);
     });
   }, []);
+
+  const handleAuthClick = () => {
+    if (isAuthenticated) {
+      navigate("/restaurants/dashboard");
+    } else {
+      onShowAuth();
+    }
+  };
 
   return (
     <section className="relative min-h-[80vh] flex items-center bg-gradient-to-b from-white via-[#FFE5ED] to-[#FFD5E2]/20">
@@ -54,11 +64,11 @@ export const HeroSection = ({ onTryDemo, onShowAuth }: HeroSectionProps) => {
           <Button 
             variant="outline"
             size="lg"
-            onClick={onShowAuth}
+            onClick={handleAuthClick}
             className="border-[#D946EF] text-[#D946EF] hover:bg-[#D946EF] hover:text-white w-full sm:w-auto"
           >
             <LogIn className="mr-2 h-5 w-5" />
-            Sign In / Register
+            {isAuthenticated ? "View Dashboard" : "Sign In / Register"}
           </Button>
         </div>
       </div>
