@@ -31,7 +31,7 @@ export const EmailCapture = ({ rewardCode }: EmailCaptureProps) => {
     
     // Add today's reward code if available
     if (rewardCode) {
-      emailBody += `Today's Reward Code: ${rewardCode}\n`;
+      emailBody += `Today's Unique Reward Code: ${rewardCode}\n`;
       emailBody += "Show this code to your server on your next visit to redeem your personalized reward!\n\n";
     }
     
@@ -59,10 +59,15 @@ export const EmailCapture = ({ rewardCode }: EmailCaptureProps) => {
       emailBody += "\n";
     }
 
+    emailBody += "Next Steps for Your Progressive Rewards:\n";
+    emailBody += "1. Use your unique reward code on your next visit\n";
+    emailBody += "2. After your next visit, reply to this email with your receipt\n";
+    emailBody += "3. We'll send you a special reward voucher for your third visit!\n\n";
+
     emailBody += "By signing up to EatUP!, I'll receive:\n";
     emailBody += `1. A personalized reward for my next visit to ${restaurantName}\n`;
-    emailBody += "2. The ability to earn more rewards up to my 4th visit\n";
-    emailBody += "3. Special offers tailored to my taste\n\n";
+    emailBody += "2. A special third-visit reward when I send my next receipt\n";
+    emailBody += "3. Exclusive offers tailored to my dining preferences\n\n";
     emailBody += "I'm excited to join EatUP! and earn more rewards with each visit!\n\n";
 
     const mailtoLink = `mailto:rewards@eatup.co?subject=Sign me up for EatUP! Rewards at ${encodeURIComponent(restaurantName)}&body=${encodeURIComponent(emailBody)}`;
@@ -81,7 +86,7 @@ export const EmailCapture = ({ rewardCode }: EmailCaptureProps) => {
       <div>
         <p className="text-center text-gray-600 text-lg mb-6">
           {rewardCode 
-            ? "Sign up now to save your reward code and unlock a special reward for your next visit!" 
+            ? "Sign up now to save your unique reward code and unlock a special reward for your next visit!" 
             : "Join EatUP! now to unlock better rewards with each visit - up to your 4th visit!"}
         </p>
         <Button 

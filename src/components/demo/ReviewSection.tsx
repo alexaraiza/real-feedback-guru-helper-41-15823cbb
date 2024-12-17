@@ -7,6 +7,7 @@ import { ThoughtsStep } from "./steps/ThoughtsStep";
 import { UploadStep } from "./steps/UploadStep";
 import { RefineStep } from "./steps/RefineStep";
 import { DemoPreferences } from "./DemoPreferences";
+import { nanoid } from 'nanoid';
 
 export const ReviewSection = () => {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
@@ -123,7 +124,9 @@ export const ReviewSection = () => {
     const finalReview = refinedReview || reviewText;
     navigator.clipboard.writeText(finalReview);
     window.open(googleMapsUrl, '_blank');
-    setRewardCode('plzrdDDQ');
+    // Generate a unique 8-character reward code
+    const uniqueCode = nanoid(8);
+    setRewardCode(uniqueCode);
     toast({
       title: "Review copied!",
       description: "Opening Google Reviews in a new tab. Please paste your review there.",
