@@ -6,6 +6,7 @@ import RestaurantDetails from "@/pages/restaurants/[id]";
 import RestaurantList from "@/pages/restaurants/index";
 import RestaurantOnboard from "@/pages/restaurants/onboard";
 import RestaurantDashboard from "@/pages/restaurants/dashboard";
+import CreateReviewPage from "@/pages/restaurants/create-review-page";
 import LoginPage from "@/pages/auth/LoginPage";
 import TermsPage from "@/pages/terms";
 
@@ -60,6 +61,15 @@ const router = createBrowserRouter([
     element: (
       <ProtectedRoute>
         <RestaurantOnboard />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    // Add this route before the :id route to ensure it takes precedence
+    path: "/restaurants/create-review-page",
+    element: (
+      <ProtectedRoute>
+        <CreateReviewPage />
       </ProtectedRoute>
     ),
   },
