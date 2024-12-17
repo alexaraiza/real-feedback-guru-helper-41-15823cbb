@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
-import { RewardsSection } from "./RewardsSection";
 import { RestaurantHeader } from "./RestaurantHeader";
+import { ReviewSection } from "./ReviewSection";
 import { supabase } from "@/integrations/supabase/client";
 
 interface CustomDemoViewProps {
@@ -28,6 +28,11 @@ export const CustomDemoView = ({ slug }: CustomDemoViewProps) => {
         if (error) throw error;
         if (data) {
           setPreferences(data);
+          // Save to localStorage for components that rely on it
+          localStorage.setItem('demoPreferences', JSON.stringify({
+            restaurantName: data.restaurant_name,
+            googleMapsUrl: data.google_maps_url,
+          }));
         }
       } catch (err) {
         console.error('Error loading demo page:', err);
@@ -69,10 +74,10 @@ export const CustomDemoView = ({ slug }: CustomDemoViewProps) => {
         
         <Card className="mt-8">
           <CardContent className="p-6">
-            <RewardsSection 
-              rewardCode={null}
-              customGoogleMapsUrl={preferences.google_maps_url}
+            <ReviewSection 
               customRestaurantName={preferences.restaurant_name}
+              customGoogleMapsUrl={preferences.google_maps_url}
+              hidePreferences={true}
             />
           </CardContent>
         </Card>

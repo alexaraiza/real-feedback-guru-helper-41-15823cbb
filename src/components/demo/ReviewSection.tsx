@@ -9,15 +9,25 @@ import { RefineStep } from "./steps/RefineStep";
 import { DemoPreferences } from "./DemoPreferences";
 import { nanoid } from 'nanoid';
 
-export const ReviewSection = () => {
+interface ReviewSectionProps {
+  customRestaurantName?: string;
+  customGoogleMapsUrl?: string;
+  hidePreferences?: boolean;
+}
+
+export const ReviewSection = ({ 
+  customRestaurantName,
+  customGoogleMapsUrl,
+  hidePreferences = false 
+}: ReviewSectionProps) => {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [reviewText, setReviewText] = useState("");
   const [refinedReview, setRefinedReview] = useState("");
   const [analysisResult, setAnalysisResult] = useState<any>(null);
   const [isRefining, setIsRefining] = useState(false);
   const [rewardCode, setRewardCode] = useState<string | null>(null);
-  const [googleMapsUrl, setGoogleMapsUrl] = useState("https://maps.app.goo.gl/Nx23mQHet4TBfctJ6");
-  const [restaurantName, setRestaurantName] = useState("The Local Kitchen & Bar");
+  const [googleMapsUrl, setGoogleMapsUrl] = useState(customGoogleMapsUrl || "https://maps.app.goo.gl/Nx23mQHet4TBfctJ6");
+  const [restaurantName, setRestaurantName] = useState(customRestaurantName || "The Local Kitchen & Bar");
   const { toast } = useToast();
 
   const handlePreferencesSaved = (name: string, url: string) => {
@@ -143,7 +153,9 @@ export const ReviewSection = () => {
   return (
     <Card>
       <CardContent className="space-y-8 pt-6">
-        <DemoPreferences onPreferencesSaved={handlePreferencesSaved} />
+        {!hidePreferences && (
+          <DemoPreferences onPreferencesSaved={handlePreferencesSaved} />
+        )}
         
         <div className="text-center">
           <div className="space-y-2">
@@ -185,6 +197,8 @@ export const ReviewSection = () => {
           <RewardsSection 
             rewardCode={rewardCode} 
             hasUploadedReceipt={!!analysisResult}
+            customRestaurantName={restaurantName}
+            customGoogleMapsUrl={googleMapsUrl}
           />
         </div>
       </CardContent>
