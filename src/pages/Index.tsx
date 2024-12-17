@@ -29,18 +29,46 @@ const Index = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
+  const checkOnboardingStatus = async (userId: string) => {
+    const { data: restaurants, error } = await supabase
+      .from("restaurants")
+      .select("id")
+      .eq("owner_id", userId)
+      .limit(1);
+
+    if (error) {
+      console.error("Error checking onboarding status:", error);
+      return false;
+    }
+
+    return restaurants && restaurants.length > 0;
+  };
+
   useEffect(() => {
     // Check if user is already logged in
-    supabase.auth.onAuthStateChange((event, session) => {
+    supabase.auth.onAuthStateChange(async (event, session) => {
       setIsAuthenticated(!!session);
       if (session) {
         setShowAuthDialog(false);
+        
         if (event === 'SIGNED_IN') {
           toast({
             title: "Welcome!",
             description: "You've successfully signed in.",
           });
-          navigate("/restaurants/dashboard");
+
+          // Check if user has completed onboarding
+          const hasCompletedOnboarding = await checkOnboardingStatus(session.user.id);
+          
+          if (!hasCompletedOnboarding) {
+            toast({
+              title: "Complete Your Registration",
+              description: "Let's set up your restaurant profile.",
+            });
+            navigate("/restaurants/onboard");
+          } else {
+            navigate("/restaurants/dashboard");
+          }
         }
       }
     });
