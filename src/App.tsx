@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import DemoPage from "./pages/demo";
 import CustomDemoPage from "./pages/custom-demo";
-import { Index } from "./pages/Index";
+import Index from "./pages/Index";
 import RestaurantOnboarding from "./pages/restaurants/onboard";
 import RestaurantDashboard from "./pages/restaurants/dashboard";
 import CreateReviewPage from "./pages/restaurants/create-review-page";
