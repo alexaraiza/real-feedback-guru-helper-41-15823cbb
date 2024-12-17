@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Gift, Mail } from "lucide-react";
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
 
 interface EmailCaptureProps {
   rewardCode: string | null;
@@ -12,21 +11,13 @@ export const EmailCapture = ({ rewardCode }: EmailCaptureProps) => {
   const [googleMapsUrl, setGoogleMapsUrl] = useState("https://maps.app.goo.gl/Nx23mQHet4TBfctJ6");
 
   useEffect(() => {
-    const fetchDemoPreferences = async () => {
-      const { data, error } = await supabase
-        .from('demo_preferences')
-        .select('*')
-        .order('created_at', { ascending: false })
-        .limit(1)
-        .single();
-
-      if (data && !error) {
-        setRestaurantName(data.restaurant_name);
-        setGoogleMapsUrl(data.google_maps_url);
-      }
-    };
-
-    fetchDemoPreferences();
+    // Load preferences from local storage
+    const savedPreferences = localStorage.getItem('demoPreferences');
+    if (savedPreferences) {
+      const { restaurantName: savedName, googleMapsUrl: savedUrl } = JSON.parse(savedPreferences);
+      setRestaurantName(savedName);
+      setGoogleMapsUrl(savedUrl);
+    }
   }, []);
 
   const handleEmailClick = () => {
