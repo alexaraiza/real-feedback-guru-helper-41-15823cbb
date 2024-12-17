@@ -1,7 +1,7 @@
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Globe } from "lucide-react";
+import { Globe, Map } from "lucide-react";
 import { UseFormReturn } from "react-hook-form";
 import { RestaurantFormData } from "../types";
 
@@ -45,9 +45,18 @@ export const WebsiteInfoSection = ({ form, onCrawl, isCrawling }: WebsiteInfoSec
         render={({ field }) => (
           <FormItem>
             <FormLabel>Google Maps URL</FormLabel>
-            <FormControl>
-              <Input placeholder="Paste your Google Maps link" {...field} />
-            </FormControl>
+            <div className="flex gap-2">
+              <FormControl>
+                <Input placeholder="Paste your Google Maps link" {...field} />
+              </FormControl>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => window.open('https://www.google.com/maps', '_blank')}
+              >
+                <Map className="h-4 w-4" />
+              </Button>
+            </div>
             <FormMessage />
           </FormItem>
         )}

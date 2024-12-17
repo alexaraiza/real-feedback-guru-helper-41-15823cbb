@@ -4,7 +4,22 @@ export interface RestaurantFormData {
   address: string;
   google_maps_url: string;
   logo_url?: string;
-  offer_title: string;
-  offer_description: string;
-  offer_discount: string;
+  contact_email: string;
+  contact_phone: string;
+}
+
+export interface Restaurant {
+  id: string;
+  name: string;
+  description?: string;
+  address: string;
+  google_maps_url?: string;
+  logo_url?: string;
+  cover_photo_url?: string;
+  cuisine_type?: string[];
+  price_range?: string;
+  average_rating?: number;
+  contact_email?: string;
+  contact_phone?: string;
+  website_url?: string;
 }

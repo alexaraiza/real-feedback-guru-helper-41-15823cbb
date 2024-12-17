@@ -4,7 +4,6 @@ import { supabase } from "@/integrations/supabase/client";
 import DemoPage from "@/pages/demo";
 import RestaurantDetails from "@/pages/restaurants/[id]";
 import RestaurantList from "@/pages/restaurants/index";
-import CreateReviewPage from "@/pages/restaurants/create-review-page";
 import RestaurantOnboard from "@/pages/restaurants/onboard";
 import RestaurantDashboard from "@/pages/restaurants/dashboard";
 import LoginPage from "@/pages/auth/LoginPage";
@@ -34,7 +33,7 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <DemoPage />,
-    errorElement: <div>Page not found</div>, // Add error handling
+    errorElement: <div>Page not found</div>,
   },
   {
     path: "/terms",
@@ -53,14 +52,6 @@ const router = createBrowserRouter([
     element: (
       <ProtectedRoute>
         <RestaurantDashboard />
-      </ProtectedRoute>
-    ),
-  },
-  {
-    path: "/restaurants/create-review-page",
-    element: (
-      <ProtectedRoute>
-        <CreateReviewPage />
       </ProtectedRoute>
     ),
   },

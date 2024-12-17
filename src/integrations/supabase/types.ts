@@ -9,82 +9,6 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      audit_media: {
-        Row: {
-          audit_id: string
-          caption: string | null
-          created_at: string | null
-          id: string
-          media_type: string
-          media_url: string
-        }
-        Insert: {
-          audit_id: string
-          caption?: string | null
-          created_at?: string | null
-          id?: string
-          media_type: string
-          media_url: string
-        }
-        Update: {
-          audit_id?: string
-          caption?: string | null
-          created_at?: string | null
-          id?: string
-          media_type?: string
-          media_url?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "audit_media_audit_id_fkey"
-            columns: ["audit_id"]
-            isOneToOne: false
-            referencedRelation: "verified_dining_audits"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      audit_responses: {
-        Row: {
-          audit_id: string
-          category: string
-          created_at: string | null
-          id: string
-          notes: string | null
-          question: string
-          rating: number | null
-          response: string | null
-        }
-        Insert: {
-          audit_id: string
-          category: string
-          created_at?: string | null
-          id?: string
-          notes?: string | null
-          question: string
-          rating?: number | null
-          response?: string | null
-        }
-        Update: {
-          audit_id?: string
-          category?: string
-          created_at?: string | null
-          id?: string
-          notes?: string | null
-          question?: string
-          rating?: number | null
-          response?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "audit_responses_audit_id_fkey"
-            columns: ["audit_id"]
-            isOneToOne: false
-            referencedRelation: "verified_dining_audits"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       blog_posts: {
         Row: {
           author_id: string
@@ -154,47 +78,6 @@ export type Database = {
         }
         Relationships: []
       }
-      receipt_analysis: {
-        Row: {
-          analysis_result: Json
-          created_at: string | null
-          id: string
-          items: string[] | null
-          receipt_image_url: string
-          restaurant_id: string | null
-          status: string | null
-          total_amount: number | null
-        }
-        Insert: {
-          analysis_result: Json
-          created_at?: string | null
-          id?: string
-          items?: string[] | null
-          receipt_image_url: string
-          restaurant_id?: string | null
-          status?: string | null
-          total_amount?: number | null
-        }
-        Update: {
-          analysis_result?: Json
-          created_at?: string | null
-          id?: string
-          items?: string[] | null
-          receipt_image_url?: string
-          restaurant_id?: string | null
-          status?: string | null
-          total_amount?: number | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "receipt_analysis_restaurant_id_fkey"
-            columns: ["restaurant_id"]
-            isOneToOne: false
-            referencedRelation: "restaurants"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       restaurant_offers: {
         Row: {
           created_at: string
@@ -248,6 +131,7 @@ export type Database = {
           custom_css: Json | null
           custom_url: string | null
           description: string | null
+          google_maps_embed_url: string | null
           id: string
           is_published: boolean | null
           meta_description: string | null
@@ -261,6 +145,7 @@ export type Database = {
           custom_css?: Json | null
           custom_url?: string | null
           description?: string | null
+          google_maps_embed_url?: string | null
           id?: string
           is_published?: boolean | null
           meta_description?: string | null
@@ -274,6 +159,7 @@ export type Database = {
           custom_css?: Json | null
           custom_url?: string | null
           description?: string | null
+          google_maps_embed_url?: string | null
           id?: string
           is_published?: boolean | null
           meta_description?: string | null
@@ -296,6 +182,8 @@ export type Database = {
         Row: {
           address: string
           average_rating: number | null
+          contact_email: string | null
+          contact_phone: string | null
           cover_photo_url: string | null
           created_at: string
           cuisine_type: string[] | null
@@ -312,6 +200,8 @@ export type Database = {
         Insert: {
           address: string
           average_rating?: number | null
+          contact_email?: string | null
+          contact_phone?: string | null
           cover_photo_url?: string | null
           created_at?: string
           cuisine_type?: string[] | null
@@ -328,6 +218,8 @@ export type Database = {
         Update: {
           address?: string
           average_rating?: number | null
+          contact_email?: string | null
+          contact_phone?: string | null
           cover_photo_url?: string | null
           created_at?: string
           cuisine_type?: string[] | null
@@ -482,51 +374,6 @@ export type Database = {
           value?: string
         }
         Relationships: []
-      }
-      verified_dining_audits: {
-        Row: {
-          created_at: string | null
-          id: string
-          restaurant_id: string
-          reviewer_id: string | null
-          status: Database["public"]["Enums"]["audit_status"] | null
-          updated_at: string | null
-          visit_date: string | null
-        }
-        Insert: {
-          created_at?: string | null
-          id?: string
-          restaurant_id: string
-          reviewer_id?: string | null
-          status?: Database["public"]["Enums"]["audit_status"] | null
-          updated_at?: string | null
-          visit_date?: string | null
-        }
-        Update: {
-          created_at?: string | null
-          id?: string
-          restaurant_id?: string
-          reviewer_id?: string | null
-          status?: Database["public"]["Enums"]["audit_status"] | null
-          updated_at?: string | null
-          visit_date?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "verified_dining_audits_restaurant_id_fkey"
-            columns: ["restaurant_id"]
-            isOneToOne: false
-            referencedRelation: "restaurants"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "verified_dining_audits_reviewer_id_fkey"
-            columns: ["reviewer_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
       }
     }
     Views: {

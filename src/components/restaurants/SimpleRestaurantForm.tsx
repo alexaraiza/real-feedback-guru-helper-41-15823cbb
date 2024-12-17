@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { supabase } from "@/integrations/supabase/client";
 import { generateSlug } from "@/utils/urlUtils";
-import { OfferFormSection } from "./OfferFormSection";
+import { LogoUpload } from "./LogoUpload";
 import { RestaurantFormData } from "./types";
 import { FirecrawlService } from "@/utils/FirecrawlService";
 import { WebsiteInfoSection } from "./sections/WebsiteInfoSection";
@@ -26,9 +26,8 @@ export function SimpleRestaurantForm() {
       address: "",
       google_maps_url: "",
       logo_url: "",
-      offer_title: "",
-      offer_description: "",
-      offer_discount: "",
+      contact_email: "",
+      contact_phone: "",
     },
   });
 
@@ -120,22 +119,14 @@ export function SimpleRestaurantForm() {
           owner_id: user.id,
           status: "pending",
           slug: slug,
+          contact_email: data.contact_email,
+          contact_phone: data.contact_phone,
+          website_url: data.website_url,
         })
         .select()
         .single();
 
       if (restaurantError) throw restaurantError;
-
-      // Insert offer
-      const { error: offerError } = await supabase.from("restaurant_offers").insert({
-        restaurant_id: restaurant.id,
-        title: data.offer_title,
-        description: data.offer_description,
-        discount_value: data.offer_discount,
-        status: "active",
-      });
-
-      if (offerError) throw offerError;
 
       toast({
         title: "Success",
@@ -178,8 +169,6 @@ export function SimpleRestaurantForm() {
           />
           
           <BasicInfoSection form={form} />
-          
-          <OfferFormSection form={form} />
 
           <Button type="submit" disabled={isSubmitting} className="w-full">
             Submit Restaurant

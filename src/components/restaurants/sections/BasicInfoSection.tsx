@@ -39,6 +39,34 @@ export const BasicInfoSection = ({ form }: BasicInfoSectionProps) => {
         )}
       />
 
+      <FormField
+        control={form.control}
+        name="contact_email"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>Contact Email</FormLabel>
+            <FormControl>
+              <Input type="email" placeholder="Enter contact email" {...field} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+
+      <FormField
+        control={form.control}
+        name="contact_phone"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>Contact Phone</FormLabel>
+            <FormControl>
+              <Input type="tel" placeholder="Enter contact phone" {...field} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+
       <LogoUpload setValue={form.setValue} logoUrl={form.watch("logo_url")} />
     </div>
   );
