@@ -49,7 +49,7 @@ export const HeroSection = ({ onTryDemo, onShowAuth }: HeroSectionProps) => {
         <h2 className="text-[#1a1060] text-2xl md:text-3xl font-bold mb-2">
           EAT. EARN. SAVE.
         </h2>
-        <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-6 bg-gradient-to-r from-purple-600 via-pink-500 to-purple-600 text-transparent bg-clip-text">
+        <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-6 bg-gradient-to-r from-purple-600 via-pink-500 to-purple-600 text-transparent bg-clip-text px-4 md:px-8 leading-tight">
           Transform Your Restaurant's Review Strategy
         </h1>
         <p className="text-lg md:text-xl text-gray-600 mb-12 max-w-3xl mx-auto">
