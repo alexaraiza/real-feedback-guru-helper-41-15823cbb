@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { RestaurantHeader } from "@/components/demo/RestaurantHeader";
 import { ReviewSection } from "@/components/demo/ReviewSection";
-import { Building2, ArrowRight, Star, Utensils, Bot } from "lucide-react";
+import { Building2, ArrowRight, Star, Utensils, Bot, Gift, MessageSquare } from "lucide-react";
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { AiSurveyWidget } from "@/components/demo/AiSurveyWidget";
