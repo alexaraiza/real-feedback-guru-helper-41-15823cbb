@@ -4,21 +4,29 @@ import { useEffect, useState } from "react";
 
 interface EmailCaptureProps {
   rewardCode: string | null;
+  customGoogleMapsUrl?: string;
+  customRestaurantName?: string;
 }
 
-export const EmailCapture = ({ rewardCode }: EmailCaptureProps) => {
-  const [restaurantName, setRestaurantName] = useState("The Local Kitchen & Bar");
-  const [googleMapsUrl, setGoogleMapsUrl] = useState("https://maps.app.goo.gl/Nx23mQHet4TBfctJ6");
+export const EmailCapture = ({ 
+  rewardCode,
+  customGoogleMapsUrl,
+  customRestaurantName 
+}: EmailCaptureProps) => {
+  const [restaurantName, setRestaurantName] = useState(customRestaurantName || "The Local Kitchen & Bar");
+  const [googleMapsUrl, setGoogleMapsUrl] = useState(customGoogleMapsUrl || "https://maps.app.goo.gl/Nx23mQHet4TBfctJ6");
 
   useEffect(() => {
-    // Load preferences from local storage
-    const savedPreferences = localStorage.getItem('demoPreferences');
-    if (savedPreferences) {
-      const { restaurantName: savedName, googleMapsUrl: savedUrl } = JSON.parse(savedPreferences);
-      setRestaurantName(savedName);
-      setGoogleMapsUrl(savedUrl);
+    // Only load from localStorage if no custom values provided
+    if (!customRestaurantName || !customGoogleMapsUrl) {
+      const savedPreferences = localStorage.getItem('demoPreferences');
+      if (savedPreferences) {
+        const { restaurantName: savedName, googleMapsUrl: savedUrl } = JSON.parse(savedPreferences);
+        if (!customRestaurantName) setRestaurantName(savedName);
+        if (!customGoogleMapsUrl) setGoogleMapsUrl(savedUrl);
+      }
     }
-  }, []);
+  }, [customRestaurantName, customGoogleMapsUrl]);
 
   const handleEmailClick = () => {
     // Get receipt analysis from localStorage if available

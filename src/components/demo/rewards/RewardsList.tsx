@@ -2,9 +2,12 @@ import { ExternalLink } from "lucide-react";
 
 interface RewardsListProps {
   hasUploadedReceipt?: boolean;
+  customRestaurantName?: string;
 }
 
-export const RewardsList = ({ hasUploadedReceipt }: RewardsListProps) => {
+export const RewardsList = ({ hasUploadedReceipt, customRestaurantName }: RewardsListProps) => {
+  const restaurantName = customRestaurantName || "The Local Kitchen & Bar";
+
   return (
     <div className="space-y-6">
       <h4 className="text-xl font-bold text-center text-gray-800 mt-12 mb-8">
