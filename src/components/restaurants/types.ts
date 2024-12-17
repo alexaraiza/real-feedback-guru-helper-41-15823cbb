@@ -6,6 +6,9 @@ export interface RestaurantFormData {
   logo_url?: string;
   contact_email: string;
   contact_phone: string;
+  offer_title?: string;
+  offer_description?: string;
+  offer_discount?: string;
 }
 
 export interface Restaurant {

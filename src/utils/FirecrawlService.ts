@@ -1,5 +1,4 @@
 import FirecrawlApp from '@mendable/firecrawl-js';
-import { supabase } from "@/integrations/supabase/client";
 
 interface ErrorResponse {
   success: false;
@@ -55,14 +54,7 @@ export class FirecrawlService {
       const crawlResponse = await this.firecrawlApp.crawlUrl(url, {
         limit: 10,
         scrapeOptions: {
-          formats: ['markdown', 'html'],
-          elements: [
-            { name: 'name', selector: 'h1, .restaurant-name, [itemprop="name"]' },
-            { name: 'description', selector: 'meta[name="description"], .restaurant-description, [itemprop="description"]' },
-            { name: 'address', selector: '.address, [itemprop="address"]' },
-            { name: 'phone', selector: '.phone, [itemprop="telephone"]' },
-            { name: 'cuisine', selector: '.cuisine-type, [itemprop="servesCuisine"]' }
-          ]
+          formats: ['markdown', 'html']
         }
       }) as CrawlResponse;
 
