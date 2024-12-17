@@ -149,9 +149,7 @@ const DemoPage = () => {
 
         <div className="max-w-7xl mx-auto px-4 py-8 md:py-12">
           <RestaurantHeader 
-            logoUrl="/lovable-uploads/23bef056-e873-4e3d-b77b-8ac3c49fa8d8.png"
             name={preferences.restaurantName || "Demo Restaurant"}
-            description="Share your positive dining experience!"
           />
 
           {!preferences.restaurantName && (
