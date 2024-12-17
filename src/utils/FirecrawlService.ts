@@ -22,18 +22,23 @@ export class FirecrawlService {
   private static firecrawlApp: FirecrawlApp | null = null;
 
   private static async getApiKey(): Promise<string | null> {
-    const { data, error } = await supabase
-      .from('secrets')
-      .select('value')
-      .eq('name', 'FIRECRAWL_API_KEY')
-      .single();
-    
-    if (error || !data) {
+    try {
+      const { data, error } = await supabase
+        .from('secrets')
+        .select('value')
+        .eq('name', 'FIRECRAWL_API_KEY')
+        .single();
+      
+      if (error || !data) {
+        console.error('Error fetching Firecrawl API key:', error);
+        return null;
+      }
+
+      return data.value;
+    } catch (error) {
       console.error('Error fetching Firecrawl API key:', error);
       return null;
     }
-
-    return data.value;
   }
 
   static async crawlRestaurantWebsite(url: string): Promise<{ success: boolean; error?: string; data?: any }> {
@@ -51,7 +56,7 @@ export class FirecrawlService {
         limit: 10,
         scrapeOptions: {
           formats: ['markdown', 'html'],
-          selectors: [
+          cssSelectors: [
             { name: 'name', selector: 'h1, .restaurant-name, [itemprop="name"]' },
             { name: 'description', selector: 'meta[name="description"], .restaurant-description, [itemprop="description"]' },
             { name: 'address', selector: '.address, [itemprop="address"]' },
