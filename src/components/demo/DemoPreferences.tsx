@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { Check } from "lucide-react";
 
 interface DemoPreferencesProps {
   onPreferencesSaved: (name: string, url: string) => void;
@@ -13,6 +14,7 @@ export const DemoPreferences = ({ onPreferencesSaved }: DemoPreferencesProps) =>
   const [restaurantName, setRestaurantName] = useState("The Local Kitchen & Bar");
   const [googleMapsUrl, setGoogleMapsUrl] = useState("https://maps.app.goo.gl/Nx23mQHet4TBfctJ6");
   const [isSaving, setIsSaving] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -56,10 +58,16 @@ export const DemoPreferences = ({ onPreferencesSaved }: DemoPreferencesProps) =>
       if (error) throw error;
 
       onPreferencesSaved(restaurantName, googleMapsUrl);
+      setShowSuccess(true);
       toast({
         title: "Preferences saved!",
         description: "Your demo has been customized successfully.",
       });
+
+      // Reset success state after 2 seconds
+      setTimeout(() => {
+        setShowSuccess(false);
+      }, 2000);
     } catch (error) {
       console.error('Error saving preferences:', error);
       toast({
@@ -95,9 +103,22 @@ export const DemoPreferences = ({ onPreferencesSaved }: DemoPreferencesProps) =>
       <Button 
         onClick={handleSavePreferences}
         disabled={isSaving}
-        className="w-full bg-primary hover:bg-primary/90"
+        className={`w-full transition-all duration-300 ${
+          showSuccess 
+            ? "bg-green-500 hover:bg-green-600" 
+            : "bg-primary hover:bg-primary/90"
+        }`}
       >
-        {isSaving ? "Saving..." : "Save Demo Preferences"}
+        {showSuccess ? (
+          <>
+            <Check className="mr-2 h-4 w-4" />
+            Saved Successfully!
+          </>
+        ) : isSaving ? (
+          "Saving..."
+        ) : (
+          "Save Demo Preferences"
+        )}
       </Button>
     </div>
   );
