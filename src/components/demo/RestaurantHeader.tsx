@@ -18,7 +18,11 @@ export const RestaurantHeader = ({ logoUrl, name, description }: RestaurantHeade
         <h1 className="text-2xl md:text-4xl font-bold bg-gradient-to-r from-primary via-pink-500 to-secondary bg-clip-text text-transparent">
           {name}
         </h1>
-        <p className="text-sm md:text-base text-muted-foreground">{description}</p>
+        <p className="text-sm md:text-base text-muted-foreground mb-2">{description}</p>
+        <p className="text-sm text-muted-foreground max-w-lg">
+          Below, you'll find our interactive demo showcasing how customers can share their dining experiences and earn rewards. 
+          Try customizing the restaurant name and location to see how the review system adapts to different businesses.
+        </p>
       </div>
     </div>
   );
