@@ -3,11 +3,9 @@ import { Gift, Mail } from "lucide-react";
 
 interface EmailCaptureProps {
   rewardCode: string | null;
-  restaurantName: string;
-  googleMapsUrl: string;
 }
 
-export const EmailCapture = ({ rewardCode, restaurantName, googleMapsUrl }: EmailCaptureProps) => {
+export const EmailCapture = ({ rewardCode }: EmailCaptureProps) => {
   const handleEmailClick = () => {
     // Get receipt analysis from localStorage if available
     const analysisResult = localStorage.getItem('receiptAnalysis');
@@ -15,7 +13,7 @@ export const EmailCapture = ({ rewardCode, restaurantName, googleMapsUrl }: Emai
     const refinedReview = localStorage.getItem('refinedReview');
     const visitTimestamp = new Date().toLocaleString();
     
-    let emailBody = `Hello EatUP! I'd like to sign up and get my next reward at ${restaurantName}.\n\n`;
+    let emailBody = "Hello EatUP! I'd like to sign up and get my next reward.\n\n";
     
     // Add today's reward code if available
     if (rewardCode) {
@@ -23,9 +21,7 @@ export const EmailCapture = ({ rewardCode, restaurantName, googleMapsUrl }: Emai
       emailBody += "Show this code to your server on your next visit to redeem your personalized reward!\n\n";
     }
     
-    // Add restaurant details
-    emailBody += `Restaurant: ${restaurantName}\n`;
-    emailBody += `Google Maps: ${googleMapsUrl}\n`;
+    // Add visit timestamp
     emailBody += `Visit Date: ${visitTimestamp}\n\n`;
     
     // Add the enhanced review if available, otherwise use original review
@@ -53,7 +49,7 @@ export const EmailCapture = ({ rewardCode, restaurantName, googleMapsUrl }: Emai
     emailBody += "3. Special offers tailored to my taste\n\n";
     emailBody += "I'm excited to join EatUP! and earn more rewards with each visit!\n\n";
 
-    const mailtoLink = `mailto:rewards@eatup.co?subject=Sign me up for EatUP! Rewards at ${encodeURIComponent(restaurantName)}&body=${encodeURIComponent(emailBody)}`;
+    const mailtoLink = `mailto:rewards@eatup.co?subject=Sign me up for EatUP! Rewards&body=${encodeURIComponent(emailBody)}`;
     window.location.href = mailtoLink;
   };
 

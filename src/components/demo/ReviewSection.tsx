@@ -96,7 +96,7 @@ export const ReviewSection = () => {
         body: { 
           review: reviewText,
           receiptData: analysisResult || null,
-          restaurantName: restaurantName
+          restaurantName: restaurantName // Pass the restaurant name to the function
         },
       });
 
@@ -182,8 +182,6 @@ export const ReviewSection = () => {
           <RewardsSection 
             rewardCode={rewardCode} 
             hasUploadedReceipt={!!analysisResult}
-            restaurantName={restaurantName}
-            googleMapsUrl={googleMapsUrl}
           />
         </div>
       </CardContent>
