@@ -52,8 +52,7 @@ export const CreateDemoButton = ({ onPageCreated }: CreateDemoButtonProps) => {
             restaurant_name: restaurantName,
             google_maps_url: googleMapsUrl,
             contact_email: contactEmail,
-            slug: uniqueSlug,
-            full_url: `/demo/${uniqueSlug}`
+            slug: uniqueSlug
           }
         ])
         .select()
@@ -63,11 +62,14 @@ export const CreateDemoButton = ({ onPageCreated }: CreateDemoButtonProps) => {
         throw error;
       }
 
-      // Generate URL based on environment
-      const baseUrl = window.location.origin;
-      const demoUrl = `${baseUrl}/demo/${uniqueSlug}`;
+      // Use the current origin for development, but format it for the Lovable preview
+      const origin = window.location.origin;
+      const isPreview = origin.includes('lovable.app');
+      const demoUrl = `/demo/${uniqueSlug}`;
       
-      await navigator.clipboard.writeText(demoUrl);
+      // If we're in the Lovable preview, use the full URL, otherwise use relative path
+      const fullUrl = isPreview ? `${origin}${demoUrl}` : demoUrl;
+      await navigator.clipboard.writeText(fullUrl);
 
       toast({
         title: "Review page created!",
@@ -75,7 +77,7 @@ export const CreateDemoButton = ({ onPageCreated }: CreateDemoButtonProps) => {
       });
 
       if (onPageCreated) {
-        onPageCreated(`/demo/${uniqueSlug}`);
+        onPageCreated(demoUrl);
       }
 
     } catch (error) {
