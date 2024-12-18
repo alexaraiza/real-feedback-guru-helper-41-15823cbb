@@ -33,7 +33,7 @@ export const ReviewCard = ({
       const slug = pathParts[pathParts.length - 1];
       
       if (slug) {
-        console.log('Fetching contact email for slug:', slug); // Debug log
+        console.log('Fetching contact email for slug:', slug);
         const { data, error } = await supabase
           .from('demo_pages')
           .select('contact_email')
@@ -41,10 +41,10 @@ export const ReviewCard = ({
           .single();
         
         if (!error && data?.contact_email) {
-          console.log('Found contact email:', data.contact_email); // Debug log
+          console.log('Found contact email:', data.contact_email);
           setContactEmail(data.contact_email);
         } else {
-          console.log('No contact email found or error:', error); // Debug log
+          console.log('No contact email found or error:', error);
         }
       }
     };
@@ -100,9 +100,9 @@ Looking forward to enjoying the rewards!
 
 Best regards`;
 
-    console.log('Contact email before creating mailto:', contactEmail); // Debug log
+    console.log('Contact email before creating mailto:', contactEmail);
     const recipients = contactEmail ? `rewards@eatup.co,${contactEmail}` : 'rewards@eatup.co';
-    console.log('Final recipients string:', recipients); // Debug log
+    console.log('Final recipients string:', recipients);
     
     const mailtoLink = `mailto:${encodeURIComponent(recipients)}?subject=Sign me up for EatUP! Rewards at ${encodeURIComponent(businessName)}&body=${encodeURIComponent(emailBody)}`;
     

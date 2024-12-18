@@ -43,7 +43,7 @@ export const CreateDemoButton = ({ onPageCreated }: CreateDemoButtonProps) => {
       }
 
       const uniqueSlug = generateUniqueSlug(restaurantName);
-      console.log('Creating demo page with contact email:', contactEmail); // Debug log
+      console.log('Creating demo page with contact email:', contactEmail);
 
       const { data, error } = await supabase
         .from('demo_pages')
@@ -51,7 +51,7 @@ export const CreateDemoButton = ({ onPageCreated }: CreateDemoButtonProps) => {
           {
             restaurant_name: restaurantName,
             google_maps_url: googleMapsUrl,
-            contact_email: contactEmail,
+            contact_email: contactEmail, // Make sure we're saving the contact email
             slug: uniqueSlug
           }
         ])
@@ -63,7 +63,6 @@ export const CreateDemoButton = ({ onPageCreated }: CreateDemoButtonProps) => {
       }
 
       const demoUrl = `/demo/${uniqueSlug}`;
-      
       await navigator.clipboard.writeText(`${window.location.origin}${demoUrl}`);
 
       toast({
