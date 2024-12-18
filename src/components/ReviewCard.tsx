@@ -31,10 +31,14 @@ export const ReviewCard = ({
     // Load contact email from demo preferences
     const savedPreferences = localStorage.getItem('demoPreferences');
     if (savedPreferences) {
-      const { contactEmail: savedEmail } = JSON.parse(savedPreferences);
-      if (savedEmail) {
-        setContactEmail(savedEmail);
-        console.log('Loaded contact email from preferences:', savedEmail);
+      try {
+        const { contactEmail: savedEmail } = JSON.parse(savedPreferences);
+        if (savedEmail) {
+          setContactEmail(savedEmail);
+          console.log('Loaded contact email from preferences:', savedEmail);
+        }
+      } catch (error) {
+        console.error('Error parsing demo preferences:', error);
       }
     }
   }, []);
@@ -138,16 +142,25 @@ export const ReviewCard = ({
     emailBody += "Best regards,\n";
     emailBody += "[Your Name]";
 
-    console.log('Contact email before creating mailto:', contactEmail); // Debug log
-
-    // Construct the recipients string, including the contact email if it exists
-    const recipients = contactEmail 
-      ? encodeURIComponent(`rewards@eatup.co,${contactEmail}`)
-      : encodeURIComponent('rewards@eatup.co');
+    // Load the latest contact email from localStorage
+    const savedPreferences = localStorage.getItem('demoPreferences');
+    let recipientEmail = 'rewards@eatup.co';
     
-    console.log('Final recipients string:', recipients); // Debug log
+    if (savedPreferences) {
+      try {
+        const { contactEmail: savedEmail } = JSON.parse(savedPreferences);
+        if (savedEmail) {
+          recipientEmail = `rewards@eatup.co,${savedEmail}`;
+          console.log('Including contact email in recipients:', savedEmail);
+        }
+      } catch (error) {
+        console.error('Error parsing demo preferences for email:', error);
+      }
+    }
 
-    const mailtoLink = `mailto:${recipients}?subject=Sign me up for EatUP! Rewards at ${encodeURIComponent(businessName)}&body=${encodeURIComponent(emailBody)}`;
+    console.log('Final recipients:', recipientEmail); // Debug log
+
+    const mailtoLink = `mailto:${encodeURIComponent(recipientEmail)}?subject=Sign me up for EatUP! Rewards at ${encodeURIComponent(businessName)}&body=${encodeURIComponent(emailBody)}`;
 
     toast({
       title: "Review copied!",
