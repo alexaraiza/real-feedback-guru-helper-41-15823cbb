@@ -28,23 +28,27 @@ export const ReviewCard = ({
   const { toast } = useToast();
 
   useEffect(() => {
-    const fetchContactEmail = async () => {
-      // First try to get from localStorage
-      const savedPreferences = localStorage.getItem('demoPreferences');
-      if (savedPreferences) {
+    // Load contact email from localStorage first
+    const savedPreferences = localStorage.getItem('demoPreferences');
+    if (savedPreferences) {
+      try {
         const { contactEmail: savedEmail } = JSON.parse(savedPreferences);
+        console.log('Found contact email in localStorage:', savedEmail);
         if (savedEmail) {
-          console.log('Found contact email in localStorage:', savedEmail);
           setContactEmail(savedEmail);
           return;
         }
+      } catch (error) {
+        console.error('Error parsing localStorage preferences:', error);
       }
+    }
 
-      // If not in localStorage, try to get from URL/database
-      const pathParts = window.location.pathname.split('/');
-      const slug = pathParts[pathParts.length - 1];
-      
-      if (slug) {
+    // If not in localStorage, try to get from URL/database
+    const pathParts = window.location.pathname.split('/');
+    const slug = pathParts[pathParts.length - 1];
+    
+    if (slug) {
+      const fetchEmailFromDb = async () => {
         console.log('Fetching contact email for slug:', slug);
         const { data, error } = await supabase
           .from('demo_pages')
@@ -58,10 +62,10 @@ export const ReviewCard = ({
         } else {
           console.log('No contact email found in database or error:', error);
         }
-      }
-    };
+      };
 
-    fetchContactEmail();
+      fetchEmailFromDb();
+    }
   }, []);
 
   const handleSubmitReview = async () => {
@@ -112,12 +116,15 @@ Looking forward to enjoying the rewards!
 
 Best regards`;
 
-    // Get contact email from state
+    // Get contact email from state and create recipients string
+    const recipients = contactEmail ? 
+      encodeURIComponent(`rewards@eatup.co,${contactEmail}`) : 
+      encodeURIComponent('rewards@eatup.co');
+    
     console.log('Contact email before creating mailto:', contactEmail);
-    const recipients = contactEmail ? `rewards@eatup.co,${contactEmail}` : 'rewards@eatup.co';
     console.log('Final recipients string:', recipients);
     
-    const mailtoLink = `mailto:${encodeURIComponent(recipients)}?subject=Sign me up for EatUP! Rewards at ${encodeURIComponent(businessName)}&body=${encodeURIComponent(emailBody)}`;
+    const mailtoLink = `mailto:${recipients}?subject=${encodeURIComponent(`Sign me up for EatUP! Rewards at ${businessName}`)}&body=${encodeURIComponent(emailBody)}`;
     
     toast({
       title: "Review copied!",
