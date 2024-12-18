@@ -18,19 +18,22 @@ export const EmailCapture = ({
   const [contactEmail, setContactEmail] = useState("");
 
   useEffect(() => {
-    // Only load from localStorage if no custom values provided
-    if (!customRestaurantName || !customGoogleMapsUrl) {
-      const savedPreferences = localStorage.getItem('demoPreferences');
-      if (savedPreferences) {
-        const { 
-          restaurantName: savedName, 
-          googleMapsUrl: savedUrl,
-          contactEmail: savedEmail 
-        } = JSON.parse(savedPreferences);
-        if (!customRestaurantName) setRestaurantName(savedName);
-        if (!customGoogleMapsUrl) setGoogleMapsUrl(savedUrl);
-        setContactEmail(savedEmail || '');
-      }
+    // Load preferences from localStorage
+    const savedPreferences = localStorage.getItem('demoPreferences');
+    console.log('Loaded preferences:', savedPreferences); // Debug log
+    
+    if (savedPreferences) {
+      const { 
+        restaurantName: savedName, 
+        googleMapsUrl: savedUrl,
+        contactEmail: savedEmail 
+      } = JSON.parse(savedPreferences);
+      
+      console.log('Parsed contact email:', savedEmail); // Debug log
+      
+      if (!customRestaurantName) setRestaurantName(savedName);
+      if (!customGoogleMapsUrl) setGoogleMapsUrl(savedUrl);
+      if (savedEmail) setContactEmail(savedEmail);
     }
   }, [customRestaurantName, customGoogleMapsUrl]);
 
@@ -97,11 +100,15 @@ export const EmailCapture = ({
     emailBody += "Best regards,\n";
     emailBody += "[Your Name]";
 
-    // Include contact email as a main recipient if it exists
+    console.log('Contact email before creating mailto:', contactEmail); // Debug log
+
+    // Construct the recipients string, including the contact email if it exists
     const recipients = contactEmail 
-      ? `rewards@eatup.co,${contactEmail}`
-      : 'rewards@eatup.co';
-      
+      ? encodeURIComponent(`rewards@eatup.co,${contactEmail}`)
+      : encodeURIComponent('rewards@eatup.co');
+    
+    console.log('Final recipients string:', recipients); // Debug log
+
     const mailtoLink = `mailto:${recipients}?subject=Sign me up for EatUP! Rewards at ${encodeURIComponent(restaurantName)}&body=${encodeURIComponent(emailBody)}`;
     window.location.href = mailtoLink;
   };
