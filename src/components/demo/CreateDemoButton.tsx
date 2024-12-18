@@ -53,7 +53,7 @@ export const CreateDemoButton = ({ onPageCreated }: CreateDemoButtonProps) => {
             google_maps_url: googleMapsUrl,
             contact_email: contactEmail,
             slug: uniqueSlug,
-            full_url: `https://eatup.co/demo/${uniqueSlug}`
+            full_url: `https://32802680-4753-4ba5-98e8-7b0522c3f6f0.lovableproject.com/demo/${uniqueSlug}`
           }
         ])
         .select()
@@ -63,13 +63,7 @@ export const CreateDemoButton = ({ onPageCreated }: CreateDemoButtonProps) => {
         throw error;
       }
 
-      // Generate URL based on environment
-      const isLovablePreview = window.location.hostname.includes('lovableproject.com');
-      const baseUrl = isLovablePreview 
-        ? 'https://32802680-4753-4ba5-98e8-7b0522c3f6f0.lovableproject.com'
-        : 'https://eatup.co';
-      
-      const demoUrl = `${baseUrl}/demo/${uniqueSlug}`;
+      const demoUrl = `https://32802680-4753-4ba5-98e8-7b0522c3f6f0.lovableproject.com/demo/${uniqueSlug}`;
       await navigator.clipboard.writeText(demoUrl);
 
       toast({
