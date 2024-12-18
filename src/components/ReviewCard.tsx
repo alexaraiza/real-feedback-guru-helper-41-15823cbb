@@ -28,18 +28,27 @@ export const ReviewCard = ({
   const { toast } = useToast();
 
   useEffect(() => {
+    // Debug: Log initial localStorage content
+    console.log('Initial localStorage content:', localStorage.getItem('demoPreferences'));
+    
     // Load contact email from demo preferences
     const savedPreferences = localStorage.getItem('demoPreferences');
     if (savedPreferences) {
       try {
-        const { contactEmail: savedEmail } = JSON.parse(savedPreferences);
-        if (savedEmail) {
-          setContactEmail(savedEmail);
-          console.log('Loaded contact email from preferences:', savedEmail);
+        const preferences = JSON.parse(savedPreferences);
+        console.log('Parsed preferences:', preferences); // Debug log
+        
+        if (preferences.contactEmail) {
+          setContactEmail(preferences.contactEmail);
+          console.log('Setting contact email to:', preferences.contactEmail);
+        } else {
+          console.log('No contact email found in preferences');
         }
       } catch (error) {
         console.error('Error parsing demo preferences:', error);
       }
+    } else {
+      console.log('No demo preferences found in localStorage');
     }
   }, []);
 
@@ -144,23 +153,30 @@ export const ReviewCard = ({
 
     // Load the latest contact email from localStorage
     const savedPreferences = localStorage.getItem('demoPreferences');
-    let recipientEmail = 'rewards@eatup.co';
+    console.log('Retrieved preferences before email:', savedPreferences); // Debug log
+    
+    let recipients = ['rewards@eatup.co'];
     
     if (savedPreferences) {
       try {
-        const { contactEmail: savedEmail } = JSON.parse(savedPreferences);
-        if (savedEmail) {
-          recipientEmail = `rewards@eatup.co,${savedEmail}`;
-          console.log('Including contact email in recipients:', savedEmail);
+        const preferences = JSON.parse(savedPreferences);
+        console.log('Parsed preferences for email:', preferences); // Debug log
+        
+        if (preferences.contactEmail) {
+          recipients.push(preferences.contactEmail);
+          console.log('Added contact email to recipients:', preferences.contactEmail);
         }
       } catch (error) {
         console.error('Error parsing demo preferences for email:', error);
       }
     }
+    
+    const recipientString = recipients.join(',');
+    console.log('Final recipient string:', recipientString); // Debug log
 
-    console.log('Final recipients:', recipientEmail); // Debug log
-
-    const mailtoLink = `mailto:${encodeURIComponent(recipientEmail)}?subject=Sign me up for EatUP! Rewards at ${encodeURIComponent(businessName)}&body=${encodeURIComponent(emailBody)}`;
+    const mailtoLink = `mailto:${encodeURIComponent(recipientString)}?subject=Sign me up for EatUP! Rewards at ${encodeURIComponent(businessName)}&body=${encodeURIComponent(emailBody)}`;
+    
+    console.log('Generated mailto link:', mailtoLink); // Debug log
 
     toast({
       title: "Review copied!",
