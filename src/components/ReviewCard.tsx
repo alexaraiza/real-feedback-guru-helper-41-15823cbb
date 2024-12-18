@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { nanoid } from 'nanoid';
@@ -24,7 +24,20 @@ export const ReviewCard = ({
   const [uniqueCode, setUniqueCode] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [review, setReview] = useState("");
+  const [contactEmail, setContactEmail] = useState("");
   const { toast } = useToast();
+
+  useEffect(() => {
+    // Load contact email from demo preferences
+    const savedPreferences = localStorage.getItem('demoPreferences');
+    if (savedPreferences) {
+      const { contactEmail: savedEmail } = JSON.parse(savedPreferences);
+      if (savedEmail) {
+        setContactEmail(savedEmail);
+        console.log('Loaded contact email from preferences:', savedEmail);
+      }
+    }
+  }, []);
 
   const handleSubmitReview = async () => {
     if (!review.trim()) return;
@@ -62,10 +75,24 @@ export const ReviewCard = ({
 
   const handleCopyAndRedirect = () => {
     navigator.clipboard.writeText(review);
+
+    // Construct email recipients including the contact email if available
+    const recipients = contactEmail 
+      ? encodeURIComponent(`rewards@eatup.co,${contactEmail}`)
+      : encodeURIComponent('rewards@eatup.co');
+
+    console.log('Email recipients for sign up:', recipients); // Debug log
+
+    // Create mailto link with all recipients
+    const mailtoLink = `mailto:${recipients}?subject=Sign me up for EatUP! Rewards at ${encodeURIComponent(businessName)}&body=Dear EatUP! Team,%0A%0AI'd like to join the rewards program at ${encodeURIComponent(businessName)}!%0A%0AMy Unique Reward Code: ${uniqueCode}%0A%0ABest regards`;
+
     toast({
       title: "Review copied!",
       description: "Opening Google Reviews in a new tab. Please paste your review there.",
     });
+
+    // Open both the mailto link and Google Maps URL
+    window.location.href = mailtoLink;
     window.open(googleMapsUrl, "_blank");
   };
 
