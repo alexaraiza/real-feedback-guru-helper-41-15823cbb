@@ -43,6 +43,7 @@ export const CreateDemoButton = ({ onPageCreated }: CreateDemoButtonProps) => {
       }
 
       const uniqueSlug = generateUniqueSlug(restaurantName);
+      console.log('Creating demo page with contact email:', contactEmail); // Debug log
 
       const { data, error } = await supabase
         .from('demo_pages')
@@ -63,7 +64,6 @@ export const CreateDemoButton = ({ onPageCreated }: CreateDemoButtonProps) => {
 
       const demoUrl = `/demo/${uniqueSlug}`;
       
-      // Copy the URL to clipboard
       await navigator.clipboard.writeText(`${window.location.origin}${demoUrl}`);
 
       toast({
@@ -71,7 +71,6 @@ export const CreateDemoButton = ({ onPageCreated }: CreateDemoButtonProps) => {
         description: "The URL has been copied to your clipboard.",
       });
 
-      // Notify parent component about the new page
       if (onPageCreated) {
         onPageCreated(demoUrl);
       }

@@ -29,11 +29,11 @@ export const ReviewCard = ({
 
   useEffect(() => {
     const fetchContactEmail = async () => {
-      // Get the slug from the URL
       const pathParts = window.location.pathname.split('/');
       const slug = pathParts[pathParts.length - 1];
       
       if (slug) {
+        console.log('Fetching contact email for slug:', slug); // Debug log
         const { data, error } = await supabase
           .from('demo_pages')
           .select('contact_email')
@@ -41,7 +41,10 @@ export const ReviewCard = ({
           .single();
         
         if (!error && data?.contact_email) {
+          console.log('Found contact email:', data.contact_email); // Debug log
           setContactEmail(data.contact_email);
+        } else {
+          console.log('No contact email found or error:', error); // Debug log
         }
       }
     };
@@ -97,7 +100,9 @@ Looking forward to enjoying the rewards!
 
 Best regards`;
 
+    console.log('Contact email before creating mailto:', contactEmail); // Debug log
     const recipients = contactEmail ? `rewards@eatup.co,${contactEmail}` : 'rewards@eatup.co';
+    console.log('Final recipients string:', recipients); // Debug log
     
     const mailtoLink = `mailto:${encodeURIComponent(recipients)}?subject=Sign me up for EatUP! Rewards at ${encodeURIComponent(businessName)}&body=${encodeURIComponent(emailBody)}`;
     
@@ -106,7 +111,6 @@ Best regards`;
       description: "Opening Google Reviews in a new tab. Please paste your review there.",
     });
 
-    // Open both the mailto link and Google Maps URL
     window.location.href = mailtoLink;
     window.open(googleMapsUrl, "_blank");
   };
