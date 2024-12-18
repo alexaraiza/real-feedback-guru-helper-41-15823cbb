@@ -7,6 +7,7 @@ import { ReviewForm } from "./review/ReviewForm";
 import { ReviewCode } from "./review/ReviewCode";
 import { UnlockedOffers } from "./review/UnlockedOffers";
 import { Button } from "@/components/ui/button";
+import { constructRewardEmailBody, getEmailRecipients } from "@/utils/emailUtils";
 
 interface ReviewCardProps {
   businessName: string;
@@ -24,33 +25,7 @@ export const ReviewCard = ({
   const [uniqueCode, setUniqueCode] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [review, setReview] = useState("");
-  const [contactEmail, setContactEmail] = useState("");
   const { toast } = useToast();
-
-  useEffect(() => {
-    // Debug: Log initial localStorage content
-    console.log('Initial localStorage content:', localStorage.getItem('demoPreferences'));
-    
-    // Load contact email from demo preferences
-    const savedPreferences = localStorage.getItem('demoPreferences');
-    if (savedPreferences) {
-      try {
-        const preferences = JSON.parse(savedPreferences);
-        console.log('Parsed preferences:', preferences); // Debug log
-        
-        if (preferences.contactEmail) {
-          setContactEmail(preferences.contactEmail);
-          console.log('Setting contact email to:', preferences.contactEmail);
-        } else {
-          console.log('No contact email found in preferences');
-        }
-      } catch (error) {
-        console.error('Error parsing demo preferences:', error);
-      }
-    } else {
-      console.log('No demo preferences found in localStorage');
-    }
-  }, []);
 
   const handleSubmitReview = async () => {
     if (!review.trim()) return;
@@ -88,96 +63,14 @@ export const ReviewCard = ({
 
   const handleCopyAndRedirect = () => {
     navigator.clipboard.writeText(review);
-
-    // Get receipt analysis from localStorage if available
-    const analysisResult = localStorage.getItem('receiptAnalysis');
-    const reviewText = localStorage.getItem('reviewText');
-    const refinedReview = localStorage.getItem('refinedReview');
-    const visitTimestamp = new Date().toLocaleString();
     
-    let emailBody = `Dear EatUP! Team,\n\n`;
-    emailBody += `I'm excited to join the EatUP! rewards program at ${businessName}! I understand that EatUP! is revolutionizing the dining experience by offering progressive rewards that get better with each visit.\n\n`;
+    const emailBody = constructRewardEmailBody(businessName, googleMapsUrl, uniqueCode, review);
+    const recipients = getEmailRecipients();
     
-    // Add today's reward code if available
-    if (uniqueCode) {
-      emailBody += `My Unique Reward Code: ${uniqueCode}\n`;
-      emailBody += `(I'll show this code to my server on my next visit to redeem my personalized reward)\n\n`;
-    }
+    console.log('Opening mailto with recipients:', recipients);
     
-    emailBody += `Visit Details:\n`;
-    emailBody += `Date: ${visitTimestamp}\n`;
-    emailBody += `Restaurant: ${businessName}\n`;
-    emailBody += `Location: ${googleMapsUrl}\n\n`;
+    const mailtoLink = `mailto:${encodeURIComponent(recipients)}?subject=Sign me up for EatUP! Rewards at ${encodeURIComponent(businessName)}&body=${encodeURIComponent(emailBody)}`;
     
-    // Add the enhanced review if available, otherwise use original review
-    if (refinedReview) {
-      emailBody += `My Enhanced Review:\n${refinedReview}\n\n`;
-    } else if (reviewText) {
-      emailBody += `My Review:\n${reviewText}\n\n`;
-    }
-    
-    // Add receipt analysis if available
-    if (analysisResult) {
-      const analysis = JSON.parse(analysisResult);
-      emailBody += "Receipt Details:\n";
-      emailBody += `Total Amount: $${analysis.total_amount}\n`;
-      emailBody += "Items:\n";
-      analysis.items.forEach((item: { name: string; price: number }) => {
-        emailBody += `- ${item.name}: $${item.price}\n`;
-      });
-      emailBody += "\n";
-    }
-
-    emailBody += "About EatUP! Progressive Rewards Program:\n";
-    emailBody += "• First Visit (Today): Left a review and joined the program\n";
-    emailBody += "• Second Visit: Use unique reward code for a special welcome-back reward\n";
-    emailBody += "• Third Visit: Send receipt to unlock premium rewards tier\n";
-    emailBody += "• Fourth Visit and Beyond: Access to exclusive VIP offers\n\n";
-
-    emailBody += "My Next Steps:\n";
-    emailBody += "1. Return to " + businessName + " with my unique reward code\n";
-    emailBody += "2. After dining, reply to this email with my receipt photo\n";
-    emailBody += "3. Receive my exclusive third-visit reward voucher\n\n";
-
-    emailBody += "What I'll Get with EatUP!:\n";
-    emailBody += `1. Immediate Reward: Special offer for my next visit to ${businessName}\n`;
-    emailBody += "2. Progressive Benefits: Increasing rewards with each visit\n";
-    emailBody += "3. VIP Treatment: Priority access to special events and promotions\n";
-    emailBody += "4. Personalized Experience: AI-powered reward recommendations\n";
-    emailBody += "5. Exclusive Access: Members-only dining events and tastings\n\n";
-
-    emailBody += "Thank you for helping me enhance my dining experience with EatUP!'s innovative rewards program.\n\n";
-    emailBody += "Looking forward to my next visit!\n\n";
-    emailBody += "Best regards,\n";
-    emailBody += "[Your Name]";
-
-    // Load the latest contact email from localStorage
-    const savedPreferences = localStorage.getItem('demoPreferences');
-    console.log('Retrieved preferences before email:', savedPreferences); // Debug log
-    
-    let recipients = ['rewards@eatup.co'];
-    
-    if (savedPreferences) {
-      try {
-        const preferences = JSON.parse(savedPreferences);
-        console.log('Parsed preferences for email:', preferences); // Debug log
-        
-        if (preferences.contactEmail) {
-          recipients.push(preferences.contactEmail);
-          console.log('Added contact email to recipients:', preferences.contactEmail);
-        }
-      } catch (error) {
-        console.error('Error parsing demo preferences for email:', error);
-      }
-    }
-    
-    const recipientString = recipients.join(',');
-    console.log('Final recipient string:', recipientString); // Debug log
-
-    const mailtoLink = `mailto:${encodeURIComponent(recipientString)}?subject=Sign me up for EatUP! Rewards at ${encodeURIComponent(businessName)}&body=${encodeURIComponent(emailBody)}`;
-    
-    console.log('Generated mailto link:', mailtoLink); // Debug log
-
     toast({
       title: "Review copied!",
       description: "Opening Google Reviews in a new tab. Please paste your review there.",
