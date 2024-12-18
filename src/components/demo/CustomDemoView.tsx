@@ -66,24 +66,21 @@ export const CustomDemoView = ({ slug }: CustomDemoViewProps) => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-pink-50/20">
-      <div className="max-w-2xl mx-auto px-4 py-8">
-        <RestaurantHeader
-          name={preferences.restaurant_name}
-          isCustomDemo={true}
-        />
-        
-        <Card className="mt-8">
-          <CardContent className="p-6">
-            <ReviewSection 
-              customRestaurantName={preferences.restaurant_name}
-              customGoogleMapsUrl={preferences.google_maps_url}
-              hidePreferences={true}
-              onTakeAiSurvey={handleTakeAiSurvey}
-            />
-          </CardContent>
-        </Card>
-      </div>
+    <div className="min-h-screen">
+      <Card>
+        <CardContent className="p-6">
+          <RestaurantHeader
+            name={preferences.restaurant_name}
+            isCustomDemo={true}
+          />
+          <ReviewSection 
+            customRestaurantName={preferences.restaurant_name}
+            customGoogleMapsUrl={preferences.google_maps_url}
+            hidePreferences={true}
+            onTakeAiSurvey={handleTakeAiSurvey}
+          />
+        </CardContent>
+      </Card>
       
       <AiSurveyWidget show={showAiSurvey} />
     </div>
