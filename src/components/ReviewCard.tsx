@@ -67,8 +67,6 @@ export const ReviewCard = ({
     const emailBody = constructRewardEmailBody(businessName, googleMapsUrl, uniqueCode, review);
     const recipients = getEmailRecipients();
     
-    console.log('Opening mailto with recipients:', recipients);
-    
     const mailtoLink = `mailto:${encodeURIComponent(recipients)}?subject=Sign me up for EatUP! Rewards at ${encodeURIComponent(businessName)}&body=${encodeURIComponent(emailBody)}`;
     
     toast({

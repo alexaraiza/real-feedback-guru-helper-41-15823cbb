@@ -53,22 +53,15 @@ export const getEmailRecipients = () => {
   
   try {
     const savedPreferences = localStorage.getItem('demoPreferences');
-    console.log('Retrieved demo preferences:', savedPreferences);
-    
     if (savedPreferences) {
       const preferences = JSON.parse(savedPreferences);
-      console.log('Parsed preferences:', preferences);
-      
-      if (preferences.contactEmail) {
-        recipients.push(preferences.contactEmail);
-        console.log('Added contact email to recipients:', preferences.contactEmail);
+      if (preferences.contactEmail && preferences.contactEmail.trim()) {
+        recipients.push(preferences.contactEmail.trim());
       }
     }
   } catch (error) {
     console.error('Error getting email recipients:', error);
   }
   
-  const recipientString = recipients.join(',');
-  console.log('Final recipients string:', recipientString);
-  return recipientString;
+  return recipients.join(',');
 };
