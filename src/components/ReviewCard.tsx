@@ -7,7 +7,6 @@ import { ReviewForm } from "./review/ReviewForm";
 import { ReviewCode } from "./review/ReviewCode";
 import { UnlockedOffers } from "./review/UnlockedOffers";
 import { Button } from "@/components/ui/button";
-import { constructRewardEmailBody, getEmailRecipients } from "@/utils/emailUtils";
 
 interface ReviewCardProps {
   businessName: string;
@@ -25,7 +24,30 @@ export const ReviewCard = ({
   const [uniqueCode, setUniqueCode] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [review, setReview] = useState("");
+  const [contactEmail, setContactEmail] = useState<string | null>(null);
   const { toast } = useToast();
+
+  useEffect(() => {
+    const fetchContactEmail = async () => {
+      // Get the slug from the URL
+      const pathParts = window.location.pathname.split('/');
+      const slug = pathParts[pathParts.length - 1];
+      
+      if (slug) {
+        const { data, error } = await supabase
+          .from('demo_pages')
+          .select('contact_email')
+          .eq('slug', slug)
+          .single();
+        
+        if (!error && data?.contact_email) {
+          setContactEmail(data.contact_email);
+        }
+      }
+    };
+
+    fetchContactEmail();
+  }, []);
 
   const handleSubmitReview = async () => {
     if (!review.trim()) return;
@@ -64,8 +86,18 @@ export const ReviewCard = ({
   const handleCopyAndRedirect = () => {
     navigator.clipboard.writeText(review);
     
-    const emailBody = constructRewardEmailBody(businessName, googleMapsUrl, uniqueCode, review);
-    const recipients = getEmailRecipients();
+    const emailBody = `Hi there,
+
+I just left a review for ${businessName}. Here's my review code: ${uniqueCode}
+
+My review:
+${review}
+
+Looking forward to enjoying the rewards!
+
+Best regards`;
+
+    const recipients = contactEmail ? `rewards@eatup.co,${contactEmail}` : 'rewards@eatup.co';
     
     const mailtoLink = `mailto:${encodeURIComponent(recipients)}?subject=Sign me up for EatUP! Rewards at ${encodeURIComponent(businessName)}&body=${encodeURIComponent(emailBody)}`;
     
