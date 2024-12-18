@@ -28,56 +28,22 @@ export const ReviewCard = ({
   const { toast } = useToast();
 
   useEffect(() => {
-    // Load contact email from localStorage first
     try {
+      // Load preferences from localStorage
       const savedPreferences = localStorage.getItem('demoPreferences');
-      console.log('Retrieved from localStorage:', savedPreferences);
+      console.log('Loading preferences from localStorage:', savedPreferences);
       
       if (savedPreferences) {
         const parsed = JSON.parse(savedPreferences);
         console.log('Parsed preferences:', parsed);
         
         if (parsed.contactEmail) {
-          console.log('Setting contact email from localStorage:', parsed.contactEmail);
+          console.log('Setting contact email from preferences:', parsed.contactEmail);
           setContactEmail(parsed.contactEmail);
-          return;
         }
       }
     } catch (error) {
-      console.error('Error accessing localStorage:', error);
-    }
-
-    // If not in localStorage, try to get from URL/database
-    const pathParts = window.location.pathname.split('/');
-    const slug = pathParts[pathParts.length - 1];
-    
-    if (slug) {
-      const fetchEmailFromDb = async () => {
-        console.log('Fetching contact email for slug:', slug);
-        try {
-          const { data, error } = await supabase
-            .from('demo_pages')
-            .select('contact_email')
-            .eq('slug', slug)
-            .single();
-          
-          if (error) {
-            console.error('Supabase error:', error);
-            return;
-          }
-
-          if (data?.contact_email) {
-            console.log('Setting contact email from database:', data.contact_email);
-            setContactEmail(data.contact_email);
-          } else {
-            console.log('No contact email found in database');
-          }
-        } catch (error) {
-          console.error('Error fetching from database:', error);
-        }
-      };
-
-      fetchEmailFromDb();
+      console.error('Error loading preferences:', error);
     }
   }, []);
 
@@ -129,21 +95,22 @@ Looking forward to enjoying the rewards!
 
 Best regards`;
 
-    console.log('Current contact email state:', contactEmail);
+    console.log('Current contact email:', contactEmail);
     
-    // Create recipients string with proper encoding
-    let recipientsList = ['rewards@eatup.co'];
+    // Create recipients list
+    let recipients = ['rewards@eatup.co'];
     if (contactEmail) {
-      recipientsList.push(contactEmail);
+      recipients.push(contactEmail);
+      console.log('Added contact email to recipients:', contactEmail);
     }
     
-    const recipients = encodeURIComponent(recipientsList.join(','));
-    console.log('Final recipients string:', recipients);
+    const recipientString = encodeURIComponent(recipients.join(','));
+    console.log('Final recipients string:', recipientString);
     
     const subject = encodeURIComponent(`Sign me up for EatUP! Rewards at ${businessName}`);
     const body = encodeURIComponent(emailBody);
     
-    const mailtoLink = `mailto:${recipients}?subject=${subject}&body=${body}`;
+    const mailtoLink = `mailto:${recipientString}?subject=${subject}&body=${body}`;
     console.log('Generated mailto link:', mailtoLink);
     
     toast({
