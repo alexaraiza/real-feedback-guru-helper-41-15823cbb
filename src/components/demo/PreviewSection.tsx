@@ -77,7 +77,6 @@ export const PreviewSection = ({ generatedUrl }: PreviewSectionProps) => {
             >
               {copied ? <Check className="h-4 w-4 text-green-500" /> : <Copy className="h-4 w-4" />}
             </Button>
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-gray-50/90 pointer-events-none" />
           </div>
         </div>
       </div>
