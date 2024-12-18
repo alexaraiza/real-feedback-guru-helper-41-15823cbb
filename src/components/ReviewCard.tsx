@@ -29,18 +29,22 @@ export const ReviewCard = ({
 
   useEffect(() => {
     // Load contact email from localStorage first
-    const savedPreferences = localStorage.getItem('demoPreferences');
-    if (savedPreferences) {
-      try {
-        const { contactEmail: savedEmail } = JSON.parse(savedPreferences);
-        console.log('Found contact email in localStorage:', savedEmail);
-        if (savedEmail) {
-          setContactEmail(savedEmail);
+    try {
+      const savedPreferences = localStorage.getItem('demoPreferences');
+      console.log('Retrieved from localStorage:', savedPreferences);
+      
+      if (savedPreferences) {
+        const parsed = JSON.parse(savedPreferences);
+        console.log('Parsed preferences:', parsed);
+        
+        if (parsed.contactEmail) {
+          console.log('Setting contact email from localStorage:', parsed.contactEmail);
+          setContactEmail(parsed.contactEmail);
           return;
         }
-      } catch (error) {
-        console.error('Error parsing localStorage preferences:', error);
       }
+    } catch (error) {
+      console.error('Error accessing localStorage:', error);
     }
 
     // If not in localStorage, try to get from URL/database
@@ -50,17 +54,26 @@ export const ReviewCard = ({
     if (slug) {
       const fetchEmailFromDb = async () => {
         console.log('Fetching contact email for slug:', slug);
-        const { data, error } = await supabase
-          .from('demo_pages')
-          .select('contact_email')
-          .eq('slug', slug)
-          .single();
-        
-        if (!error && data?.contact_email) {
-          console.log('Found contact email in database:', data.contact_email);
-          setContactEmail(data.contact_email);
-        } else {
-          console.log('No contact email found in database or error:', error);
+        try {
+          const { data, error } = await supabase
+            .from('demo_pages')
+            .select('contact_email')
+            .eq('slug', slug)
+            .single();
+          
+          if (error) {
+            console.error('Supabase error:', error);
+            return;
+          }
+
+          if (data?.contact_email) {
+            console.log('Setting contact email from database:', data.contact_email);
+            setContactEmail(data.contact_email);
+          } else {
+            console.log('No contact email found in database');
+          }
+        } catch (error) {
+          console.error('Error fetching from database:', error);
         }
       };
 
@@ -116,15 +129,22 @@ Looking forward to enjoying the rewards!
 
 Best regards`;
 
-    // Get contact email from state and create recipients string
-    const recipients = contactEmail ? 
-      encodeURIComponent(`rewards@eatup.co,${contactEmail}`) : 
-      encodeURIComponent('rewards@eatup.co');
+    console.log('Current contact email state:', contactEmail);
     
-    console.log('Contact email before creating mailto:', contactEmail);
+    // Create recipients string with proper encoding
+    let recipientsList = ['rewards@eatup.co'];
+    if (contactEmail) {
+      recipientsList.push(contactEmail);
+    }
+    
+    const recipients = encodeURIComponent(recipientsList.join(','));
     console.log('Final recipients string:', recipients);
     
-    const mailtoLink = `mailto:${recipients}?subject=${encodeURIComponent(`Sign me up for EatUP! Rewards at ${businessName}`)}&body=${encodeURIComponent(emailBody)}`;
+    const subject = encodeURIComponent(`Sign me up for EatUP! Rewards at ${businessName}`);
+    const body = encodeURIComponent(emailBody);
+    
+    const mailtoLink = `mailto:${recipients}?subject=${subject}&body=${body}`;
+    console.log('Generated mailto link:', mailtoLink);
     
     toast({
       title: "Review copied!",
