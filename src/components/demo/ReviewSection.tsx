@@ -8,6 +8,8 @@ import { UploadStep } from "./steps/UploadStep";
 import { RefineStep } from "./steps/RefineStep";
 import { DemoPreferences } from "./DemoPreferences";
 import { nanoid } from 'nanoid';
+import { Button } from "@/components/ui/button";
+import { MessageCircle } from "lucide-react";
 
 interface ReviewSectionProps {
   customRestaurantName?: string;
