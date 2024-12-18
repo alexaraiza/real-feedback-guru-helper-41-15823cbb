@@ -62,14 +62,9 @@ export const CreateDemoButton = ({ onPageCreated }: CreateDemoButtonProps) => {
         throw error;
       }
 
-      // Use the current origin for development, but format it for the Lovable preview
-      const origin = window.location.origin;
-      const isPreview = origin.includes('lovable.app');
-      const demoUrl = `/demo/${uniqueSlug}`;
-      
-      // If we're in the Lovable preview, use the full URL, otherwise use relative path
-      const fullUrl = isPreview ? `${origin}${demoUrl}` : demoUrl;
-      await navigator.clipboard.writeText(fullUrl);
+      // Generate the Lovable app URL format
+      const lovableAppUrl = `https://id-preview--32802680-4753-4ba5-98e8-7b0522c3f6f0.lovable.app/demo/${uniqueSlug}`;
+      await navigator.clipboard.writeText(lovableAppUrl);
 
       toast({
         title: "Review page created!",
@@ -77,7 +72,7 @@ export const CreateDemoButton = ({ onPageCreated }: CreateDemoButtonProps) => {
       });
 
       if (onPageCreated) {
-        onPageCreated(demoUrl);
+        onPageCreated(`/demo/${uniqueSlug}`);
       }
 
     } catch (error) {
