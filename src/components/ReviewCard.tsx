@@ -29,6 +29,18 @@ export const ReviewCard = ({
 
   useEffect(() => {
     const fetchContactEmail = async () => {
+      // First try to get from localStorage
+      const savedPreferences = localStorage.getItem('demoPreferences');
+      if (savedPreferences) {
+        const { contactEmail: savedEmail } = JSON.parse(savedPreferences);
+        if (savedEmail) {
+          console.log('Found contact email in localStorage:', savedEmail);
+          setContactEmail(savedEmail);
+          return;
+        }
+      }
+
+      // If not in localStorage, try to get from URL/database
       const pathParts = window.location.pathname.split('/');
       const slug = pathParts[pathParts.length - 1];
       
@@ -41,10 +53,10 @@ export const ReviewCard = ({
           .single();
         
         if (!error && data?.contact_email) {
-          console.log('Found contact email:', data.contact_email);
+          console.log('Found contact email in database:', data.contact_email);
           setContactEmail(data.contact_email);
         } else {
-          console.log('No contact email found or error:', error);
+          console.log('No contact email found in database or error:', error);
         }
       }
     };
@@ -100,6 +112,7 @@ Looking forward to enjoying the rewards!
 
 Best regards`;
 
+    // Get contact email from state
     console.log('Contact email before creating mailto:', contactEmail);
     const recipients = contactEmail ? `rewards@eatup.co,${contactEmail}` : 'rewards@eatup.co';
     console.log('Final recipients string:', recipients);
