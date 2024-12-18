@@ -67,7 +67,7 @@ export const CustomDemoView = ({ slug }: CustomDemoViewProps) => {
 
   return (
     <div className="min-h-screen">
-      <Card>
+      <Card className="max-w-2xl mx-auto">
         <CardContent className="p-6">
           <RestaurantHeader
             name={preferences.restaurant_name}
