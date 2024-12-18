@@ -43,6 +43,7 @@ export const CreateDemoButton = ({ onPageCreated }: CreateDemoButtonProps) => {
       }
 
       const uniqueSlug = generateUniqueSlug(restaurantName);
+      const lovableUrl = `https://32802680-4753-4ba5-98e8-7b0522c3f6f0.lovableproject.com/demo/${uniqueSlug}`;
       console.log('Creating demo page with contact email:', contactEmail);
 
       const { data, error } = await supabase
@@ -53,7 +54,7 @@ export const CreateDemoButton = ({ onPageCreated }: CreateDemoButtonProps) => {
             google_maps_url: googleMapsUrl,
             contact_email: contactEmail,
             slug: uniqueSlug,
-            full_url: `https://32802680-4753-4ba5-98e8-7b0522c3f6f0.lovableproject.com/demo/${uniqueSlug}`
+            full_url: lovableUrl
           }
         ])
         .select()
@@ -63,8 +64,7 @@ export const CreateDemoButton = ({ onPageCreated }: CreateDemoButtonProps) => {
         throw error;
       }
 
-      const demoUrl = `https://32802680-4753-4ba5-98e8-7b0522c3f6f0.lovableproject.com/demo/${uniqueSlug}`;
-      await navigator.clipboard.writeText(demoUrl);
+      await navigator.clipboard.writeText(lovableUrl);
 
       toast({
         title: "Review page created!",
