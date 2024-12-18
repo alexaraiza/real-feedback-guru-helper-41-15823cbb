@@ -6,12 +6,13 @@ import { useToast } from "@/hooks/use-toast";
 import { Check } from "lucide-react";
 
 interface DemoPreferencesProps {
-  onPreferencesSaved: (name: string, url: string) => void;
+  onPreferencesSaved: (name: string, url: string, email: string) => void;
 }
 
 export const DemoPreferences = ({ onPreferencesSaved }: DemoPreferencesProps) => {
   const [restaurantName, setRestaurantName] = useState("The Local Kitchen & Bar");
   const [googleMapsUrl, setGoogleMapsUrl] = useState("https://maps.app.goo.gl/Nx23mQHet4TBfctJ6");
+  const [contactEmail, setContactEmail] = useState("");
   const [isSaving, setIsSaving] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const { toast } = useToast();
@@ -20,10 +21,11 @@ export const DemoPreferences = ({ onPreferencesSaved }: DemoPreferencesProps) =>
     // Load preferences from local storage on component mount
     const savedPreferences = localStorage.getItem('demoPreferences');
     if (savedPreferences) {
-      const { restaurantName: savedName, googleMapsUrl: savedUrl } = JSON.parse(savedPreferences);
+      const { restaurantName: savedName, googleMapsUrl: savedUrl, contactEmail: savedEmail } = JSON.parse(savedPreferences);
       setRestaurantName(savedName);
       setGoogleMapsUrl(savedUrl);
-      onPreferencesSaved(savedName, savedUrl);
+      setContactEmail(savedEmail || '');
+      onPreferencesSaved(savedName, savedUrl, savedEmail || '');
     }
   }, [onPreferencesSaved]);
 
@@ -43,9 +45,10 @@ export const DemoPreferences = ({ onPreferencesSaved }: DemoPreferencesProps) =>
       localStorage.setItem('demoPreferences', JSON.stringify({
         restaurantName,
         googleMapsUrl,
+        contactEmail,
       }));
 
-      onPreferencesSaved(restaurantName, googleMapsUrl);
+      onPreferencesSaved(restaurantName, googleMapsUrl, contactEmail);
       setShowSuccess(true);
       toast({
         title: "Preferences saved!",
@@ -86,6 +89,16 @@ export const DemoPreferences = ({ onPreferencesSaved }: DemoPreferencesProps) =>
           value={googleMapsUrl}
           onChange={(e) => setGoogleMapsUrl(e.target.value)}
           placeholder="Paste your Google Maps link"
+        />
+      </div>
+      <div className="space-y-2">
+        <Label htmlFor="contactEmail">Contact Email</Label>
+        <Input
+          id="contactEmail"
+          type="email"
+          value={contactEmail}
+          onChange={(e) => setContactEmail(e.target.value)}
+          placeholder="Enter restaurant contact email"
         />
       </div>
       <Button 

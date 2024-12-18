@@ -15,15 +15,21 @@ export const EmailCapture = ({
 }: EmailCaptureProps) => {
   const [restaurantName, setRestaurantName] = useState(customRestaurantName || "The Local Kitchen & Bar");
   const [googleMapsUrl, setGoogleMapsUrl] = useState(customGoogleMapsUrl || "https://maps.app.goo.gl/Nx23mQHet4TBfctJ6");
+  const [contactEmail, setContactEmail] = useState("");
 
   useEffect(() => {
     // Only load from localStorage if no custom values provided
     if (!customRestaurantName || !customGoogleMapsUrl) {
       const savedPreferences = localStorage.getItem('demoPreferences');
       if (savedPreferences) {
-        const { restaurantName: savedName, googleMapsUrl: savedUrl } = JSON.parse(savedPreferences);
+        const { 
+          restaurantName: savedName, 
+          googleMapsUrl: savedUrl,
+          contactEmail: savedEmail 
+        } = JSON.parse(savedPreferences);
         if (!customRestaurantName) setRestaurantName(savedName);
         if (!customGoogleMapsUrl) setGoogleMapsUrl(savedUrl);
+        setContactEmail(savedEmail || '');
       }
     }
   }, [customRestaurantName, customGoogleMapsUrl]);
@@ -91,7 +97,7 @@ export const EmailCapture = ({
     emailBody += "Best regards,\n";
     emailBody += "[Your Name]";
 
-    const mailtoLink = `mailto:rewards@eatup.co?subject=Sign me up for EatUP! Rewards at ${encodeURIComponent(restaurantName)}&body=${encodeURIComponent(emailBody)}`;
+    const mailtoLink = `mailto:rewards@eatup.co?cc=${encodeURIComponent(contactEmail)}&subject=Sign me up for EatUP! Rewards at ${encodeURIComponent(restaurantName)}&body=${encodeURIComponent(emailBody)}`;
     window.location.href = mailtoLink;
   };
 

@@ -32,7 +32,7 @@ export const CreateDemoButton = ({ onPageCreated }: CreateDemoButtonProps) => {
         return;
       }
 
-      const { restaurantName, googleMapsUrl } = JSON.parse(savedPreferences);
+      const { restaurantName, googleMapsUrl, contactEmail } = JSON.parse(savedPreferences);
       if (!restaurantName || !googleMapsUrl) {
         toast({
           title: "Missing preferences",
@@ -50,6 +50,7 @@ export const CreateDemoButton = ({ onPageCreated }: CreateDemoButtonProps) => {
           {
             restaurant_name: restaurantName,
             google_maps_url: googleMapsUrl,
+            contact_email: contactEmail,
             slug: uniqueSlug
           }
         ])
@@ -62,7 +63,7 @@ export const CreateDemoButton = ({ onPageCreated }: CreateDemoButtonProps) => {
 
       const demoUrl = `/demo/${uniqueSlug}`;
       
-      // Copy the URL to clipboard - use window.location.origin to get the current domain
+      // Copy the URL to clipboard
       await navigator.clipboard.writeText(`${window.location.origin}${demoUrl}`);
 
       toast({

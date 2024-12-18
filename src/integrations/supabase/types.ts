@@ -59,6 +59,7 @@ export type Database = {
       }
       demo_pages: {
         Row: {
+          contact_email: string | null
           created_at: string
           full_url: string | null
           google_maps_url: string
@@ -67,6 +68,7 @@ export type Database = {
           slug: string
         }
         Insert: {
+          contact_email?: string | null
           created_at?: string
           full_url?: string | null
           google_maps_url: string
@@ -75,6 +77,7 @@ export type Database = {
           slug: string
         }
         Update: {
+          contact_email?: string | null
           created_at?: string
           full_url?: string | null
           google_maps_url?: string
@@ -86,18 +89,21 @@ export type Database = {
       }
       demo_preferences: {
         Row: {
+          contact_email: string | null
           created_at: string
           google_maps_url: string
           id: string
           restaurant_name: string
         }
         Insert: {
+          contact_email?: string | null
           created_at?: string
           google_maps_url: string
           id?: string
           restaurant_name: string
         }
         Update: {
+          contact_email?: string | null
           created_at?: string
           google_maps_url?: string
           id?: string
