@@ -52,7 +52,8 @@ export const CreateDemoButton = ({ onPageCreated }: CreateDemoButtonProps) => {
             restaurant_name: restaurantName,
             google_maps_url: googleMapsUrl,
             contact_email: contactEmail,
-            slug: uniqueSlug
+            slug: uniqueSlug,
+            full_url: `/demo/${uniqueSlug}`
           }
         ])
         .select()
@@ -62,9 +63,11 @@ export const CreateDemoButton = ({ onPageCreated }: CreateDemoButtonProps) => {
         throw error;
       }
 
-      // Generate the Lovable app URL format
-      const lovableAppUrl = `https://id-preview--32802680-4753-4ba5-98e8-7b0522c3f6f0.lovable.app/demo/${uniqueSlug}`;
-      await navigator.clipboard.writeText(lovableAppUrl);
+      // Generate URL based on environment
+      const baseUrl = window.location.origin;
+      const demoUrl = `${baseUrl}/demo/${uniqueSlug}`;
+      
+      await navigator.clipboard.writeText(demoUrl);
 
       toast({
         title: "Review page created!",
