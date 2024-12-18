@@ -43,14 +43,20 @@ export const PreviewSection = ({ generatedUrl }: PreviewSectionProps) => {
       <h3 className="text-xl font-semibold mb-4">Your Review Page Details</h3>
       <div className="space-y-6">
         <div>
-          <p className="text-sm text-gray-600 mb-2">2. Your unique URL to share with customers:</p>
-          <code className="block p-3 bg-gray-50 rounded-lg text-sm break-all">
-            {fullUrl}
-          </code>
+          <p className="text-sm font-medium text-gray-600 mb-2">Your unique URL to share with customers:</p>
+          <div className="flex flex-col space-y-2">
+            <div className="relative">
+              <code className="block p-4 bg-gray-50 rounded-lg text-sm break-all font-mono text-primary">
+                {fullUrl}
+              </code>
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-gray-50/90 pointer-events-none" />
+            </div>
+          </div>
         </div>
+        
         {qrCodeUrl && (
           <div>
-            <p className="text-sm text-gray-600 mb-2">Your unique QR code to share with customers:</p>
+            <p className="text-sm font-medium text-gray-600 mb-2">Your unique QR code to share with customers:</p>
             <div className="bg-white p-4 rounded-lg inline-block">
               <img 
                 src={qrCodeUrl} 
