@@ -7,6 +7,7 @@ import { ReviewForm } from "./review/ReviewForm";
 import { ReviewCode } from "./review/ReviewCode";
 import { UnlockedOffers } from "./review/UnlockedOffers";
 import { Button } from "@/components/ui/button";
+import { MessageCircle } from "lucide-react";
 
 interface ReviewCardProps {
   businessName: string;
@@ -142,6 +143,22 @@ Best regards`;
           >
             Copy & Share on Google
           </Button>
+
+          <div className="border-t pt-6 mt-8">
+            <h3 className="text-lg font-semibold text-gray-800 mb-3">
+              Have more feedback?
+            </h3>
+            <p className="text-gray-600 mb-4">
+              Chat with our AI assistant to share additional thoughts about your experience.
+            </p>
+            <Button
+              onClick={onTakeAiSurvey}
+              className="w-full bg-gradient-to-r from-[#8B5CF6] via-[#D946EF] to-[#1EAEDB] hover:opacity-90 text-white"
+            >
+              <MessageCircle className="mr-2 h-5 w-5" />
+              Chat with EatUP! AI Assistant
+            </Button>
+          </div>
         </div>
       )}
     </div>
