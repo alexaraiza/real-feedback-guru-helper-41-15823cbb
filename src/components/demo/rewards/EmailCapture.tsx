@@ -97,7 +97,9 @@ export const EmailCapture = ({
     emailBody += "Best regards,\n";
     emailBody += "[Your Name]";
 
-    const mailtoLink = `mailto:rewards@eatup.co?cc=${encodeURIComponent(contactEmail)}&subject=Sign me up for EatUP! Rewards at ${encodeURIComponent(restaurantName)}&body=${encodeURIComponent(emailBody)}`;
+    // Create mailto link with CC if contact email exists
+    const ccPart = contactEmail ? `&cc=${encodeURIComponent(contactEmail)}` : '';
+    const mailtoLink = `mailto:rewards@eatup.co${ccPart}?subject=Sign me up for EatUP! Rewards at ${encodeURIComponent(restaurantName)}&body=${encodeURIComponent(emailBody)}`;
     window.location.href = mailtoLink;
   };
 
