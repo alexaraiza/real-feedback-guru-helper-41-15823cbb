@@ -62,9 +62,9 @@ export const CreateDemoButton = ({ onPageCreated }: CreateDemoButtonProps) => {
         throw error;
       }
 
-      // Generate the Lovable app URL format
-      const lovableAppUrl = `https://id-preview--32802680-4753-4ba5-98e8-7b0522c3f6f0.lovable.app/demo/${uniqueSlug}`;
-      await navigator.clipboard.writeText(lovableAppUrl);
+      // Generate URL in the requested format
+      const lovableUrl = `https://32802680-4753-4ba5-98e8-7b0522c3f6f0.lovableproject.com/demo/${uniqueSlug}`;
+      await navigator.clipboard.writeText(lovableUrl);
 
       toast({
         title: "Review page created!",
