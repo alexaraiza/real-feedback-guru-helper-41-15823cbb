@@ -6,7 +6,7 @@ import { RewardsSection } from "./RewardsSection";
 import { ThoughtsStep } from "./steps/ThoughtsStep";
 import { UploadStep } from "./steps/UploadStep";
 import { RefineStep } from "./steps/RefineStep";
-import { DemoPreferences } from "./DemoPreferences";
+import { RestaurantInfo } from "./RestaurantInfo";
 import { nanoid } from 'nanoid';
 import { AiFeedbackSection } from "./AiFeedbackSection";
 
@@ -157,7 +157,7 @@ export const ReviewSection = ({
     <Card>
       <CardContent className="space-y-8 pt-6">
         {!hidePreferences && (
-          <DemoPreferences onPreferencesSaved={handlePreferencesSaved} />
+          <RestaurantInfo onRestaurantInfoSaved={handlePreferencesSaved} />
         )}
         
         <div className="text-center">

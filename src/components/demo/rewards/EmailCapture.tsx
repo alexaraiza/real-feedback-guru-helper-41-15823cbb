@@ -19,21 +19,22 @@ export const EmailCapture = ({
 
   useEffect(() => {
     // Load preferences from localStorage
-    const savedPreferences = localStorage.getItem('demoPreferences');
-    console.log('Loaded preferences:', savedPreferences); // Debug log
+
+    const savedRestaurantInfo = localStorage.getItem('restaurantInfo');
+    console.log('Loaded preferences:', savedRestaurantInfo); // Debug log
     
-    if (savedPreferences) {
+    if (savedRestaurantInfo) {
       const { 
-        restaurantName: savedName, 
-        googleMapsUrl: savedUrl,
-        contactEmail: savedEmail 
-      } = JSON.parse(savedPreferences);
+        restaurantName: savedRestaurantName,
+        googleMapsUrl: savedGoogleMapsUrl,
+        contactEmail: savedContactEmail
+      } = JSON.parse(savedRestaurantInfo);
       
-      console.log('Parsed contact email:', savedEmail); // Debug log
+      console.log('Parsed contact email:', savedContactEmail); // Debug log
       
-      if (!customRestaurantName) setRestaurantName(savedName);
-      if (!customGoogleMapsUrl) setGoogleMapsUrl(savedUrl);
-      if (savedEmail) setContactEmail(savedEmail);
+      if (!customRestaurantName) setRestaurantName(savedRestaurantName);
+      if (!customGoogleMapsUrl) setGoogleMapsUrl(savedGoogleMapsUrl);
+      if (savedContactEmail) setContactEmail(savedContactEmail);
     }
   }, [customRestaurantName, customGoogleMapsUrl]);
 

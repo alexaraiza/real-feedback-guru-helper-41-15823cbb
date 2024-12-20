@@ -52,9 +52,10 @@ export const getEmailRecipients = () => {
   const recipients = [defaultRecipient];
   
   try {
-    const savedPreferences = localStorage.getItem('demoPreferences');
-    if (savedPreferences) {
-      const preferences = JSON.parse(savedPreferences);
+    const savedRestaurantInfo = localStorage.getItem('restaurantInfo');
+
+    if (savedRestaurantInfo) {
+      const preferences = JSON.parse(savedRestaurantInfo);
       if (preferences.contactEmail && preferences.contactEmail.trim()) {
         recipients.push(preferences.contactEmail.trim());
       }

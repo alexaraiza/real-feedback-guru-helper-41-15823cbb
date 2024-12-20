@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Building2 } from "lucide-react";
-import { CreateDemoButton } from "./CreateDemoButton";
-import { PreviewSection } from "./PreviewSection";
+import { CreateReviewPageButton } from "./CreateReviewPageButton";
+import { ReviewPageUrlSection } from "./ReviewPageUrlSection";
 
 interface ReviewPageCreationSectionProps {
   restaurantName: string | null;
@@ -43,9 +43,9 @@ export const ReviewPageCreationSection = ({ restaurantName, googleMapsUrl }: Rev
           </div>
         </div>
 
-        <CreateDemoButton onPageCreated={setGeneratedUrl} />
-        
-        <PreviewSection 
+        <CreateReviewPageButton setGeneratedUrl={setGeneratedUrl} />
+
+        <ReviewPageUrlSection
           restaurantName={restaurantName}
           googleMapsUrl={googleMapsUrl}
           generatedUrl={generatedUrl}

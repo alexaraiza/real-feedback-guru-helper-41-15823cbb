@@ -2,15 +2,15 @@ import { useState, useEffect } from "react";
 import QRCode from "qrcode";
 import { Button } from "@/components/ui/button";
 import { Download, Copy, Check } from "lucide-react";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 
-interface PreviewSectionProps {
+interface ReviewPageUrlSectionProps {
   restaurantName: string | null;
   googleMapsUrl: string | null;
   generatedUrl: string | null;
 }
 
-export const PreviewSection = ({ generatedUrl }: PreviewSectionProps) => {
+export const ReviewPageUrlSection = ({ generatedUrl }: ReviewPageUrlSectionProps) => {
   const [qrCodeUrl, setQrCodeUrl] = useState<string>("");
   const [copied, setCopied] = useState(false);
   const { toast } = useToast();
@@ -39,6 +39,7 @@ export const PreviewSection = ({ generatedUrl }: PreviewSectionProps) => {
 
   const handleCopyUrl = async () => {
     const fullUrl = `${window.location.origin}${generatedUrl}`;
+
     try {
       await navigator.clipboard.writeText(fullUrl);
       setCopied(true);

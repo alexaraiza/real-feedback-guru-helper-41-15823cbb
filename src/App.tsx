@@ -1,29 +1,20 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import DemoPage from "./pages/demo";
-import CustomDemoPage from "./pages/custom-demo";
-import RestaurantOnboarding from "./pages/restaurants/onboard";
-import RestaurantDashboard from "./pages/restaurants/dashboard";
-import CreateReviewPage from "./pages/restaurants/create-review-page";
-import ReviewPagePreview from "./pages/restaurants/review-page-preview";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import IndexPage from "./pages/index";
+import RestaurantReviewPage from "./pages/restaurant-review";
 import { AuthProvider } from "./components/auth/AuthProvider";
 import { Toaster } from "./components/ui/toaster";
 
 function App() {
   return (
-    <Router>
+    <BrowserRouter>
       <AuthProvider>
         <Routes>
-          <Route path="/" element={<DemoPage />} />
-          <Route path="/demo" element={<Navigate to="/" replace />} />
-          <Route path="/demo/:slug" element={<CustomDemoPage />} />
-          <Route path="/restaurants/onboard" element={<RestaurantOnboarding />} />
-          <Route path="/restaurants/dashboard" element={<RestaurantDashboard />} />
-          <Route path="/restaurants/create-review-page" element={<CreateReviewPage />} />
-          <Route path="/restaurants/review-page-preview" element={<ReviewPagePreview />} />
+          <Route path="/" element={<IndexPage />} />
+          <Route path="/:slug" element={<RestaurantReviewPage />} />
         </Routes>
         <Toaster />
       </AuthProvider>
-    </Router>
+    </BrowserRouter>
   );
 }
 

@@ -5,13 +5,13 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { Check } from "lucide-react";
 
-interface DemoPreferencesProps {
-  onPreferencesSaved: (name: string, url: string, email: string) => void;
+interface RestaurantInfoProps {
+  onRestaurantInfoSaved: (name: string, url: string, email: string) => void;
 }
 
-export const DemoPreferences = ({ onPreferencesSaved }: DemoPreferencesProps) => {
-  const [restaurantName, setRestaurantName] = useState("The Local Kitchen & Bar");
-  const [googleMapsUrl, setGoogleMapsUrl] = useState("https://maps.app.goo.gl/Nx23mQHet4TBfctJ6");
+export const RestaurantInfo = ({ onRestaurantInfoSaved }: RestaurantInfoProps) => {
+  const [restaurantName, setRestaurantName] = useState("");
+  const [googleMapsUrl, setGoogleMapsUrl] = useState("");
   const [contactEmail, setContactEmail] = useState("");
   const [isSaving, setIsSaving] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
@@ -19,15 +19,16 @@ export const DemoPreferences = ({ onPreferencesSaved }: DemoPreferencesProps) =>
 
   useEffect(() => {
     // Load preferences from local storage on component mount
-    const savedPreferences = localStorage.getItem('demoPreferences');
-    if (savedPreferences) {
-      const { restaurantName: savedName, googleMapsUrl: savedUrl, contactEmail: savedEmail } = JSON.parse(savedPreferences);
-      setRestaurantName(savedName);
-      setGoogleMapsUrl(savedUrl);
-      setContactEmail(savedEmail || '');
-      onPreferencesSaved(savedName, savedUrl, savedEmail || '');
+    const savedRestaurantInfo = localStorage.getItem('restaurantInfo');
+
+    if (savedRestaurantInfo) {
+      const { restaurantName: savedRestaurantName, googleMapsUrl: savedGoogleMapsUrl, contactEmail: savedContactEmail } = JSON.parse(savedRestaurantInfo);
+      setRestaurantName(savedRestaurantName);
+      setGoogleMapsUrl(savedGoogleMapsUrl);
+      setContactEmail(savedContactEmail || '');
+      onRestaurantInfoSaved(savedRestaurantName, savedGoogleMapsUrl, savedContactEmail || '');
     }
-  }, [onPreferencesSaved]);
+  }, [onRestaurantInfoSaved]);
 
   const handleSavePreferences = () => {
     if (!restaurantName.trim() || !googleMapsUrl.trim()) {
@@ -40,15 +41,16 @@ export const DemoPreferences = ({ onPreferencesSaved }: DemoPreferencesProps) =>
     }
 
     setIsSaving(true);
+
     try {
       // Save to local storage
-      localStorage.setItem('demoPreferences', JSON.stringify({
+      localStorage.setItem('restaurantInfo', JSON.stringify({
         restaurantName,
         googleMapsUrl,
         contactEmail,
       }));
 
-      onPreferencesSaved(restaurantName, googleMapsUrl, contactEmail);
+      onRestaurantInfoSaved(restaurantName, googleMapsUrl, contactEmail);
       setShowSuccess(true);
       toast({
         title: "Preferences saved!",

@@ -7,11 +7,11 @@ import { useNavigate } from "react-router-dom";
 import { AiSurveyWidget } from "./AiSurveyWidget";
 import { Footer } from "@/components/Footer";
 
-interface CustomDemoViewProps {
+interface RestaurantReviewProps {
   slug: string;
 }
 
-export const CustomDemoView = ({ slug }: CustomDemoViewProps) => {
+export const RestaurantReview = ({ slug }: RestaurantReviewProps) => {
   const [preferences, setPreferences] = useState<{
     restaurant_name: string;
     google_maps_url: string;
@@ -21,7 +21,7 @@ export const CustomDemoView = ({ slug }: CustomDemoViewProps) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const loadDemoPage = async () => {
+    const loadRestaurantReviewPage = async () => {
       try {
         const { data, error } = await supabase
           .from('demo_pages')
@@ -32,7 +32,7 @@ export const CustomDemoView = ({ slug }: CustomDemoViewProps) => {
         if (error) throw error;
         if (data) {
           setPreferences(data);
-          localStorage.setItem('demoPreferences', JSON.stringify({
+          localStorage.setItem('restaurantInfo', JSON.stringify({
             restaurantName: data.restaurant_name,
             googleMapsUrl: data.google_maps_url,
           }));
@@ -47,7 +47,7 @@ export const CustomDemoView = ({ slug }: CustomDemoViewProps) => {
       }
     };
 
-    loadDemoPage();
+    loadRestaurantReviewPage();
   }, [slug, navigate]);
 
   const handleTakeAiSurvey = () => {

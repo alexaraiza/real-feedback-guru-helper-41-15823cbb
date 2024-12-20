@@ -1,32 +1,33 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 
-interface CreateDemoButtonProps {
-  onPageCreated: (restaurantName: string) => void;
+interface CreateReviewPageButtonProps {
+  setGeneratedUrl: React.Dispatch<React.SetStateAction<string>>;
 }
 
-export const CreateDemoButton = ({ onPageCreated }: CreateDemoButtonProps) => {
+export const CreateReviewPageButton = ({ setGeneratedUrl }: CreateReviewPageButtonProps) => {
   const [isCreating, setIsCreating] = useState(false);
   const { toast } = useToast();
 
-  const handleCreateDemo = async () => {
+  const handleCreateReviewPage = async () => {
     setIsCreating(true);
+
     try {
       // Simulate API call delay
       await new Promise(resolve => setTimeout(resolve, 1000));
       
       const demoRestaurantName = "demo-restaurant";
-      onPageCreated(demoRestaurantName);
+      setGeneratedUrl(demoRestaurantName);
       
       toast({
         title: "Success!",
-        description: "Your demo review page has been created.",
+        description: "Your review page has been created.",
       });
     } catch (error) {
       toast({
         title: "Error",
-        description: "Failed to create demo review page. Please try again.",
+        description: "Failed to create review page. Please try again.",
         variant: "destructive",
       });
     } finally {
@@ -36,11 +37,11 @@ export const CreateDemoButton = ({ onPageCreated }: CreateDemoButtonProps) => {
 
   return (
     <Button
-      onClick={handleCreateDemo}
+      onClick={handleCreateReviewPage}
       disabled={isCreating}
       className="w-full"
     >
-      {isCreating ? "Creating..." : "Create Demo Review Page"}
+      {isCreating ? "Creating..." : "Create Review Page"}
     </Button>
   );
 };
