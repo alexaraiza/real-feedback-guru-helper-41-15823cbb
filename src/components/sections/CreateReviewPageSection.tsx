@@ -1,91 +1,56 @@
-import { useState, useEffect } from "react";
-import { Building2, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useNavigate } from "react-router-dom";
-import { useToast } from "@/hooks/use-toast";
-import { supabase } from "@/integrations/supabase/client";
-import { SubscriptionPaywall } from "../subscription/SubscriptionPaywall";
+import { ArrowRight } from "lucide-react";
 
-export const CreateReviewPageSection = () => {
-  const [isLoading, setIsLoading] = useState(true);
-  const [isSubscribed, setIsSubscribed] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const navigate = useNavigate();
-  const { toast } = useToast();
+interface CreateReviewPageSectionProps {
+  onShowAuth: () => void;
+}
 
-  useEffect(() => {
-    const checkSubscription = async () => {
-      try {
-        const { data: { session } } = await supabase.auth.getSession();
-        setIsAuthenticated(!!session);
-        
-        if (session) {
-          const { data, error } = await supabase.functions.invoke('check-subscription');
-          if (error) throw error;
-          setIsSubscribed(data.subscribed);
-        }
-      } catch (error) {
-        console.error('Error checking subscription:', error);
-        toast({
-          title: "Error",
-          description: "Failed to check subscription status",
-          variant: "destructive",
-        });
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    checkSubscription();
-  }, [toast]);
-
-  const handleCreateReviewPage = () => {
-    if (!isAuthenticated) {
-      toast({
-        title: "Authentication required",
-        description: "Please sign in to create a review page",
-        variant: "destructive",
-      });
-      return;
-    }
-    navigate("/restaurants/create-review-page");
-  };
-
-  if (isLoading) {
-    return (
-      <div className="flex justify-center items-center min-h-[400px]">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-      </div>
-    );
-  }
-
-  if (!isSubscribed) {
-    return <SubscriptionPaywall />;
-  }
-
+export const CreateReviewPageSection = ({ onShowAuth }: CreateReviewPageSectionProps) => {
   return (
-    <div className="max-w-3xl mx-auto p-6 md:p-8 bg-white rounded-xl shadow-lg border border-pink-100">
-      <div className="text-center space-y-6">
-        <div className="bg-primary/10 p-3 rounded-full w-fit mx-auto">
-          <Building2 className="h-8 w-8 text-primary" />
-        </div>
-        
-        <div>
-          <h2 className="text-2xl md:text-3xl font-bold mb-3">
+    <section className="py-20 bg-gradient-to-b from-white to-pink-50">
+      <div className="max-w-7xl mx-auto px-4">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-bold mb-4 bg-gradient-to-r from-[#E94E87] via-[#F17BA3] to-[#FF9B9B] text-transparent bg-clip-text">
             Create Your Review Page
           </h2>
-          <p className="text-gray-600">
-            Get started with your own personalized review collection page. Perfect for restaurants looking to gather authentic customer feedback.
+          <p className="text-gray-600 max-w-2xl mx-auto">
+            Build a custom-branded review page that encourages positive reviews and helps you gather valuable customer feedback.
           </p>
         </div>
 
-        <Button
-          onClick={handleCreateReviewPage}
-          className="w-full bg-primary hover:bg-primary/90 text-white font-semibold py-6"
-        >
-          Create Review Page
-        </Button>
+        <div className="grid md:grid-cols-3 gap-8 mb-12">
+          <div className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300">
+            <h3 className="text-xl font-semibold mb-3 text-[#E94E87]">Custom Branding</h3>
+            <p className="text-gray-600">
+              Add your logo, colors, and messaging to create a seamless brand experience.
+            </p>
+          </div>
+
+          <div className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300">
+            <h3 className="text-xl font-semibold mb-3 text-[#E94E87]">Smart Routing</h3>
+            <p className="text-gray-600">
+              Automatically direct happy customers to leave positive reviews on your preferred platforms.
+            </p>
+          </div>
+
+          <div className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300">
+            <h3 className="text-xl font-semibold mb-3 text-[#E94E87]">Feedback Collection</h3>
+            <p className="text-gray-600">
+              Gather detailed customer feedback to improve your service and operations.
+            </p>
+          </div>
+        </div>
+
+        <div className="text-center">
+          <Button
+            onClick={onShowAuth}
+            className="bg-gradient-to-r from-[#E94E87] to-[#F17BA3] text-white hover:opacity-90"
+            size="lg"
+          >
+            Create Your Review Page <ArrowRight className="ml-2" />
+          </Button>
+        </div>
       </div>
-    </div>
+    </section>
   );
 };
