@@ -5,6 +5,7 @@ import { ReviewSection } from "./ReviewSection";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { AiSurveyWidget } from "./AiSurveyWidget";
+import { Footer } from "@/components/Footer";
 
 interface CustomDemoViewProps {
   slug: string;
@@ -66,23 +67,26 @@ export const CustomDemoView = ({ slug }: CustomDemoViewProps) => {
   }
 
   return (
-    <div className="min-h-screen">
-      <Card className="max-w-2xl mx-auto">
-        <CardContent className="p-6">
-          <RestaurantHeader
-            name={preferences.restaurant_name}
-            isCustomDemo={true}
-          />
-          <ReviewSection 
-            customRestaurantName={preferences.restaurant_name}
-            customGoogleMapsUrl={preferences.google_maps_url}
-            hidePreferences={true}
-            onTakeAiSurvey={handleTakeAiSurvey}
-          />
-        </CardContent>
-      </Card>
+    <div className="min-h-screen flex flex-col">
+      <div className="flex-grow">
+        <Card className="max-w-2xl mx-auto">
+          <CardContent className="p-6">
+            <RestaurantHeader
+              name={preferences.restaurant_name}
+              isCustomDemo={true}
+            />
+            <ReviewSection 
+              customRestaurantName={preferences.restaurant_name}
+              customGoogleMapsUrl={preferences.google_maps_url}
+              hidePreferences={true}
+              onTakeAiSurvey={handleTakeAiSurvey}
+            />
+          </CardContent>
+        </Card>
+      </div>
       
       <AiSurveyWidget show={showAiSurvey} />
+      <Footer />
     </div>
   );
 };
