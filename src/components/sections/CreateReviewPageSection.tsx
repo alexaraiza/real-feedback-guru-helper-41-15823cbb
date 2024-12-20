@@ -1,11 +1,51 @@
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
+import { SubscriptionPaywall } from "@/components/subscription/SubscriptionPaywall";
+import { supabase } from "@/integrations/supabase/client";
 
 interface CreateReviewPageSectionProps {
   onShowAuth: () => void;
 }
 
 export const CreateReviewPageSection = ({ onShowAuth }: CreateReviewPageSectionProps) => {
+  const [isSubscribed, setIsSubscribed] = useState<boolean | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const checkSubscription = async () => {
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        
+        if (!session) {
+          setIsSubscribed(false);
+          setIsLoading(false);
+          return;
+        }
+
+        const { data, error } = await supabase.functions.invoke('check-subscription');
+        
+        if (error) throw error;
+        setIsSubscribed(data?.subscribed || false);
+      } catch (error) {
+        console.error('Error checking subscription:', error);
+        setIsSubscribed(false);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    checkSubscription();
+  }, []);
+
+  if (isLoading) {
+    return null;
+  }
+
+  if (!isSubscribed) {
+    return <SubscriptionPaywall />;
+  }
+
   return (
     <section className="py-20 bg-gradient-to-b from-white to-pink-50">
       <div className="max-w-7xl mx-auto px-4">
